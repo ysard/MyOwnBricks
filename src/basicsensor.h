@@ -50,8 +50,8 @@ protected:
     uint8_t m_connSerialRX_pin;
     uint8_t m_connSerialTX_pin;
 
-    unsigned char m_rxBuf[32];
-    unsigned char m_txBuf[32];
+    unsigned char m_rxBuf[16];
+    unsigned char m_txBuf[16];
     unsigned long m_lastAckTick;
 
     bool m_connected;
