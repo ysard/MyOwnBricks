@@ -505,7 +505,8 @@ void LegoPupColorDistance::parseHeader(const uint8_t &header, uint8_t &mode, uin
 
 /**
  * @brief Get size of a message from the given header. Used by parseHeader().
- *      /!\ This is a simplified version that works on messages of type LUMP_MSG_TYPE_DATA.
+ *
+ * @warning /!\ This is a simplified version that works on messages of type LUMP_MSG_TYPE_DATA.
  *      DO NOT use on LUMP_MSG_TYPE_SYS, LUMP_MSG_TYPE_INFO messages.
  * @param header
  * @return Expected size
@@ -535,8 +536,8 @@ void LegoPupColorDistance::sendUARTBuffer(uint8_t msg_size) {
  */
 void LegoPupColorDistance::extendedModeInfoResponse() {
     // extended mode info
-    m_txBuf[0] = 0x46;                      // header type LUMP_MSG_TYPE_CMD cmd LUMP_CMD_EXT_MODE size 3
-    m_txBuf[1] = this->m_currentExtMode;    // value
+    m_txBuf[0] = 0x46;                      // header type LUMP_MSG_TYPE_CMD, cmd LUMP_CMD_EXT_MODE, size 3
+    m_txBuf[1] = this->m_currentExtMode;    // current EXT_MODE
     sendUARTBuffer(1);
 }
 
@@ -547,9 +548,6 @@ void LegoPupColorDistance::extendedModeInfoResponse() {
 void LegoPupColorDistance::setLEDColorMode() {
     // Mode 5 (write mode)
     // Expect LED color index (1 int8_t)
-    //uint8_t val = uint8_t(m_rxBuf[0]);
-    //m_LEDColor = &val;
-    //m_LEDColor = new uint8_t(m_rxBuf[0]);  // TODO: delete previous ?? so init indep in constrc
     *this->m_LEDColor = m_rxBuf[0];
 
     #ifdef DbgSerial
@@ -587,7 +585,7 @@ void LegoPupColorDistance::setIRTXMode() {
 void LegoPupColorDistance::LEDColorMode() {
     // Mode 0
     m_txBuf[0] = 0xC0;                      // header
-    m_txBuf[1] = *m_LEDColor;         // LED current color [0, 3, 5, 9, 0x0A]
+    m_txBuf[1] = *m_LEDColor;               // LED current color [0, 3, 5, 9, 0x0A]
     sendUARTBuffer(1);
 }
 
@@ -630,9 +628,11 @@ void LegoPupColorDistance::sensorRGBIMode() {
     // Mode 6
     // Max observed value is ~440
     // Send data; payload size = 6, but total msg_size = 10
+    // TODO: we send: device header: 0xde => type LUMP_MSG_TYPE_DATA mode 6 tot size 10
+    // size = 10 !! 8 bytes useful / 10
     m_txBuf[0] = getHeader(lump_msg_type_t::LUMP_MSG_TYPE_DATA, 6, 10); // 0xde
-    m_txBuf[1] = this->m_sensorRGB[0] & 0xFF;           // Send the lower byte
-    m_txBuf[2] = (this->m_sensorRGB[0] >> 8) & 0xFF;    // Send the upper byte first
+    m_txBuf[1] = this->m_sensorRGB[0] & 0xFF;           // Send LSB
+    m_txBuf[2] = (this->m_sensorRGB[0] >> 8) & 0xFF;    // Send MSB
     m_txBuf[3] = this->m_sensorRGB[1] & 0xFF;
     m_txBuf[4] = (this->m_sensorRGB[1] >> 8) & 0xFF;
     m_txBuf[5] = this->m_sensorRGB[2] & 0xFF;
@@ -640,8 +640,6 @@ void LegoPupColorDistance::sensorRGBIMode() {
     m_txBuf[7] = 0;                                     // Padding
     m_txBuf[8] = 0;                                     // Padding
     sendUARTBuffer(8);
-    // TODO: we send: device header: 0xde => type LUMP_MSG_TYPE_DATA mode 6 tot size 10
-    // size = 10 !! 8 bytes useful / 10
 }
 
 /**
@@ -658,11 +656,11 @@ void LegoPupColorDistance::sensorSpec1Mode() {
     this->extendedModeInfoResponse();
 
     // Send data
-    m_txBuf[0] = 0xD0;                      // header
-    m_txBuf[1] = *m_sensorColor;            // color    [0, 3, 5, 9, 0x0A, 0xFF]
-    m_txBuf[2] = *m_sensorDistance;         // distance [0..10]
-    m_txBuf[3] = *m_LEDColor;         // LED current color [0, 3, 5, 9, 0x0A]
-    m_txBuf[4] = *m_reflectedLight;   // reflected light [0..5F]
+    m_txBuf[0] = 0xD0;               // header
+    m_txBuf[1] = *m_sensorColor;     // color    [0, 3, 5, 9, 0x0A, 0xFF]
+    m_txBuf[2] = *m_sensorDistance;  // distance [0..10]
+    m_txBuf[3] = *m_LEDColor;        // LED current color [0, 3, 5, 9, 0x0A]
+    m_txBuf[4] = *m_reflectedLight;  // reflected light [0..5F]
     sendUARTBuffer(4);
 }
 
