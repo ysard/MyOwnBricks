@@ -47,7 +47,7 @@
  * @brief Handle the LegoUART protocol and define modes of the
  * Color & Distance sensor.
  *
- * @param m_LEDColor Current color of the LED; Available values: COLOR_NONE,
+ * @param m_LEDColor Current color of the LED; Available values:
  *      COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE.
  * @param m_sensorDistance Distance measured to the the nearest object.
  *      Discretized values 0..10.
@@ -57,7 +57,8 @@
  * @param m_ambientLight Ambient light based on lux value.
  *      Discretized values ???
  * @param m_sensorRGB Raw values of Red Green Blue channels.
- * @param m_sensorColor Detected color. See available values of m_LEDColor.
+ * @param m_sensorColor Detected color. See available values of m_LEDColor
+ *      + COLOR_NONE.
  * @param m_IR_code IR code for Power Functions IR devices
  *      (supposed to be transmitted via the Power Functions RC Protocol).
  * @param m_pIRfunc Callback set by user receiving m_IR_code.
