@@ -23,28 +23,29 @@
  * @brief Default constructor
  */
 LegoPupColorDistance::LegoPupColorDistance(){
-    uint8_t *default_val = new uint8_t(0);
+    uint8_t  *default_val  = new uint8_t(0);
     uint16_t defaultRGB[3] = {0, 0, 0};
 
     // Sensor default values
-    m_sensorColor = default_val;
+    m_sensorColor    = default_val;
     m_sensorDistance = default_val;
-    m_LEDColor = new uint8_t(0);
+    m_LEDColor       = new uint8_t(0);
     m_reflectedLight = default_val;
-    m_ambientLight = default_val;
-    m_sensorRGB = defaultRGB;
-    m_IR_code = 0;
-    m_pIRfunc = nullptr;
-    m_pLEDColorfunc = nullptr;
+    m_ambientLight   = default_val;
+    m_sensorRGB      = defaultRGB;
+    m_IR_code        = 0;
+    m_pIRfunc        = nullptr;
+    m_pLEDColorfunc  = nullptr;
 
     // UART protocol
     m_connSerialRX_pin = 0;
     m_connSerialTX_pin = 1;
 
     m_currentExtMode = 0;
-    m_lastAckTick = 0;
-    m_connected = false;
+    m_lastAckTick    = 0;
+    m_connected      = false;
 }
+
 
 /**
  * @brief Constructor allowing to set detected color and distance measure.
@@ -53,69 +54,75 @@ LegoPupColorDistance::LegoPupColorDistance(){
  *      the nearest object. Discretized values 0..10.
  */
 LegoPupColorDistance::LegoPupColorDistance(uint8_t *pSensorColor, uint8_t *pSensorDistance){
-    uint8_t *default_val = new uint8_t(0);
+    uint8_t  *default_val  = new uint8_t(0);
     uint16_t defaultRGB[3] = {0, 0, 0};
 
     // Set given values
-    m_sensorColor = pSensorColor;
+    m_sensorColor    = pSensorColor;
     m_sensorDistance = pSensorDistance;
     // Sensor default values
-    m_LEDColor = new uint8_t(0);
+    m_LEDColor       = new uint8_t(0);
     m_reflectedLight = default_val;
-    m_ambientLight = default_val;
-    m_sensorRGB = defaultRGB;
-    m_IR_code = 0;
-    m_pIRfunc = nullptr;
-    m_pLEDColorfunc = nullptr;
+    m_ambientLight   = default_val;
+    m_sensorRGB      = defaultRGB;
+    m_IR_code        = 0;
+    m_pIRfunc        = nullptr;
+    m_pLEDColorfunc  = nullptr;
 
     // UART protocol
     m_connSerialRX_pin = 0;
     m_connSerialTX_pin = 1;
 
     m_currentExtMode = 0;
-    m_lastAckTick = 0;
-    m_connected = false;
+    m_lastAckTick    = 0;
+    m_connected      = false;
 }
+
 
 /**
  * @brief Setter for m_sensorColor
  * @param pData Pointer to a discretized detected color. See m_LEDColor.
  */
-void LegoPupColorDistance::setSensorColor(uint8_t* pData){
+void LegoPupColorDistance::setSensorColor(uint8_t *pData){
     m_sensorColor = pData;
 }
+
 
 /**
  * @brief Setter for m_sensorDistance
  * @param pData Pointer to a discreztized distance measured to the
  *      the nearest object. Discretized values 0..10.
  */
-void LegoPupColorDistance::setSensorDistance(uint8_t* pData){
+void LegoPupColorDistance::setSensorDistance(uint8_t *pData){
     m_sensorDistance = pData;
 }
+
 
 /**
  * @brief Setter for m_sensorRGB; Raw values of Red Green Blue channels.
  * @param pData Expected value pointed is an array of uint16_t size 3.
  */
-void LegoPupColorDistance::setSensorRGB(uint16_t* pData) {
+void LegoPupColorDistance::setSensorRGB(uint16_t *pData){
     this->m_sensorRGB = pData;
 }
+
 
 /**
  * @brief Getter for m_IR_code
  * @return IR code
  */
-uint16_t LegoPupColorDistance::getSensorIRCode() {
+uint16_t LegoPupColorDistance::getSensorIRCode(){
     return this->m_IR_code;
 }
+
 
 /**
  * @brief Set callback receiving m_IR_code when modified by the hub.
  */
-void LegoPupColorDistance::setIRCallback(void (pfunc)(const uint16_t)) {
+void LegoPupColorDistance::setIRCallback(void(pfunc)(const uint16_t)){
     this->m_pIRfunc = pfunc;
 }
+
 
 /**
  * @brief Setter for m_LEDColor
@@ -123,35 +130,39 @@ void LegoPupColorDistance::setIRCallback(void (pfunc)(const uint16_t)) {
  *      Available values:
  *      COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE.
  */
-void LegoPupColorDistance::setSensorLEDColor(uint8_t* pData) {
+void LegoPupColorDistance::setSensorLEDColor(uint8_t *pData){
     // Free constructor's value
     delete this->m_LEDColor;
     this->m_LEDColor = pData;
 }
 
+
 /**
  * @brief Set callback receiving m_LEDColor when modified by the hub.
  */
-void LegoPupColorDistance::setLEDColorCallback(void (pfunc)(const uint8_t)) {
+void LegoPupColorDistance::setLEDColorCallback(void(pfunc)(const uint8_t)){
     this->m_pLEDColorfunc = pfunc;
 }
+
 
 /**
  * @brief Setter for m_reflectedLight
  * @param pData Pointer to reflected light (from clear channel value or
  *      calculations based on rgb channels). Discretized values 0..5F.
  */
-void LegoPupColorDistance::setSensorReflectedLight(uint8_t* pData) {
+void LegoPupColorDistance::setSensorReflectedLight(uint8_t *pData){
     this->m_reflectedLight = pData;
 }
+
 
 /**
  * @brief Setter for m_ambientLight
  * @param pData Pointer to ambient light based on lux value.
  */
-void LegoPupColorDistance::setSensorAmbientLight(uint8_t* pData) {
+void LegoPupColorDistance::setSensorAmbientLight(uint8_t *pData){
     this->m_ambientLight = pData;
 }
+
 
 /**
  * @brief Get status of connection with the hub.
@@ -161,20 +172,23 @@ bool LegoPupColorDistance::isConnected(void){
     return m_connected;
 }
 
+
 /**
  * @brief Get checksum for the given message
  * @param pData Message array: Header + Payload
  * @param length Length of the message
  * @return Checksum byte
  */
-uint8_t LegoPupColorDistance::calcChecksum(uint8_t* pData, int length){
+uint8_t LegoPupColorDistance::calcChecksum(uint8_t *pData, int length){
     uint8_t lRet, i;
+
     lRet = 0xFF;
     for(i=0; i<length; i++){
         lRet ^= pData[i];
     }
     return lRet;
 }
+
 
 /**
  * @brief Wait until the hub is available on the serial RX line.
@@ -191,11 +205,11 @@ void LegoPupColorDistance::commWaitForHubIdle(void){
 
     pinMode(m_connSerialRX_pin, INPUT);
     idletick = millis();
-    while(1){
-        if(digitalRead(m_connSerialRX_pin) == LOW){
+    while (1) {
+        if (digitalRead(m_connSerialRX_pin) == LOW) {
             idletick = millis();
         }
-        if(millis()-idletick > 100){
+        if (millis() - idletick > 100) {
             break;
         }
     }
@@ -205,6 +219,7 @@ void LegoPupColorDistance::commWaitForHubIdle(void){
     digitalWrite(m_connSerialTX_pin, LOW);
     delay(100);
 }
+
 
 /**
  * @brief Send initialization sequences for the current Color & Distance sensor.
@@ -352,14 +367,14 @@ void LegoPupColorDistance::Process(void){
 
         // Check if the hub send a ACK
         unsigned long currenttime = starttime;
-        while((currenttime-starttime) < 2000){
+        while ((currenttime - starttime) < 2000) {
             if (SerialTTL.available() > 0) {
                 // read the incoming byte
                 unsigned char dat = SerialTTL.read();
-                if (dat == 0x04){ // ACK
+                if (dat == 0x04) { // ACK
                     //DbgSerial.println("Connection Espablished !");
                     SerialTTL.begin(115200);
-                    m_connected = true;
+                    m_connected   = true;
                     m_lastAckTick = millis();
                     break;
                 }
@@ -367,8 +382,7 @@ void LegoPupColorDistance::Process(void){
             currenttime = millis();
             delay(10);
         }
-    }
-    else{
+    } else {
         // Connection established
         if (SerialTTL.available() > 0) {
             unsigned char header;
@@ -380,7 +394,7 @@ void LegoPupColorDistance::Process(void){
             DbgSerial.println(header, HEX);
             #endif
 
-            if(header == 0x02){ // NACK
+            if (header == 0x02) { // NACK
                 m_lastAckTick = millis();
                 // Here we can send mode 0 or mode 8 according to the value of ExtMode
                 // And send extendedModeInfoResponse before any data response.
@@ -389,8 +403,7 @@ void LegoPupColorDistance::Process(void){
                 this->m_currentExtMode = EXT_MODE_8;
                 this->sensorSpec1Mode();
                 delay(50);
-            }
-            else if (header == 0x43) {
+            } else if (header == 0x43) {
                 // Get values commands (3 bytes message)
                 mode = SerialTTL.read();
 
@@ -428,8 +441,7 @@ void LegoPupColorDistance::Process(void){
                 }
                 // Discard the last byte of data (checksum)
                 SerialTTL.read();
-            }
-            else if(header == 0x46){
+            } else if (header == 0x46) {
                 // Set values commands
                 // The message has 2 parts (each with header and checksum):
                 // - The EXT_MODE status directly given
@@ -468,12 +480,13 @@ void LegoPupColorDistance::Process(void){
         // it could end to a systematic disconnection here...
 
         // Check disconnection from the Hub and go in reset/init mode if needed
-        if(millis()- m_lastAckTick > 200){
+        if (millis() - m_lastAckTick > 200) {
             // DbgSerial.println("Disconnect; Too much time since last NACK");
             m_connected = false;
         }
     }
 }
+
 
 /**
  * @brief Get header from the given message type, mode and size
@@ -485,9 +498,10 @@ void LegoPupColorDistance::Process(void){
  *      (There are restrictions due to the masks used)
  * @return
  */
-uint8_t LegoPupColorDistance::getHeader(const lump_msg_type_t &msg_type, const uint8_t &mode, const uint8_t &msg_size) {
-    return (msg_type & LUMP_MSG_TYPE_MASK) | (mode & LUMP_MSG_CMD_MASK) | ((msg_size*3) & LUMP_MSG_SIZE_MASK);
+uint8_t LegoPupColorDistance::getHeader(const lump_msg_type_t& msg_type, const uint8_t& mode, const uint8_t& msg_size){
+    return (msg_type & LUMP_MSG_TYPE_MASK) | (mode & LUMP_MSG_CMD_MASK) | ((msg_size * 3) & LUMP_MSG_SIZE_MASK);
 }
+
 
 /**
  * @brief Get mode and message size from the given header.
@@ -496,12 +510,13 @@ uint8_t LegoPupColorDistance::getHeader(const lump_msg_type_t &msg_type, const u
  * @param mode Reference See LegoPupColorDistance class enumeration of mode.
  * @param msg_size Reference to message size.
  */
-void LegoPupColorDistance::parseHeader(const uint8_t &header, uint8_t &mode, uint8_t &msg_size) {
+void LegoPupColorDistance::parseHeader(const uint8_t& header, uint8_t& mode, uint8_t& msg_size){
     // Type is known to be LUMP_MSG_TYPE_DATA because of 0x46 header
     // msg_type = header & LUMP_MSG_TYPE_MASK;
-    mode = header & LUMP_MSG_CMD_MASK;
+    mode     = header & LUMP_MSG_CMD_MASK;
     msg_size = getMsgSize(header);
 }
+
 
 /**
  * @brief Get size of a message from the given header. Used by parseHeader().
@@ -511,41 +526,44 @@ void LegoPupColorDistance::parseHeader(const uint8_t &header, uint8_t &mode, uin
  * @param header
  * @return Expected size
  */
-uint8_t LegoPupColorDistance::getMsgSize(const uint8_t &header) {
+uint8_t LegoPupColorDistance::getMsgSize(const uint8_t& header){
     // Simplified version that implicitly asserts that msg_type is LUMP_MSG_TYPE_DATA
     return _(uint8_t) ((1 << (((header) >> 3) & 0x7)) + 2);
 }
+
 
 /**
  * @brief Send the TX buffer content to the hub
  *      Also add the checksum of the message.
  * @param msg_size Size of the message WITHOUT header & checksum.
  */
-void LegoPupColorDistance::sendUARTBuffer(uint8_t msg_size) {
+void LegoPupColorDistance::sendUARTBuffer(uint8_t msg_size){
     // Add checksum to the last index
     m_txBuf[msg_size + 1] = calcChecksum(this->m_txBuf, msg_size + 1);
     // Send data
-    SerialTTL.write((char*)this->m_txBuf, msg_size + 2);
+    SerialTTL.write((char *)this->m_txBuf, msg_size + 2);
     SerialTTL.flush();
 }
+
 
 /**
  * @brief Send EXT_MODE status to the hub: extended mode info message
  *      Should be used as a first response after a NACK, and before every responses for
  *      modes >= 8.
  */
-void LegoPupColorDistance::extendedModeInfoResponse() {
+void LegoPupColorDistance::extendedModeInfoResponse(){
     // extended mode info
     m_txBuf[0] = 0x46;                      // header type LUMP_MSG_TYPE_CMD, cmd LUMP_CMD_EXT_MODE, size 3
     m_txBuf[1] = this->m_currentExtMode;    // current EXT_MODE
     sendUARTBuffer(1);
 }
 
+
 /**
  * @brief Mode 5 response (write)
  *      Also call LEDColor callback if defined. See m_pLEDColorfunc.
  */
-void LegoPupColorDistance::setLEDColorMode() {
+void LegoPupColorDistance::setLEDColorMode(){
     // Mode 5 (write mode)
     // Expect LED color index (1 int8_t)
     *this->m_LEDColor = m_rxBuf[0];
@@ -559,11 +577,12 @@ void LegoPupColorDistance::setLEDColorMode() {
         this->m_pLEDColorfunc(*this->m_LEDColor);
 }
 
+
 /**
  * @brief Mode 7 response (write)
  *      Also call IR callback if defined. See m_pIRfunc.
  */
-void LegoPupColorDistance::setIRTXMode() {
+void LegoPupColorDistance::setIRTXMode(){
     // Mode 7 (write mode)
     // Expect IR code on (1 int16_t)
     // From Little-Endian (LSB first in the array, then the MSB)
@@ -579,45 +598,50 @@ void LegoPupColorDistance::setIRTXMode() {
         this->m_pIRfunc(this->m_IR_code);
 }
 
+
 /**
  * @brief Mode 0 response (read): Send current LED color.
  */
-void LegoPupColorDistance::LEDColorMode() {
+void LegoPupColorDistance::LEDColorMode(){
     // Mode 0
     m_txBuf[0] = 0xC0;                      // header
     m_txBuf[1] = *m_LEDColor;               // LED current color [0, 3, 5, 9, 0x0A]
     sendUARTBuffer(1);
 }
 
+
 /**
  * @brief Mode 1 response (read): Send distance measure.
  */
-void LegoPupColorDistance::sensorDistanceMode() {
+void LegoPupColorDistance::sensorDistanceMode(){
     // Mode 1
     m_txBuf[0] = 0xC1;                      // header
     m_txBuf[1] = *m_sensorDistance;         // distance [0..10]
     sendUARTBuffer(1);
 }
 
+
 /**
  * @brief Mode 3 response (read): Send reflected light measure.
  */
-void LegoPupColorDistance::sensorReflectedLightMode() {
+void LegoPupColorDistance::sensorReflectedLightMode(){
     // Mode 3
     m_txBuf[0] = 0xC3;                      // header
     m_txBuf[1] = *this->m_reflectedLight;   // 0..5F
     sendUARTBuffer(1);
 }
 
+
 /**
  * @brief Mode 4 response (read): Send lux measure.
  */
-void LegoPupColorDistance::sensorAmbientLight() {
+void LegoPupColorDistance::sensorAmbientLight(){
     // Mode 4
     m_txBuf[0] = 0xC4;                      // header
     m_txBuf[1] = *this->m_ambientLight;
     sendUARTBuffer(1);
 }
+
 
 /**
  * @brief Mode 6 response (read): Send RGB array.
@@ -642,11 +666,12 @@ void LegoPupColorDistance::sensorRGBIMode() {
     sendUARTBuffer(8);
 }
 
+
 /**
  * @brief Mode 8 response (read): Default response after NACK.
  *      Send detected color, distance, current LED color, reflected light data.
  */
-void LegoPupColorDistance::sensorSpec1Mode() {
+void LegoPupColorDistance::sensorSpec1Mode(){
     // Mode 8
     #ifdef DbgSerial
     DbgSerial.println(F("Mode 8"));
@@ -664,6 +689,7 @@ void LegoPupColorDistance::sensorSpec1Mode() {
     sendUARTBuffer(4);
 }
 
+
 /**
  * @brief Mode 9 response (read): Debug info
  *
@@ -671,7 +697,7 @@ void LegoPupColorDistance::sensorSpec1Mode() {
  *      Here is a custom implementation for debugging purposes.
  *      We basically send all responses to all modes.
  */
-void LegoPupColorDistance::sensorDebugMode() {
+void LegoPupColorDistance::sensorDebugMode(){
     // Mode 9 - Test mode
     // extended mode info
     // We are already in EXT_MODE_8 because of the Mode 9 command

@@ -28,13 +28,13 @@
 #endif
 
 #if defined(ARDUINO_AVR_PROMICRO)
-#define SerialTTL Serial1
-#define DbgSerial Serial
+#define SerialTTL    Serial1
+#define DbgSerial    Serial
 #else
-#define SerialTTL Serial
+#define SerialTTL    Serial
 #endif
 
-#define _(type) static_cast<type>
+#define _(type)    static_cast<type>
 
 #define COLOR_NONE     0xFF
 #define COLOR_BLACK    0
@@ -93,13 +93,13 @@ public:
     LegoPupColorDistance(uint8_t *pSensorColor, uint8_t *pSensorDistance);
     void Process(void);
 
+    uint16_t getSensorIRCode();
     void setSensorColor(uint8_t *pData);
     void setSensorDistance(uint8_t *pData);
     void setSensorRGB(uint16_t *pData);
-    uint16_t getSensorIRCode();
-    void setIRCallback(void (pfunc)(const uint16_t));
+    void setIRCallback(void(pfunc)(const uint16_t));
     void setSensorLEDColor(uint8_t *pData);
-    void setLEDColorCallback(void (pfunc)(const uint8_t));
+    void setLEDColorCallback(void(pfunc)(const uint8_t));
     void setSensorReflectedLight(uint8_t *pData);
     void setSensorAmbientLight(uint8_t *pData);
 
