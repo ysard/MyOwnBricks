@@ -32,6 +32,10 @@
 #define COLOR_RED      9
 #define COLOR_WHITE    10
 
+// CMD_EXT_MODE payload
+#define EXT_MODE_0                     0x00    // mode is < 8
+#define EXT_MODE_8                     0x08    // mode is >= 8
+
 /**
  * @brief Handle the LegoUART protocol and define modes of the
  * Color & Distance sensor.
