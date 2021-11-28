@@ -21,21 +21,10 @@
 #define LegoPupColorDistance_h
 
 #include "lego_uart.h"
+#include "basicsensor.h"
 #include "Arduino.h"
 
-#if !defined(ARDUINO_AVR_PROMICRO) && !defined(ARDUINO_AVR_MICRO)
-#include <cinttypes>
-#endif
-
-#if defined(ARDUINO_AVR_PROMICRO)
-#define SerialTTL    Serial1
-#define DbgSerial    Serial
-#else
-#define SerialTTL    Serial
-#endif
-
-#define _(type)    static_cast<type>
-
+// Colors (detected & LED (except NONE for this last one)) expected values
 #define COLOR_NONE     0xFF
 #define COLOR_BLACK    0
 #define COLOR_BLUE     3
@@ -72,7 +61,7 @@
  * @param m_lastAckTick Time flag used to detect disconnection from the hub.
  * @param m_connected Connection flag.
  */
-class LegoPupColorDistance {
+class LegoPupColorDistance : public BasicSensor {
     // LEGO POWERED UP Color and Distance Sensor modes
     enum {
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COLOR = 0, // read 1x int8_t
@@ -103,16 +92,8 @@ public:
     void setSensorReflectedLight(uint8_t *pData);
     void setSensorAmbientLight(uint8_t *pData);
 
-    bool isConnected(void);
-
 private:
     // Protocol handy functions
-    uint8_t calcChecksum(uint8_t *pData, int length);
-    uint8_t getHeader(const lump_msg_type_t& msg_type, const uint8_t& mode, const uint8_t& msg_size);
-    void parseHeader(const uint8_t& header, uint8_t& mode, uint8_t& msg_size);
-    uint8_t getMsgSize(const uint8_t& header);
-    void sendUARTBuffer(uint8_t msg_size);
-    void commWaitForHubIdle(void);
     void commSendInitSequence(void);
     void extendedModeInfoResponse();
 
@@ -136,16 +117,6 @@ private:
     uint8_t *m_sensorColor;
     void (*m_pIRfunc)(const uint16_t);      // Callback for IR change
     void (*m_pLEDColorfunc)(const uint8_t); // Callback for Led color change
-
-    uint8_t m_connSerialRX_pin;
-    uint8_t m_connSerialTX_pin;
-    uint8_t m_currentExtMode;
-
-    unsigned char m_rxBuf[32];
-    unsigned char m_txBuf[32];
-    unsigned long m_lastAckTick;
-
-    bool m_connected;
 };
 
 #endif
