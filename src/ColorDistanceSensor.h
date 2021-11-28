@@ -116,6 +116,8 @@ private:
     uint8_t *m_sensorColor;
     void (*m_pIRfunc)(const uint16_t);      // Callback for IR change
     void (*m_pLEDColorfunc)(const uint8_t); // Callback for Led color change
+
+    uint8_t m_currentExtMode;
 };
 
 #endif
