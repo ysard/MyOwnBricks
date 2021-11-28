@@ -17,6 +17,17 @@
 
 #define _(type)    static_cast<type>
 
+/**
+ * @brief Handle basic functions for LegoUART protocol.
+ *      Designed to be inherited in specific classes of sensors.
+ *
+ * @param m_connSerialRX_pin Serial RX pin of the board. (default: 0).
+ * @param m_connSerialTX_pin Serial TX pin of the board. (default: 1).
+ * @param m_rxBuf Buffer used to store bytes emitted by the hub.
+ * @param m_txBug Buffer used to store bytes before being sent to the hub.
+ * @param m_lastAckTick Time flag used to detect disconnection from the hub.
+ * @param m_connected Connection flag.
+ */
 class BasicSensor {
 
 public:

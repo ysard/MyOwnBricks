@@ -33,8 +33,8 @@
 #define COLOR_WHITE    10
 
 // CMD_EXT_MODE payload
-#define EXT_MODE_0                     0x00    // mode is < 8
-#define EXT_MODE_8                     0x08    // mode is >= 8
+#define EXT_MODE_0     0x00  // for mode numbers < 8
+#define EXT_MODE_8     0x08  // for mode numbers >= 8
 
 /**
  * @brief Handle the LegoUART protocol and define modes of the
@@ -57,13 +57,8 @@
  * @param m_pIRfunc Callback set by user receiving m_IR_code.
  * @param m_pLEDColorfunc Callback set by user receiving m_LEDColor.
  *
- * @param m_connSerialRX_pin Serial RX pin of the board. (default: 0).
- * @param m_connSerialTX_pin Serial TX pin of the board. (default: 1).
- *
  * @param m_currentExtMode Extended mode switch for modes >= 8. Available values:
  *      EXT_MODE_0, EXT_MODE_8.
- * @param m_lastAckTick Time flag used to detect disconnection from the hub.
- * @param m_connected Connection flag.
  */
 class LegoPupColorDistance : public BasicSensor {
     // LEGO POWERED UP Color and Distance Sensor modes
