@@ -33,7 +33,7 @@ class BasicSensor {
 public:
     BasicSensor();
     // virtual ~BasicSensor(){}
-    // virtual void rocess();
+    // virtual void process();
 
     bool isConnected();
 
