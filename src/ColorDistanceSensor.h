@@ -80,7 +80,7 @@ public:
     LegoPupColorDistance();
     LegoPupColorDistance(uint8_t *pSensorColor, uint8_t *pSensorDistance);
     virtual ~LegoPupColorDistance();
-    void Process(void);
+    void process();
 
     uint16_t getSensorIRCode();
     void setSensorColor(uint8_t *pData);
@@ -94,7 +94,7 @@ public:
 
 private:
     // Protocol handy functions
-    void commSendInitSequence(void);
+    void commSendInitSequence();
     void extendedModeInfoResponse();
 
     // Handle queries from the hub

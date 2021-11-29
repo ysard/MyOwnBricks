@@ -7,7 +7,7 @@ BasicSensor::BasicSensor(): m_connected(false) {}
  * @brief Get status of connection with the hub.
  * @return bool
  */
-bool BasicSensor::isConnected(void){
+bool BasicSensor::isConnected(){
     return m_connected;
 }
 
@@ -33,7 +33,7 @@ uint8_t BasicSensor::calcChecksum(uint8_t *pData, int length){
  * @brief Wait until the hub is available on the serial RX line.
  *      Then, assert the TX line.
  */
-void BasicSensor::commWaitForHubIdle(void){
+void BasicSensor::commWaitForHubIdle(){
     // Disable uart: manual control TX and RX pins
     SerialTTL.end();
 
@@ -71,7 +71,7 @@ void BasicSensor::commWaitForHubIdle(void){
  * @brief Handle the protocol queries & responses from/to the hub.
  *      Queries can be read/write according to the requested mode.
  */
-//void BasicSensor::Process(){
+//void BasicSensor::process(){
 //    // To implement
 //}
 

@@ -173,7 +173,7 @@ void LegoPupColorDistance::setSensorAmbientLight(uint8_t *pData){
  * @brief Send initialization sequences for the current Color & Distance sensor.
  * @see https://github.com/pybricks/pybricks-micropython/lib/pbio/test/src/uartdev.c
  */
-void LegoPupColorDistance::commSendInitSequence(void){
+void LegoPupColorDistance::commSendInitSequence(){
     // TODO: put all this strings into flash via PROGMEM
     // Initialize uart
     SerialTTL.begin(115200);
@@ -297,7 +297,7 @@ void LegoPupColorDistance::commSendInitSequence(void){
  * @brief Handle the protocol queries & responses from/to the hub.
  *      Queries can be read/write according to the requested mode.
  */
-void LegoPupColorDistance::Process(void){
+void LegoPupColorDistance::process(){
 
     if(!this->m_connected){
         #ifdef DbgSerial

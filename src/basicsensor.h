@@ -33,9 +33,9 @@ class BasicSensor {
 public:
     BasicSensor();
     // virtual ~BasicSensor(){}
-    //virtual void Process();
+    // virtual void rocess();
 
-    bool isConnected(void);
+    bool isConnected();
 
 protected:
     // Protocol handy functions
@@ -44,7 +44,8 @@ protected:
     void parseHeader(const uint8_t& header, uint8_t& mode, uint8_t& msg_size);
     uint8_t getMsgSize(const uint8_t& header);
     void sendUARTBuffer(uint8_t msg_size);
-    void commWaitForHubIdle(void);
+    void commWaitForHubIdle();
+    void connectToHub();
     //virtual void commSendInitSequence(void);
 
     uint8_t m_connSerialRX_pin;
