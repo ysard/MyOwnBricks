@@ -17,29 +17,32 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "LegoPupTilt.h"
+#include "TiltSensor.h"
 
 LegoPupTilt::LegoPupTilt(){
     m_sensorTiltX = nullptr;
     m_sensorTiltY = nullptr;
 }
 
-LegoPupTilt::LegoPupTilt(int8_t* pSensorTiltX, int8_t* pSensorTiltY){
+
+LegoPupTilt::LegoPupTilt(int8_t *pSensorTiltX, int8_t *pSensorTiltY){
     m_sensorTiltX = pSensorTiltX;
     m_sensorTiltY = pSensorTiltY;
 }
 
-void LegoPupTilt::setSensorTiltX(int8_t* pData){
+
+void LegoPupTilt::setSensorTiltX(int8_t *pData){
     m_sensorTiltX = pData;
 }
 
-void LegoPupTilt::setSensorTiltY(int8_t* pData){
+
+void LegoPupTilt::setSensorTiltY(int8_t *pData){
     m_sensorTiltY = pData;
 }
 
 
-void LegoPupTilt::commSendInitSequence(void){
-	// Initialize uart
+void LegoPupTilt::commSendInitSequence(){
+    // Initialize uart
     SerialTTL.begin(2400);
 
     SerialTTL.write("\x00",1);
@@ -88,8 +91,7 @@ void LegoPupTilt::commSendInitSequence(void){
 
 
 void LegoPupTilt::process(){
-
-    if(!m_connected){
+    if (!m_connected) {
         connectToHub();
     } else {
         // Connection established
@@ -97,24 +99,23 @@ void LegoPupTilt::process(){
             unsigned char header;
             header = SerialTTL.read();
 
-            if(header == 0x02) {  // NACK
+            if (header == 0x02) {  // NACK
                 m_lastAckTick = millis();
 
-				//Send dummy data
-                m_txBuf[0] = 0xC8;					// header
-                m_txBuf[1] = *m_sensorTiltX;			// X [-45..45]
-                m_txBuf[2] = *m_sensorTiltY;			// Y [-45..45]
-                m_txBuf[3] = calcChecksum(m_txBuf,3);	// checksum
-                SerialTTL.write((char*)m_txBuf, 4);
-				delay(50);
-			}
+                //Send dummy data
+                m_txBuf[0] = 0xC8;                      // header
+                m_txBuf[1] = *m_sensorTiltX;            // X [-45..45]
+                m_txBuf[2] = *m_sensorTiltY;            // Y [-45..45]
+                m_txBuf[3] = calcChecksum(m_txBuf, 3);  // checksum
+                SerialTTL.write((char *)m_txBuf, 4);
+                delay(50);
+            }
+        }
 
-		}
-
-		// Check for disconnection from the Hub
-        if(millis()- m_lastAckTick > 200){
-			//DbgSerial.println("Disconnect, Hub didnt send NACK");
+        // Check for disconnection from the Hub
+        if (millis() - m_lastAckTick > 200) {
+            //DbgSerial.println("Disconnect, Hub didnt send NACK");
             m_connected = false;
-		}
-	}
+        }
+    }
 }

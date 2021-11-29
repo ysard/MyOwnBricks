@@ -32,7 +32,7 @@ public:
     void setSensorTiltY(int8_t *pData);
 
 private:
-    void commSendInitSequence(void);
+    void commSendInitSequence();
 
     int8_t *m_sensorTiltX;
     int8_t *m_sensorTiltY;
