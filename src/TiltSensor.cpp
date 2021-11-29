@@ -96,19 +96,27 @@ void LegoPupTilt::process(){
     } else {
         // Connection established
         if (SerialTTL.available() > 0) {
-            unsigned char header;
-            header = SerialTTL.read();
+            unsigned char header = SerialTTL.read();
 
             if (header == 0x02) {  // NACK
                 m_lastAckTick = millis();
 
-                //Send dummy data
-                m_txBuf[0] = 0xC8;                      // header
-                m_txBuf[1] = *m_sensorTiltX;            // X [-45..45]
-                m_txBuf[2] = *m_sensorTiltY;            // Y [-45..45]
-                m_txBuf[3] = calcChecksum(m_txBuf, 3);  // checksum
-                SerialTTL.write((char *)m_txBuf, 4);
-                delay(50);
+                // Send default mode: 0 (angles data)
+                this->sensorAngleMode();
+            } else if (header == 0x43) {
+                // Get values commands (3 bytes message)
+                unsigned char mode = SerialTTL.read();
+
+                switch (mode) {
+                    case LegoPupTilt::PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__ANGLE:
+                        this->sensorAngleMode();
+                        break;
+                    default:
+                        break;
+                }
+
+                // Discard the last byte of data (checksum)
+                SerialTTL.read();
             }
         }
 
@@ -118,4 +126,13 @@ void LegoPupTilt::process(){
             m_connected = false;
         }
     }
+}
+
+
+void LegoPupTilt::sensorAngleMode(){
+    // Mode 0
+    m_txBuf[0] = 0xC8;                       // header (LUMP_MSG_TYPE_DATA, mode 0, size 4)
+    m_txBuf[1] = _(uint8_t)(*m_sensorTiltX); // X [-45..45]
+    m_txBuf[2] = _(uint8_t)(*m_sensorTiltY); // Y [-45..45]
+    sendUARTBuffer(2);
 }

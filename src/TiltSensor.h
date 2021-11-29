@@ -23,6 +23,14 @@
 #include "basicsensor.h"
 
 class LegoPupTilt : BasicSensor {
+    // LEGO POWERED UP WEDO 2.0 Tilt sensor modes
+    enum {
+        PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__ANGLE  = 0,  // read 2x int8_t
+        //PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__DIR    = 1,  // read 1x int8_t
+        //PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__CNT    = 2,  // read 3x int8_t
+        //PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__CAL    = 2,  // read 3x int8_t
+    };
+
 public:
     LegoPupTilt();
     LegoPupTilt(int8_t *pSensorTiltX, int8_t *pSensorTiltY);
@@ -30,6 +38,8 @@ public:
 
     void setSensorTiltX(int8_t *pData);
     void setSensorTiltY(int8_t *pData);
+
+    void sensorAngleMode();
 
 private:
     void commSendInitSequence();
