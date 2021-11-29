@@ -64,6 +64,18 @@ void BasicSensor::commWaitForHubIdle(){
 }
 
 
+/**
+ * @brief Handle initialization of a connection to the hub.
+ *      Workflow:
+ *          - Wait RX line deasserted by the hub to LOW
+ *          - Wait 100 ms
+ *          - Assert TX line briefly
+ *          - Start UART connection at 2400 bauds
+ *          - Send sensor init sequence
+ *          - Send ACK (0x04)
+ *          - Wait ACK
+ *          - Start UART connection at 115200 bauds
+ */
 void BasicSensor::connectToHub() {
     #ifdef DbgSerial
     DbgSerial.println("INIT SENSOR");
