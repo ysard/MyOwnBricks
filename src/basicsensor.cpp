@@ -67,13 +67,17 @@ void BasicSensor::commWaitForHubIdle(){
 /**
  * @brief Initialize UART communication with specific sensor sequence.
  * @see https://github.com/pybricks/pybricks-micropython/lib/pbio/test/src/uartdev.c
+ * @note Must be reimplemented in derived classes.
  */
-//void BasicSensor::commSendInitSequence(void){}
+void BasicSensor::commSendInitSequence(){}
 
 
 /**
  * @brief Handle the protocol queries & responses from/to the hub.
  *      Queries can be read/write according to the requested mode.
+ * @warning Do not forget to check at each iteration if `millis() - m_lastAckTick > 200`.
+ *      If true, the device must go in reset mode by setting the m_connected
+ *      boolean to false.
  */
 //void BasicSensor::process(){
 //    // To implement
@@ -86,18 +90,24 @@ void BasicSensor::commWaitForHubIdle(){
  * @param mode Mode number.
  * @param msg_size Size of the message WITHOUT header & checksum!
  *
- * @warning: msg_size is multiplied by 3 in order the given params fits in authorized headers
- *      (There are restrictions due to the masks used)
+ * @warning: msg_size is multiplied by 3 in order the given params fits in expected
+ *      headers (There are restrictions due to the masks used).
  * @return
  */
-uint8_t BasicSensor::getHeader(const lump_msg_type_t& msg_type, const uint8_t& mode, const uint8_t& msg_size){
-    return (msg_type & LUMP_MSG_TYPE_MASK) | (mode & LUMP_MSG_CMD_MASK) | ((msg_size * 3) & LUMP_MSG_SIZE_MASK);
+uint8_t BasicSensor::getHeader(
+        const lump_msg_type_t& msg_type,
+        const uint8_t& mode,
+        const uint8_t& msg_size){
+    return (msg_type & LUMP_MSG_TYPE_MASK) | \
+           (mode & LUMP_MSG_CMD_MASK) | \
+           ((msg_size * 3) & LUMP_MSG_SIZE_MASK);
 }
 
 
 /**
  * @brief Get mode and message size from the given header.
- *      Currently used to parse 2nd part of write queries (1st part has the known header 0x46).
+ *      Currently used to parse 2nd part of write queries
+ *      (1st part has the known header 0x46).
  * @param header Header of a received/transmitted message.
  * @param mode Reference See the class enumeration of modes.
  * @param msg_size Reference to message size.
@@ -113,7 +123,7 @@ void BasicSensor::parseHeader(const uint8_t& header, uint8_t& mode, uint8_t& msg
 /**
  * @brief Get size of a message from the given header. Used by parseHeader().
  *
- * @warning /!\ This is a simplified version that works on messages of type LUMP_MSG_TYPE_DATA.
+ * @warning /!\ This is a simplified version that works on LUMP_MSG_TYPE_DATA messages.
  *      DO NOT use on LUMP_MSG_TYPE_SYS, LUMP_MSG_TYPE_INFO messages.
  * @param header
  * @return Expected size

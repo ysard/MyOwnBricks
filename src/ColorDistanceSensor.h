@@ -22,7 +22,6 @@
 
 #include "lego_uart.h"
 #include "basicsensor.h"
-#include "Arduino.h"
 
 // Colors (detected & LED (except NONE for this last one)) expected values
 #define COLOR_NONE     0xFF

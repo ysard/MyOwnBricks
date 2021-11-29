@@ -46,7 +46,7 @@ protected:
     void sendUARTBuffer(uint8_t msg_size);
     void commWaitForHubIdle();
     void connectToHub();
-    //virtual void commSendInitSequence(void);
+    virtual void commSendInitSequence();
 
     uint8_t m_connSerialRX_pin;
     uint8_t m_connSerialTX_pin;
