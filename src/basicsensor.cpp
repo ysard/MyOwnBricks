@@ -1,7 +1,11 @@
 #include "basicsensor.h"
 
-BasicSensor::BasicSensor(): m_connected(false) {}
-
+BasicSensor::BasicSensor() :
+    m_connSerialRX_pin(0),
+    m_connSerialTX_pin(1),
+    m_lastAckTick(0),
+    m_connected(false)
+{}
 
 /**
  * @brief Get status of connection with the hub.

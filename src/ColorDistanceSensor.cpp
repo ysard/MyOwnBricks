@@ -38,12 +38,7 @@ LegoPupColorDistance::LegoPupColorDistance(){
     m_pLEDColorfunc  = nullptr;
 
     // UART protocol
-    m_connSerialRX_pin = 0;
-    m_connSerialTX_pin = 1;
-
     m_currentExtMode = 0;
-    m_lastAckTick    = 0;
-    m_connected      = false;
 }
 
 
@@ -70,9 +65,6 @@ LegoPupColorDistance::LegoPupColorDistance(uint8_t *pSensorColor, uint8_t *pSens
     m_pLEDColorfunc  = nullptr;
 
     // UART protocol
-    m_connSerialRX_pin = 0;
-    m_connSerialTX_pin = 1;
-
     m_currentExtMode = 0;
 }
 
