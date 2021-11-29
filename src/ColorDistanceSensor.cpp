@@ -292,37 +292,7 @@ void LegoPupColorDistance::commSendInitSequence(){
 void LegoPupColorDistance::process(){
 
     if(!this->m_connected){
-        #ifdef DbgSerial
-        DbgSerial.println("INIT SENSOR");
-        #endif
-
-        // Wait for HUB to idle it's TX pin (idle = High)
-        // TODO: ces bidouilles émettent b'\x00\x00' avant tout choses sur la ligne série !!
-        commWaitForHubIdle();
-
-        // Starting initialization sequence
-        //unsigned long starSequence = millis();
-        commSendInitSequence();
-        unsigned long starttime = millis();
-        //DbgSerial.println(starttime-starSequence); // time requested for initialization sequence
-
-        // Check if the hub send a ACK
-        unsigned long currenttime = starttime;
-        while ((currenttime - starttime) < 2000) {
-            if (SerialTTL.available() > 0) {
-                // read the incoming byte
-                unsigned char dat = SerialTTL.read();
-                if (dat == 0x04) { // ACK
-                    //DbgSerial.println("Connection Espablished !");
-                    SerialTTL.begin(115200);
-                    m_connected   = true;
-                    m_lastAckTick = millis();
-                    break;
-                }
-            }
-            currenttime = millis();
-            delay(10);
-        }
+        connectToHub();
     } else {
         // Connection established
         if (SerialTTL.available() > 0) {
