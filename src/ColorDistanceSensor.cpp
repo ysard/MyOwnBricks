@@ -23,15 +23,15 @@
  * @brief Default constructor
  */
 LegoPupColorDistance::LegoPupColorDistance(){
-    uint8_t  *default_val  = new uint8_t(0);
+    m_defaultIntVal  = new uint8_t(0);
     uint16_t defaultRGB[3] = {0, 0, 0};
 
     // Sensor default values
-    m_sensorColor    = default_val;
-    m_sensorDistance = default_val;
+    m_sensorColor    = m_defaultIntVal;
+    m_sensorDistance = m_defaultIntVal;
     m_LEDColor       = new uint8_t(0);
-    m_reflectedLight = default_val;
-    m_ambientLight   = default_val;
+    m_reflectedLight = m_defaultIntVal;
+    m_ambientLight   = m_defaultIntVal;
     m_sensorRGB      = defaultRGB;
     m_IR_code        = 0;
     m_pIRfunc        = nullptr;
@@ -54,7 +54,7 @@ LegoPupColorDistance::LegoPupColorDistance(){
  *      the nearest object. Discretized values 0..10.
  */
 LegoPupColorDistance::LegoPupColorDistance(uint8_t *pSensorColor, uint8_t *pSensorDistance){
-    uint8_t  *default_val  = new uint8_t(0);
+    m_defaultIntVal  = new uint8_t(0);
     uint16_t defaultRGB[3] = {0, 0, 0};
 
     // Set given values
@@ -62,8 +62,8 @@ LegoPupColorDistance::LegoPupColorDistance(uint8_t *pSensorColor, uint8_t *pSens
     m_sensorDistance = pSensorDistance;
     // Sensor default values
     m_LEDColor       = new uint8_t(0);
-    m_reflectedLight = default_val;
-    m_ambientLight   = default_val;
+    m_reflectedLight = m_defaultIntVal;
+    m_ambientLight   = m_defaultIntVal;
     m_sensorRGB      = defaultRGB;
     m_IR_code        = 0;
     m_pIRfunc        = nullptr;
@@ -74,8 +74,14 @@ LegoPupColorDistance::LegoPupColorDistance(uint8_t *pSensorColor, uint8_t *pSens
     m_connSerialTX_pin = 1;
 
     m_currentExtMode = 0;
-    m_lastAckTick    = 0;
-    m_connected      = false;
+}
+
+
+/**
+ * @brief LegoPupColorDistance::~LegoPupColorDistance
+ */
+LegoPupColorDistance::~LegoPupColorDistance() {
+    delete m_defaultIntVal;
 }
 
 

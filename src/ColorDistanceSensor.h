@@ -79,6 +79,7 @@ class LegoPupColorDistance : public BasicSensor {
 public:
     LegoPupColorDistance();
     LegoPupColorDistance(uint8_t *pSensorColor, uint8_t *pSensorDistance);
+    virtual ~LegoPupColorDistance();
     void Process(void);
 
     uint16_t getSensorIRCode();
@@ -118,6 +119,7 @@ private:
     void (*m_pLEDColorfunc)(const uint8_t); // Callback for Led color change
 
     uint8_t m_currentExtMode;
+    uint8_t *m_defaultIntVal;
 };
 
 #endif
