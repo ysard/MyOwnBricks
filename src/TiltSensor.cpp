@@ -19,28 +19,48 @@
  */
 #include "TiltSensor.h"
 
+/**
+ * @brief Default constructor
+ */
 LegoPupTilt::LegoPupTilt(){
     m_sensorTiltX = nullptr;
     m_sensorTiltY = nullptr;
 }
 
 
+/**
+ * @brief  Constructor allowing to set X, Y angle measures.
+ * @param pSensorTiltX
+ * @param pSensorTiltY
+ */
 LegoPupTilt::LegoPupTilt(int8_t *pSensorTiltX, int8_t *pSensorTiltY){
     m_sensorTiltX = pSensorTiltX;
     m_sensorTiltY = pSensorTiltY;
 }
 
 
+/**
+ * @brief Setter for m_sensorTiltX
+ * @param pData
+ */
 void LegoPupTilt::setSensorTiltX(int8_t *pData){
     m_sensorTiltX = pData;
 }
 
 
+/**
+ * @brief Setter for m_sensorTiltY
+ * @param pData
+ */
 void LegoPupTilt::setSensorTiltY(int8_t *pData){
     m_sensorTiltY = pData;
 }
 
 
+/**
+ * @brief Send initialization sequences for the current Color & Distance sensor.
+ * @see https://github.com/pybricks/pybricks-micropython/lib/pbio/test/src/uartdev.c
+ */
 void LegoPupTilt::commSendInitSequence(){
     // Initialize uart
     SerialTTL.begin(2400);
@@ -90,6 +110,10 @@ void LegoPupTilt::commSendInitSequence(){
 }
 
 
+/**
+ * @brief Handle the protocol queries & responses from/to the hub.
+ *      Queries can be read/write according to the requested mode.
+ */
 void LegoPupTilt::process(){
     if (!m_connected) {
         connectToHub();
@@ -129,6 +153,9 @@ void LegoPupTilt::process(){
 }
 
 
+/**
+ * @brief Mode 0 response (read): Send X, Y angles.
+ */
 void LegoPupTilt::sensorAngleMode(){
     // Mode 0
     m_txBuf[0] = 0xC8;                       // header (LUMP_MSG_TYPE_DATA, mode 0, size 4)
