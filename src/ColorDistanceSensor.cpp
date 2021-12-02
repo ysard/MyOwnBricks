@@ -44,6 +44,7 @@ LegoPupColorDistance::LegoPupColorDistance(){
 
 /**
  * @brief Constructor allowing to set detected color and distance measure.
+ * @overload
  * @param pSensorColor Pointer to a discretized detected color. See m_LEDColor.
  * @param pSensorDistance Pointer to a discreztized distance measured to the
  *      the nearest object. Discretized values 0..10.
@@ -359,7 +360,7 @@ void LegoPupColorDistance::process(){
                 // - The LUMP_MSG_TYPE_DATA itself with its data
                 this->m_currentExtMode = SerialTTL.read();
 
-                // Discard the last byte of data (checksum) and get the header of the next message
+                // Discard the next byte (checksum) and get the header of the next message
                 size_t ret = SerialTTL.readBytes(m_rxBuf, 2);
                 if (!ret)
                     return;

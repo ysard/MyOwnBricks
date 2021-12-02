@@ -115,6 +115,8 @@ void BasicSensor::connectToHub() {
  * @brief Initialize UART communication with specific sensor sequence.
  * @see https://github.com/pybricks/pybricks-micropython/lib/pbio/test/src/uartdev.c
  * @note Must be reimplemented in derived classes.
+ *      This function is declared as virtual because connectToHub uses it
+ *      and must use the derived method, sepcific of a sensor.
  */
 void BasicSensor::commSendInitSequence(){}
 

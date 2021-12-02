@@ -46,6 +46,7 @@ protected:
     void sendUARTBuffer(uint8_t msg_size);
     void commWaitForHubIdle();
     void connectToHub();
+    // Could/should use virtual pure (..() = 0) but it uses 14bytes for nothing
     virtual void commSendInitSequence();
 
     uint8_t m_connSerialRX_pin;
