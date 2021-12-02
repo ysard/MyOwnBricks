@@ -93,7 +93,7 @@ public:
 
 private:
     // Protocol handy functions
-    void commSendInitSequence();
+    virtual void commSendInitSequence();
     void extendedModeInfoResponse();
 
     // Handle queries from the hub

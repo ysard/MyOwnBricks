@@ -42,7 +42,7 @@ public:
     void sensorAngleMode();
 
 private:
-    void commSendInitSequence();
+    virtual void commSendInitSequence();
 
     int8_t *m_sensorTiltX;
     int8_t *m_sensorTiltY;
