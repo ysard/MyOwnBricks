@@ -146,7 +146,7 @@ void LegoPupTilt::process(){
 
         // Check for disconnection from the Hub
         if (millis() - m_lastAckTick > 200) {
-            //DbgSerial.println("Disconnect, Hub didnt send NACK");
+            //DEBUG_PRINTLN("Disconnect, Hub didnt send NACK");
             m_connected = false;
         }
     }

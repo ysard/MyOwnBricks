@@ -301,10 +301,8 @@ void LegoPupColorDistance::process(){
             unsigned char mode;
             header = SerialTTL.read();
 
-            #ifdef DbgSerial
-            DbgSerial.print(F("<\tHeader "));
-            DbgSerial.println(header, HEX);
-            #endif
+            DEBUG_PRINT(F("<\tHeader "));
+            DEBUG_PRINTLN(header, HEX);
 
             if (header == 0x02) { // NACK
                 m_lastAckTick = millis();
@@ -319,10 +317,8 @@ void LegoPupColorDistance::process(){
                 // Get values commands (3 bytes message)
                 mode = SerialTTL.read();
 
-                #ifdef DbgSerial
-                DbgSerial.print(F("<\tAsked mode "));
-                DbgSerial.println(mode);
-                #endif
+                DEBUG_PRINT(F("<\tAsked mode "));
+                DEBUG_PRINTLN(mode);
 
                 this->m_currentExtMode = (mode < 8) ? EXT_MODE_0 : EXT_MODE_8;
 
@@ -393,7 +389,8 @@ void LegoPupColorDistance::process(){
 
         // Check disconnection from the Hub and go in reset/init mode if needed
         if (millis() - m_lastAckTick > 200) {
-            // DbgSerial.println("Disconnect; Too much time since last NACK");
+            DEBUG_PRINT("Disconnect; Too much time since last NACK");
+            DEBUG_PRINTLN(millis() - m_lastAckTick);
             m_connected = false;
         }
     }
@@ -422,10 +419,8 @@ void LegoPupColorDistance::setLEDColorMode(){
     // Expect LED color index (1 int8_t)
     *this->m_LEDColor = m_rxBuf[0];
 
-    #ifdef DbgSerial
-    DbgSerial.print(F("LEDcolor set: "));
-    DbgSerial.println(*m_LEDColor, HEX);
-    #endif
+    DEBUG_PRINT(F("LEDcolor set: "));
+    DEBUG_PRINTLN(*m_LEDColor, HEX);
 
     if (this->m_pLEDColorfunc != nullptr)
         this->m_pLEDColorfunc(*this->m_LEDColor);
@@ -443,10 +438,8 @@ void LegoPupColorDistance::setIRTXMode(){
     //this->m_IR_code = *((uint16_t *) &m_rxBuf[0]);
     this->m_IR_code = (_(uint16_t) (m_rxBuf[1] << 8)) | m_rxBuf[0];
 
-    #ifdef DbgSerial
-    DbgSerial.print(F("IR data set: "));
-    DbgSerial.println(this->m_IR_code, HEX);
-    #endif
+    DEBUG_PRINT(F("IR data set: "));
+    DEBUG_PRINTLN(this->m_IR_code, HEX);
 
     if (this->m_pIRfunc != nullptr)
         this->m_pIRfunc(this->m_IR_code);
@@ -527,9 +520,7 @@ void LegoPupColorDistance::sensorRGBIMode() {
  */
 void LegoPupColorDistance::sensorSpec1Mode(){
     // Mode 8
-    #ifdef DbgSerial
-    DbgSerial.println(F("Mode 8"));
-    #endif
+    DEBUG_PRINTLN(F("Mode 8"));
 
     // extended mode info
     this->extendedModeInfoResponse();

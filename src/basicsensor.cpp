@@ -96,9 +96,7 @@ void BasicSensor::commWaitForHubIdle(){
  *          - Start UART connection at 115200 bauds
  */
 void BasicSensor::connectToHub() {
-    #ifdef DbgSerial
-    DbgSerial.println("INIT SENSOR");
-    #endif
+    DEBUG_PRINTLN("INIT SENSOR");
 
     // Wait for HUB to idle it's TX pin (idle = High)
     // TODO: ces bidouilles émettent b'\x00\x00' avant tout choses sur la ligne série !!
@@ -108,7 +106,7 @@ void BasicSensor::connectToHub() {
     //unsigned long starSequence = millis();
     commSendInitSequence();
     unsigned long starttime = millis();
-    //DbgSerial.println(starttime-starSequence); // time requested for initialization sequence
+    //DEBUG_PRINTLN(starttime-starSequence); // time requested for initialization sequence
 
     // Check if the hub send a ACK
     unsigned long currenttime = starttime;
@@ -117,7 +115,7 @@ void BasicSensor::connectToHub() {
             // read the incoming byte
             unsigned char dat = SerialTTL.read();
             if (dat == 0x04) { // ACK
-                //DbgSerial.println("Connection Espablished !");
+                //DEBUG_PRINTLN("Connection Espablished !");
                 SerialTTL.begin(115200);
                 m_connected   = true;
                 m_lastAckTick = millis();
