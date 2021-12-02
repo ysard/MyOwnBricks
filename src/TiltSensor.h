@@ -20,6 +20,7 @@
 #ifndef LegoPupTilt_h
 #define LegoPupTilt_h
 
+#include "global.h"
 #include "basicsensor.h"
 
 class LegoPupTilt : BasicSensor {

@@ -20,21 +20,10 @@
 #ifndef BASICSENSOR_H
 #define BASICSENSOR_H
 
+#include "global.h"
 #include "lego_uart.h"
 #include "Arduino.h"
 
-#if !defined(ARDUINO_AVR_PROMICRO) && !defined(ARDUINO_AVR_MICRO)
-#include <cinttypes>
-#endif
-
-#if defined(ARDUINO_AVR_PROMICRO)
-#define SerialTTL    Serial1
-#define DbgSerial    Serial
-#else
-#define SerialTTL    Serial
-#endif
-
-#define _(type)    static_cast<type>
 
 /**
  * @brief Handle basic functions for LegoUART protocol.

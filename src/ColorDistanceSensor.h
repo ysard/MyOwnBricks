@@ -20,6 +20,7 @@
 #ifndef LegoPupColorDistance_h
 #define LegoPupColorDistance_h
 
+#include "global.h"
 #include "lego_uart.h"
 #include "basicsensor.h"
 
