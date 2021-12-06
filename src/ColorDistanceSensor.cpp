@@ -289,6 +289,9 @@ void LegoPupColorDistance::commSendInitSequence(){
 /**
  * @brief Handle the protocol queries & responses from/to the hub.
  *      Queries can be read/write according to the requested mode.
+ * @warning In the situation where the processing of the responses to the
+ *      queries from the hub takes longer than 200ms, a disconnection
+ *      will be performed here.
  */
 void LegoPupColorDistance::process(){
 
@@ -382,9 +385,6 @@ void LegoPupColorDistance::process(){
                 }
             }
         }
-
-        // TODO: possible that the processing of responses takes longer than 200ms...
-        // it could end to a systematic disconnection here...
 
         // Check disconnection from the Hub and go in reset/init mode if needed
         if (millis() - m_lastAckTick > 200) {

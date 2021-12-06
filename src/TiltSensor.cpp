@@ -113,6 +113,9 @@ void LegoPupTilt::commSendInitSequence(){
 /**
  * @brief Handle the protocol queries & responses from/to the hub.
  *      Queries can be read/write according to the requested mode.
+ * @warning In the situation where the processing of the responses to the
+ *      queries from the hub takes longer than 200ms, a disconnection
+ *      will be performed here.
  */
 void LegoPupTilt::process(){
     if (!m_connected) {
@@ -146,7 +149,8 @@ void LegoPupTilt::process(){
 
         // Check for disconnection from the Hub
         if (millis() - m_lastAckTick > 200) {
-            //DEBUG_PRINTLN("Disconnect, Hub didnt send NACK");
+            INFO_PRINT("Disconnect; Too much time since last NACK - ");
+            INFO_PRINTLN(millis() - m_lastAckTick);
             m_connected = false;
         }
     }
