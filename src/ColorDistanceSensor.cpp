@@ -312,7 +312,6 @@ void LegoPupColorDistance::process(){
                 // Note: In practice the default mode is always the lowest (0).
                 this->m_currentExtMode = EXT_MODE_8;
                 this->sensorSpec1Mode();
-                delay(50);
             } else if (header == 0x43) {
                 // Get values commands (3 bytes message)
                 mode = SerialTTL.read();
