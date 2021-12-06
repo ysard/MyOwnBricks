@@ -29,7 +29,8 @@
 #define SerialTTL    Serial
 #endif
 
-#define DEBUG // Activate this for debug output on Serial CDC interface
+//#define DEBUG // Activate this for debug output on Serial CDC interface
+//#define INFO
 
 /**
  * Debug directives
@@ -52,5 +53,23 @@
   * Static cast syntatic sugar
   */
 #define _(type)    static_cast<type>
+
+
+/**
+ * Info directives
+ */
+#if (defined(INFO) && defined(DbgSerial))
+    #define INFO_PRINT(...)    DbgSerial.print(__VA_ARGS__)
+    #define INFO_PRINTLN(...)  DbgSerial.println(__VA_ARGS__)
+#else
+    /**
+     * If INFO, print the arguments, otherwise do nothing.
+     */
+    #define INFO_PRINT(...) void()
+    /**
+     * If INFO, print the arguments as a line, otherwise do nothing.
+     */
+    #define INFO_PRINTLN(...) void()
+#endif
 
 #endif
