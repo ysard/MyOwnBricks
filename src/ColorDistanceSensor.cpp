@@ -429,11 +429,23 @@ void LegoPupColorDistance::setLEDColorMode(){
 /**
  * @brief Mode 7 response (write)
  *      Also call IR callback if defined. See m_pIRfunc.
+ * @todo
+ *      Repeated pulses: count 5 IR codes in x loops: multi callback call
+ *      Because we maybe can't block the loop for 5 consecutive transmissions
+ *      (a loop can't take more than 200ms).
+ *      LEGO protocol needs 5 repetitions, the delay between 2 repetitions is
+ *      channel dependent, the length of a message is 16ms (doc), ~11ms in IRremote.
+ *      channel delays: 1: 110ms, 2: 148ms, 3: 189ms, 4: 230ms (100 to 200ms in IRremote)
+ *
+ *      See:
+ *      https://github.com/Arduino-IRremote/Arduino-IRremote/blob/e06b594fbefac384d7e1c12aa3e014fca9ee0e6b/src/ir_Lego.hpp#L123
+ *      https://web.archive.org/web/20190711083546/http://www.hackvandedam.nl/blog/?page_id=559
  */
 void LegoPupColorDistance::setIRTXMode(){
     // Mode 7 (write mode)
     // Expect IR code on (1 int16_t)
     // From Little-Endian (LSB first in the array, then the MSB)
+    // Don't do this: prefer explicit endianness handling
     //this->m_IR_code = *((uint16_t *) &m_rxBuf[0]);
     this->m_IR_code = (_(uint16_t) (m_rxBuf[1] << 8)) | m_rxBuf[0];
 
