@@ -579,7 +579,3 @@ void LegoPupColorDistance::sensorDebugMode(){
     m_rxBuf[1] = 0x41; // MSB
     this->setIRTXMode();
 }
-/*10200 octets (35%) de l'espace de stockage de programmes. Le maximum est de 28672 octets.
-Les variables globales utilisent 1571 octets (61%)
-
-*/
