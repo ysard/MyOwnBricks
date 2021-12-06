@@ -388,8 +388,8 @@ void LegoPupColorDistance::process(){
 
         // Check disconnection from the Hub and go in reset/init mode if needed
         if (millis() - m_lastAckTick > 200) {
-            DEBUG_PRINT("Disconnect; Too much time since last NACK");
-            DEBUG_PRINTLN(millis() - m_lastAckTick);
+            INFO_PRINT("Disconnect; Too much time since last NACK - ");
+            INFO_PRINTLN(millis() - m_lastAckTick);
             m_connected = false;
         }
     }
