@@ -316,9 +316,14 @@ void LegoPupColorDistance::process(){
                 this->m_currentExtMode = EXT_MODE_8;
                 this->sensorSpec1Mode();
             } else if (header == 0x43) {
-                // Get values commands (3 bytes message)
-                mode = SerialTTL.read();
-
+                // "Get value" commands (3 bytes message: header, mode, checksum)
+                size_t ret = SerialTTL.readBytes(m_rxBuf, 2);
+                if (ret < 2) {
+                    // check if all expected bytes are received without timeout
+                    DEBUG_PRINT("incomplete 0x43 message");
+                    return;
+                }
+                mode = m_rxBuf[0];
                 DEBUG_PRINT(F("<\tAsked mode "));
                 DEBUG_PRINTLN(mode);
 
@@ -349,28 +354,28 @@ void LegoPupColorDistance::process(){
                     default:
                         break;
                 }
-                // Discard the last byte of data (checksum)
-                SerialTTL.read();
             } else if (header == 0x46) {
-                // Set values commands
-                // The message has 2 parts (each with header and checksum):
-                // - The EXT_MODE status directly given
-                // - The LUMP_MSG_TYPE_DATA itself with its data
-                this->m_currentExtMode = SerialTTL.read();
+                // "Set value" commands
+                // The message has 2 parts (each with header, value and checksum):
+                // - The EXT_MODE status as value
+                // - The LUMP_MSG_TYPE_DATA itself with its data as value
 
-                // Discard the next byte (checksum) and get the header of the next message
-                size_t ret = SerialTTL.readBytes(m_rxBuf, 2);
-                if (!ret)
+                // Get data1, checksum1, header2 (header of the next message)
+                size_t ret = SerialTTL.readBytes(m_rxBuf, 3);
+                if (ret < 3)
+                    // check if all expected bytes are received without timeout
                     return;
+
+                this->m_currentExtMode = m_rxBuf[0];
 
                 // Get mode and size of the message from the header
                 uint8_t msg_size;
-                parseHeader(m_rxBuf[1], mode, msg_size);
+                parseHeader(m_rxBuf[2], mode, msg_size);
 
-                // Read the remaining bytes after the header
+                // Read the remaining bytes after the header (cheksum included)
                 // Data will be in the indexes [0;msg_size-2]
                 ret = SerialTTL.readBytes(m_rxBuf, msg_size - 1);
-                if (!ret)
+                if (ret < msg_size - 1)
                     return;
 
                 switch(mode) {

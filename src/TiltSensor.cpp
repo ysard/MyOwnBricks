@@ -131,19 +131,21 @@ void LegoPupTilt::process(){
                 // Send default mode: 0 (angles data)
                 this->sensorAngleMode();
             } else if (header == 0x43) {
-                // Get values commands (3 bytes message)
-                unsigned char mode = SerialTTL.read();
+                // "Get value" commands (3 bytes message: header, mode, checksum)
+                size_t ret = SerialTTL.readBytes(m_rxBuf, 2);
+                if (ret < 2) {
+                    // check if all expected bytes are received without timeout
+                    DEBUG_PRINT("incomplete 0x43 message");
+                    return;
+                }
 
-                switch (mode) {
+                switch (m_rxBuf[0]) {
                     case LegoPupTilt::PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__ANGLE:
                         this->sensorAngleMode();
                         break;
                     default:
                         break;
                 }
-
-                // Discard the last byte of data (checksum)
-                SerialTTL.read();
             }
         }
 
