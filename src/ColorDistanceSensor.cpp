@@ -294,7 +294,6 @@ void LegoPupColorDistance::commSendInitSequence(){
  *      will be performed here.
  */
 void LegoPupColorDistance::process(){
-
     if(!this->m_connected){
         connectToHub();
     } else {
@@ -352,6 +351,8 @@ void LegoPupColorDistance::process(){
                         this->sensorDebugMode();
                         break;
                     default:
+                        INFO_PRINT("unknown R mode: ");
+                        INFO_PRINTLN(mode, HEX);
                         break;
                 }
             } else if (header == 0x46) {
@@ -386,6 +387,8 @@ void LegoPupColorDistance::process(){
                         this->setIRTXMode();
                         break;
                     default:
+                        INFO_PRINT("unknown W mode: ");
+                        INFO_PRINTLN(mode, HEX);
                         break;
                 }
             }
