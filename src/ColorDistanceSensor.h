@@ -65,7 +65,7 @@ class LegoPupColorDistance : public BasicSensor {
     enum {
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COLOR = 0, // read 1x int8_t
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__PROX  = 1, // read 1x int8_t
-        //PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COUNT = 2,  // read 1x int32_t
+        PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COUNT = 2,  // read 1x int32_t
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__REFLT = 3, // read 1x int8_t
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__AMBI  = 4, // read 1x int8_t
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COL_O = 5, // writ 1x int8_t
