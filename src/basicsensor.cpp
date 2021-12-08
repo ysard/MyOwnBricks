@@ -92,7 +92,7 @@ void BasicSensor::commWaitForHubIdle(){
  *          - Start UART connection at 2400 bauds
  *          - Send sensor init sequence
  *          - Send ACK (0x04)
- *          - Wait ACK
+ *          - Wait ACK during 2s
  *          - Start UART connection at 115200 bauds
  */
 void BasicSensor::connectToHub() {
@@ -106,7 +106,6 @@ void BasicSensor::connectToHub() {
     //unsigned long starSequence = millis();
     commSendInitSequence();
     unsigned long starttime = millis();
-    //DEBUG_PRINTLN(starttime-starSequence); // time requested for initialization sequence
 
     // Check if the hub send a ACK
     unsigned long currenttime = starttime;
@@ -115,7 +114,7 @@ void BasicSensor::connectToHub() {
             // read the incoming byte
             unsigned char dat = SerialTTL.read();
             if (dat == 0x04) { // ACK
-                //DEBUG_PRINTLN("Connection Espablished !");
+                //DEBUG_PRINTLN("Connection established !");
                 SerialTTL.begin(115200);
                 m_connected   = true;
                 m_lastAckTick = millis();

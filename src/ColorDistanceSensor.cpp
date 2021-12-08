@@ -173,7 +173,7 @@ void LegoPupColorDistance::commSendInitSequence(){
 
     SerialTTL.write("\x40\x25\x9A",3);
     SerialTTL.write("\x51\x07\x07\x0A\x07\xA3",6);
-    SerialTTL.write("\x52\x00\xC2\x01\x00\x6E",6);
+    SerialTTL.write("\x52\x00\xC2\x01\x00\x6E",6); // SPEED 115200
     SerialTTL.write("\x5F\x00\x00\x00\x10\x00\x00\x00\x10\xA0",10);
     SerialTTL.flush();
     delay(10);
