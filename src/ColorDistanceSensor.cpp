@@ -169,7 +169,7 @@ void LegoPupColorDistance::setSensorAmbientLight(uint8_t *pData){
 void LegoPupColorDistance::commSendInitSequence(){
     // TODO: put all this strings into flash via PROGMEM
     // Initialize uart
-    SerialTTL.begin(115200);
+    SerialTTL.begin(2400);
 
     SerialTTL.write("\x40\x25\x9A",3);
     SerialTTL.write("\x51\x07\x07\x0A\x07\xA3",6);
