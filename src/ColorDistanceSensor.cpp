@@ -369,11 +369,12 @@ void LegoPupColorDistance::process(){
                 // Get mode and size of the message from the header
                 uint8_t msg_size;
                 parseHeader(m_rxBuf[2], mode, msg_size);
+                // TODO: avoid buffer overflow: check msg size <= size rx buffer
 
                 // Read the remaining bytes after the header (cheksum included)
                 // Data will be in the indexes [0;msg_size-2]
                 ret = SerialTTL.readBytes(m_rxBuf, msg_size - 1);
-                if (ret < msg_size - 1)
+                if (_(signed)(ret) != msg_size - 1)
                     return;
 
                 switch(mode) {
