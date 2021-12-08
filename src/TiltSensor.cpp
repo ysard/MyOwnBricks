@@ -65,9 +65,6 @@ void LegoPupTilt::commSendInitSequence(){
     // Initialize uart
     SerialTTL.begin(2400);
 
-    SerialTTL.write("\x00", 1);
-    SerialTTL.flush();
-	delay(10);
     SerialTTL.write("\x40\x22\x9D\x49\x03\x02\xB7\x52\x00\xC2\x01\x00\x6E\x5F\x00", 15);SerialTTL.flush();
     SerialTTL.write("\x00\x00\x10\x00\x00\x00\x10\xA0\x9B\x00\x4C\x50\x46\x32\x2D\x43", 16);SerialTTL.flush();
     SerialTTL.write("\x41\x4C\x6F\x9B\x01\x00\x00\x34\xC2\x00\x00\x34\x42\xE5\x9B\x02", 16);SerialTTL.flush();

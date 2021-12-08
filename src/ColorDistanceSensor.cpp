@@ -171,9 +171,6 @@ void LegoPupColorDistance::commSendInitSequence(){
     // Initialize uart
     SerialTTL.begin(115200);
 
-    SerialTTL.write("\x00",1);
-    SerialTTL.flush();
-    delay(10);
     SerialTTL.write("\x40\x25\x9A",3);
     SerialTTL.write("\x51\x07\x07\x0A\x07\xA3",6);
     SerialTTL.write("\x52\x00\xC2\x01\x00\x6E",6);
