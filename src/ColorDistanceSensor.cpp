@@ -331,25 +331,28 @@ void ColorDistanceSensor::process(){
                 this->m_currentExtMode = (mode < 8) ? EXT_MODE_0 : EXT_MODE_8;
 
                 switch (mode) {
-                    case LegoPupColorDistance::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COLOR:
+                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COLOR:
                         this->LEDColorMode();
                         break;
-                    case LegoPupColorDistance::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__PROX:
+                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__PROX:
                         this->sensorDistanceMode();
                         break;
-                    case LegoPupColorDistance::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__REFLT:
+                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COUNT:
+                        this->sensorDetectionCount();
+                        break;
+                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__REFLT:
                         this->sensorReflectedLightMode();
                         break;
-                    case LegoPupColorDistance::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__AMBI:
+                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__AMBI:
                         this->sensorAmbientLight();
                         break;
-                    case LegoPupColorDistance::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__RGB_I:
+                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__RGB_I:
                         this->sensorRGBIMode();
                         break;
-                    case LegoPupColorDistance::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__SPEC1:
+                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__SPEC1:
                         this->sensorSpec1Mode();
                         break;
-                    case LegoPupColorDistance::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__DEBUG:
+                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__DEBUG:
                         this->sensorDebugMode();
                         break;
                     default:
