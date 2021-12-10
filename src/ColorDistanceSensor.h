@@ -60,7 +60,7 @@
  * @param m_currentExtMode Extended mode switch for modes >= 8. Available values:
  *      EXT_MODE_0, EXT_MODE_8.
  */
-class LegoPupColorDistance : public BasicSensor {
+class ColorDistanceSensor : public BasicSensor {
     // LEGO POWERED UP Color and Distance Sensor modes
     enum {
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COLOR = 0, // read 1x int8_t
@@ -77,9 +77,9 @@ class LegoPupColorDistance : public BasicSensor {
     };
 
 public:
-    LegoPupColorDistance();
-    LegoPupColorDistance(uint8_t *pSensorColor, uint8_t *pSensorDistance);
-    virtual ~LegoPupColorDistance();
+    ColorDistanceSensor();
+    ColorDistanceSensor(uint8_t *pSensorColor, uint8_t *pSensorDistance);
+    virtual ~ColorDistanceSensor();
     void process();
 
     uint16_t getSensorIRCode();

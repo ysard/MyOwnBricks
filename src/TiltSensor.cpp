@@ -22,7 +22,7 @@
 /**
  * @brief Default constructor
  */
-LegoPupTilt::LegoPupTilt(){
+TiltSensor::TiltSensor(){
     m_sensorTiltX = nullptr;
     m_sensorTiltY = nullptr;
 }
@@ -33,7 +33,7 @@ LegoPupTilt::LegoPupTilt(){
  * @param pSensorTiltX
  * @param pSensorTiltY
  */
-LegoPupTilt::LegoPupTilt(int8_t *pSensorTiltX, int8_t *pSensorTiltY){
+TiltSensor::TiltSensor(int8_t *pSensorTiltX, int8_t *pSensorTiltY){
     m_sensorTiltX = pSensorTiltX;
     m_sensorTiltY = pSensorTiltY;
 }
@@ -43,7 +43,7 @@ LegoPupTilt::LegoPupTilt(int8_t *pSensorTiltX, int8_t *pSensorTiltY){
  * @brief Setter for m_sensorTiltX
  * @param pData
  */
-void LegoPupTilt::setSensorTiltX(int8_t *pData){
+void TiltSensor::setSensorTiltX(int8_t *pData){
     m_sensorTiltX = pData;
 }
 
@@ -52,7 +52,7 @@ void LegoPupTilt::setSensorTiltX(int8_t *pData){
  * @brief Setter for m_sensorTiltY
  * @param pData
  */
-void LegoPupTilt::setSensorTiltY(int8_t *pData){
+void TiltSensor::setSensorTiltY(int8_t *pData){
     m_sensorTiltY = pData;
 }
 
@@ -61,7 +61,7 @@ void LegoPupTilt::setSensorTiltY(int8_t *pData){
  * @brief Send initialization sequences for the current Color & Distance sensor.
  * @see https://github.com/pybricks/pybricks-micropython/lib/pbio/test/src/uartdev.c
  */
-void LegoPupTilt::commSendInitSequence(){
+void TiltSensor::commSendInitSequence(){
     // Initialize uart
     SerialTTL.begin(2400);
 
@@ -114,7 +114,7 @@ void LegoPupTilt::commSendInitSequence(){
  *      queries from the hub takes longer than 200ms, a disconnection
  *      will be performed here.
  */
-void LegoPupTilt::process(){
+void TiltSensor::process(){
     if (!m_connected) {
         connectToHub();
     } else {
@@ -137,7 +137,7 @@ void LegoPupTilt::process(){
                 }
 
                 switch (m_rxBuf[0]) {
-                    case LegoPupTilt::PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__ANGLE:
+                    case TiltSensor::PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__ANGLE:
                         this->sensorAngleMode();
                         break;
                     default:
@@ -159,7 +159,7 @@ void LegoPupTilt::process(){
 /**
  * @brief Mode 0 response (read): Send X, Y angles.
  */
-void LegoPupTilt::sensorAngleMode(){
+void TiltSensor::sensorAngleMode(){
     // Mode 0
     m_txBuf[0] = 0xC8;                       // header (LUMP_MSG_TYPE_DATA, mode 0, size 4)
     m_txBuf[1] = _(uint8_t)(*m_sensorTiltX); // X [-45..45]
