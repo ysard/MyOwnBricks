@@ -30,6 +30,7 @@ ColorDistanceSensor::ColorDistanceSensor(){
     m_sensorColor    = m_defaultIntVal;
     m_sensorDistance = m_defaultIntVal;
     m_LEDColor       = new uint8_t(0);
+    m_detectionCount = new uint32_t(0);
     m_reflectedLight = m_defaultIntVal;
     m_ambientLight   = m_defaultIntVal;
     m_sensorRGB      = defaultRGB;
@@ -58,6 +59,7 @@ ColorDistanceSensor::ColorDistanceSensor(uint8_t *pSensorColor, uint8_t *pSensor
     m_sensorDistance = pSensorDistance;
     // Sensor default values
     m_LEDColor       = new uint8_t(0);
+    m_detectionCount = new uint32_t(0);
     m_reflectedLight = m_defaultIntVal;
     m_ambientLight   = m_defaultIntVal;
     m_sensorRGB      = defaultRGB;
@@ -98,6 +100,15 @@ void ColorDistanceSensor::setSensorDistance(uint8_t *pData){
     m_sensorDistance = pData;
 }
 
+/**
+ * @brief Setter for m_detectionCount
+ * @param pData Pointer to a counter of detections.
+ */
+void ColorDistanceSensor::setSensorDetectionCount(uint32_t *pData){
+    // Free constructor's value
+    delete this->m_detectionCount;
+    this->m_detectionCount = pData;
+}
 
 /**
  * @brief Setter for m_sensorRGB; Raw values of Red Green Blue channels.
@@ -495,6 +506,20 @@ void ColorDistanceSensor::sensorDistanceMode(){
     sendUARTBuffer(1);
 }
 
+/**
+ * @brief Mode 2 response (read): Send detection count below 5cm
+ *      (2inches in useless non metric system).
+ * @note Packet size: 10 (not a power of 2 size... to be tested).
+ */
+void ColorDistanceSensor::sensorDetectionCount(){
+    // Mode 2
+    m_txBuf[0] = 0xda;                      // header
+    // Decompose 32 bits value into bytes from LSB to MSB (Little-Endian)
+    for (uint8_t i = 0; i < 8; i++) {
+        m_txBuf[i + 1] = (*m_detectionCount >> (i * 8)) & 0xFF;
+    }
+    sendUARTBuffer(8);
+}
 
 /**
  * @brief Mode 3 response (read): Send reflected light measure.

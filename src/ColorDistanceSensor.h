@@ -69,7 +69,7 @@ class ColorDistanceSensor : public BasicSensor {
     enum {
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COLOR = 0, // read 1x int8_t
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__PROX  = 1, // read 1x int8_t
-        PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COUNT = 2,  // read 1x int32_t
+        PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COUNT = 2, // read 1x int32_t
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__REFLT = 3, // read 1x int8_t
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__AMBI  = 4, // read 1x int8_t
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COL_O = 5, // writ 1x int8_t
@@ -89,6 +89,7 @@ public:
     uint16_t getSensorIRCode();
     void setSensorColor(uint8_t *pData);
     void setSensorDistance(uint8_t *pData);
+    void setSensorDetectionCount(uint32_t *pData);
     void setSensorRGB(uint16_t *pData);
     void setIRCallback(void(pfunc)(const uint16_t));
     void setSensorLEDColor(uint8_t *pData);
@@ -106,6 +107,7 @@ private:
     void setIRTXMode();
     void LEDColorMode();
     void sensorDistanceMode();
+    void sensorDetectionCount();
     void sensorReflectedLightMode();
     void sensorAmbientLight();
     void sensorRGBIMode();
@@ -114,6 +116,7 @@ private:
 
     uint8_t *m_LEDColor;
     uint8_t *m_sensorDistance;
+    uint32_t *m_detectionCount;
     uint8_t *m_reflectedLight;
     uint8_t *m_ambientLight;
     uint16_t *m_sensorRGB;
