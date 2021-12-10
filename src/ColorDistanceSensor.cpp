@@ -352,9 +352,12 @@ void ColorDistanceSensor::process(){
                     case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__SPEC1:
                         this->sensorSpec1Mode();
                         break;
+                    #ifdef DEBUG
+                    // This implementation doesn't follow Lego's one
                     case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__DEBUG:
                         this->sensorDebugMode();
                         break;
+                    #endif
                     default:
                         INFO_PRINT("unknown R mode: ");
                         INFO_PRINTLN(mode, HEX);
