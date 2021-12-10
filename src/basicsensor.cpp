@@ -103,7 +103,6 @@ void BasicSensor::connectToHub() {
     commWaitForHubIdle();
 
     // Starting initialization sequence
-    //unsigned long starSequence = millis();
     commSendInitSequence();
     unsigned long starttime = millis();
 

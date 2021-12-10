@@ -47,7 +47,7 @@ ColorDistanceSensor::ColorDistanceSensor(){
  * @overload
  * @param pSensorColor Pointer to a discretized detected color. See m_LEDColor.
  * @param pSensorDistance Pointer to a discreztized distance measured to the
- *      the nearest object. Discretized values 0..10.
+ *      the nearest object. Discretized values 0...10.
  */
 ColorDistanceSensor::ColorDistanceSensor(uint8_t *pSensorColor, uint8_t *pSensorDistance){
     m_defaultIntVal  = new uint8_t(0);
@@ -80,7 +80,9 @@ ColorDistanceSensor::~ColorDistanceSensor() {
 
 /**
  * @brief Setter for m_sensorColor
- * @param pData Pointer to a discretized detected color. See m_LEDColor.
+ * @param pData Pointer to a discretized detected color.
+ *      Available values:
+ *      COLOR_NONE, COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE.
  */
 void ColorDistanceSensor::setSensorColor(uint8_t *pData){
     m_sensorColor = pData;
@@ -90,7 +92,7 @@ void ColorDistanceSensor::setSensorColor(uint8_t *pData){
 /**
  * @brief Setter for m_sensorDistance
  * @param pData Pointer to a discreztized distance measured to the
- *      the nearest object. Discretized values 0..10.
+ *      the nearest object. Discretized values 0...10.
  */
 void ColorDistanceSensor::setSensorDistance(uint8_t *pData){
     m_sensorDistance = pData;
@@ -100,6 +102,8 @@ void ColorDistanceSensor::setSensorDistance(uint8_t *pData){
 /**
  * @brief Setter for m_sensorRGB; Raw values of Red Green Blue channels.
  * @param pData Expected value pointed is an array of uint16_t size 3.
+ *      Values should not exceed experimentally observed value of ~440.
+ *      Continuous values 0..1023.
  */
 void ColorDistanceSensor::setSensorRGB(uint16_t *pData){
     this->m_sensorRGB = pData;
@@ -147,7 +151,7 @@ void ColorDistanceSensor::setLEDColorCallback(void(pfunc)(const uint8_t)){
 /**
  * @brief Setter for m_reflectedLight
  * @param pData Pointer to reflected light (from clear channel value or
- *      calculations based on rgb channels). Discretized values 0..5F.
+ *      calculations based on rgb channels). Continuous values 0..100.
  */
 void ColorDistanceSensor::setSensorReflectedLight(uint8_t *pData){
     this->m_reflectedLight = pData;
@@ -157,6 +161,7 @@ void ColorDistanceSensor::setSensorReflectedLight(uint8_t *pData){
 /**
  * @brief Setter for m_ambientLight
  * @param pData Pointer to ambient light based on lux value.
+ *      Continuous values 0..100.
  */
 void ColorDistanceSensor::setSensorAmbientLight(uint8_t *pData){
     this->m_ambientLight = pData;
@@ -491,7 +496,7 @@ void ColorDistanceSensor::sensorDistanceMode(){
 void ColorDistanceSensor::sensorReflectedLightMode(){
     // Mode 3
     m_txBuf[0] = 0xC3;                      // header
-    m_txBuf[1] = *this->m_reflectedLight;   // 0..5F
+    m_txBuf[1] = *this->m_reflectedLight;   // 0..100
     sendUARTBuffer(1);
 }
 
@@ -547,7 +552,7 @@ void ColorDistanceSensor::sensorSpec1Mode(){
     m_txBuf[1] = *m_sensorColor;     // color    [0, 3, 5, 9, 0x0A, 0xFF]
     m_txBuf[2] = *m_sensorDistance;  // distance [0..10]
     m_txBuf[3] = *m_LEDColor;        // LED current color [0, 3, 5, 9, 0x0A]
-    m_txBuf[4] = *m_reflectedLight;  // reflected light [0..5F]
+    m_txBuf[4] = *m_reflectedLight;  // reflected light [0..100]
     sendUARTBuffer(4);
 }
 

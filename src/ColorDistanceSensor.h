@@ -43,15 +43,19 @@
  * @param m_LEDColor Current color of the LED; Available values:
  *      COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE.
  * @param m_sensorDistance Distance measured to the the nearest object.
- *      Discretized values 0..10.
+ *      Discretized values 0...10.
+ * @param m_detectionCount Detection count; should be incremented each time
+ *      the sensor detects a distance < 5cm.
  * @param m_reflectedLight Reflected light (from clear channel value or
  *      calculations based on rgb channels).
- *      Discretized values 0..5F.
+ *      Continuous values 0...100.
  * @param m_ambientLight Ambient light based on lux value.
- *      Discretized values ???
+ *      Continuous values 0...100.
  * @param m_sensorRGB Raw values of Red Green Blue channels.
- * @param m_sensorColor Detected color. See available values of m_LEDColor
- *      + COLOR_NONE.
+ *      Values should not exceed experimentally observed value of ~440.
+ *      Continuous values 0..1023.
+ * @param m_sensorColor Detected color; Available values:
+ *      COLOR_NONE, COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE.
  * @param m_IR_code IR code for Power Functions IR devices
  *      (supposed to be transmitted via the Power Functions RC Protocol).
  * @param m_pIRfunc Callback set by user receiving m_IR_code.

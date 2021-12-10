@@ -29,6 +29,12 @@
 #define SerialTTL    Serial
 #endif
 
+/**
+  * Static cast syntatic sugar
+  */
+#define _(type)    static_cast<type>
+
+
 //#define DEBUG // Activate this for debug output on Serial CDC interface
 //#define INFO
 
@@ -48,12 +54,6 @@
      */
     #define DEBUG_PRINTLN(...) void()
 #endif
-
-/**
-  * Static cast syntatic sugar
-  */
-#define _(type)    static_cast<type>
-
 
 /**
  * Info directives
