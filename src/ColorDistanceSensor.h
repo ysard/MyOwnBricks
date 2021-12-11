@@ -66,6 +66,7 @@
  */
 class ColorDistanceSensor : public BasicSensor {
     // LEGO POWERED UP Color and Distance Sensor modes
+    // https://github.com/pybricks/pybricks-micropython/blob/master/pybricks/util_pb/pb_device.h
     enum {
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COLOR = 0, // read 1x int8_t
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__PROX  = 1, // read 1x int8_t

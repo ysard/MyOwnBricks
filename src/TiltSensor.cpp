@@ -146,12 +146,12 @@ void TiltSensor::handleModes(){
 
 
 /**
- * @brief Mode 0 response (read): Send X, Y angles.
+ * @brief Mode 0 response (read): Send X/roll/roulis, Y/pitch/tangage angles.
  */
 void TiltSensor::sensorAngleMode(){
     // Mode 0
     m_txBuf[0] = 0xC8;                       // header (LUMP_MSG_TYPE_DATA, mode 0, size 4)
-    m_txBuf[1] = _(uint8_t)(*m_sensorTiltX); // X [-45..45]
-    m_txBuf[2] = _(uint8_t)(*m_sensorTiltY); // Y [-45..45]
+    m_txBuf[1] = _(uint8_t)(*m_sensorTiltX); // X/roll
+    m_txBuf[2] = _(uint8_t)(*m_sensorTiltY); // Y/pitch
     sendUARTBuffer(2);
 }

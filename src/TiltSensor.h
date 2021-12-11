@@ -23,8 +23,21 @@
 #include "global.h"
 #include "basicsensor.h"
 
+
+/**
+ * @brief Handle the LegoUART protocol and define modes of the
+ * Tilt sensor.
+ *
+ * @param m_sensorTiltX Angle value in degrees for rotation along x-axis
+ *      also called roll/roulis.
+ *      Continuous values ??...??
+ * @param m_sensorTiltY Angle value in degrees for rotation along y-axis
+ *      also called pitch/tangage.
+ *      Continuous values ??...??
+ */
 class TiltSensor : BasicSensor {
     // LEGO POWERED UP WEDO 2.0 Tilt sensor modes
+    // https://github.com/pybricks/pybricks-micropython/blob/master/pybricks/util_pb/pb_device.h
     enum {
         PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__ANGLE  = 0,  // read 2x int8_t
         //PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__DIR    = 1,  // read 1x int8_t
