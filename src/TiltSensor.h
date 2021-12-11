@@ -35,7 +35,6 @@ class TiltSensor : BasicSensor {
 public:
     TiltSensor();
     TiltSensor(int8_t *pSensorTiltX, int8_t *pSensorTiltY);
-    void process();
 
     void setSensorTiltX(int8_t *pData);
     void setSensorTiltY(int8_t *pData);
@@ -43,6 +42,8 @@ public:
     void sensorAngleMode();
 
 private:
+    // Process queries from/to hub
+    virtual void handleModes();
     virtual void commSendInitSequence();
 
     int8_t *m_sensorTiltX;

@@ -41,8 +41,7 @@ class BasicSensor {
 public:
     BasicSensor();
     // virtual ~BasicSensor(){}
-    // virtual void process();
-
+    void process();
     bool isConnected();
 
 protected:
@@ -56,6 +55,7 @@ protected:
     void connectToHub();
     // Could/should use virtual pure (..() = 0) but it uses 14bytes for nothing
     virtual void commSendInitSequence();
+    virtual void handleModes();
 
     uint8_t m_connSerialRX_pin;
     uint8_t m_connSerialTX_pin;

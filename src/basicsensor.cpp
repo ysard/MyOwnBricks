@@ -139,13 +139,37 @@ void BasicSensor::commSendInitSequence(){}
 /**
  * @brief Handle the protocol queries & responses from/to the hub.
  *      Queries can be read/write according to the requested mode.
+ *      This function is specific to one sensor and MUST BE reimplemented.
+ * @warning In the situation where the processing of the responses to the
+ *      queries from the hub takes longer than 200ms, a disconnection
+ *      will be performed here.
+ */
+void BasicSensor::handleModes(){}
+
+
+/**
+ * @brief Handle the connection process to the hub.
+ * @see Protocol queries & responses are processed by `handleModes()`.
  * @warning Do not forget to check at each iteration if `millis() - m_lastAckTick > 200`.
  *      If true, the device must go in reset mode by setting the m_connected
  *      boolean to false.
  */
-//void BasicSensor::process(){
-//    // To implement
-//}
+void BasicSensor::process(){
+    if(!m_connected){
+        this->connectToHub();
+        return;
+    }
+
+    // Connection established
+    handleModes();
+
+    // Check disconnection from the Hub and go in reset/init mode if needed
+    if (millis() - m_lastAckTick > 200) {
+        INFO_PRINT(F("Disconnect; Too much time since last NACK - "));
+        INFO_PRINTLN(millis() - m_lastAckTick);
+        m_connected = false;
+    }
+}
 
 
 /**

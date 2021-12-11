@@ -84,7 +84,6 @@ public:
     ColorDistanceSensor();
     ColorDistanceSensor(uint8_t *pSensorColor, uint8_t *pSensorDistance);
     virtual ~ColorDistanceSensor();
-    void process();
 
     uint16_t getSensorIRCode();
     void setSensorColor(uint8_t *pData);
@@ -97,6 +96,8 @@ public:
     void setSensorAmbientLight(uint8_t *pData);
 
 private:
+    // Process queries from/to hub
+    virtual void handleModes();
     // Protocol handy functions
     virtual void commSendInitSequence();
     void extendedModeInfoResponse();
