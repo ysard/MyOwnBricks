@@ -337,9 +337,6 @@ void ColorDistanceSensor::process(){
                     case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__PROX:
                         this->sensorDistanceMode();
                         break;
-                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COUNT:
-                        this->sensorDetectionCount();
-                        break;
                     case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__REFLT:
                         this->sensorReflectedLightMode();
                         break;
