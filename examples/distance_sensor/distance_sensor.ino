@@ -1,5 +1,5 @@
 /*
- * A library for the emulation of PoweredUp sensors on microcontrollers
+ * MyOwnBrick is a library for the emulation of PoweredUp sensors on microcontrollers
  * Copyright (C) 2021 Ysard - <ysard@users.noreply.github.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -121,10 +121,11 @@ void setup() {
     // Distance sensor config
     // pin 7, INT6 EXT
     // Note: INT-0,1,2,3 are occupied by UART and i2c transmissions on pro-micro
-    // /!\ DO NOT activate pullup from the arduino, the GPIO1 pin is usually already pulled up
-    // into the sensor board itself to 2.8V. These pins (SCL, SDA, GPIO0, GPIO1) ARE NOT
-    // tolerant to more than VDD + 0.5V (= 3.3V).
-    // pinMode(SENSOR_INTERRUPT_PIN, INPUT_PULLUP);
+    // /!\ DO NOT activate pullup from the arduino, the GPIO1 pin is usually already
+    // pulled up into the sensor board itself to 2.8V. These pins (SCL, SDA, GPIO0, GPIO1)
+    // ARE NOT tolerant to more than VDD + 0.5V (= 3.3V). Note that I2C pins are connected
+    // to level shifters, but not the others.
+    // pinMode(SENSOR_INTERRUPT_PIN, INPUT_PULLUP);  // DON'T do this!
     cli(); // Disable all interrupts: Avoid first and not wanted trigger of the interrupt
     attachInterrupt(digitalPinToInterrupt(SENSOR_INTERRUPT_PIN), ISR_sensor, FALLING);
     sei(); // Enable all interrupts
@@ -164,7 +165,7 @@ void loop() {
       EIFR &= ~(1 << INTF6); // clear interrupt flag in case of bounce
     }
     // Synchronous reading
-    //INFO_PRINTLN(sensor.readRangeContinuousMillimeters()); // 12ms
+    //INFO_PRINTLN(sensor.readRangeContinuousMillimeters()); // 12ms, DON'T do this!
 
     // Send data to PoweredUp Hub
     lpup.process();
