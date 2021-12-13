@@ -82,7 +82,7 @@ ColorDistanceSensor::~ColorDistanceSensor() {
  * @brief Setter for m_sensorColor
  * @param pData Pointer to a discretized detected color.
  *      Available values:
- *      COLOR_NONE, COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE.
+ *      COLOR_NONE, COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_WHITE.
  */
 void ColorDistanceSensor::setSensorColor(uint8_t *pData){
     m_sensorColor = pData;
@@ -131,7 +131,7 @@ void ColorDistanceSensor::setIRCallback(void(pfunc)(const uint16_t)){
  * @brief Setter for m_LEDColor
  * @param pData: Pointer to the current LED color.
  *      Available values:
- *      COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE.
+ *      COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_WHITE.
  */
 void ColorDistanceSensor::setSensorLEDColor(uint8_t *pData){
     // Free constructor's value
