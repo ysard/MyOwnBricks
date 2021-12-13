@@ -17,8 +17,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef LegoPupTilt_h
-#define LegoPupTilt_h
+#ifndef TILTSENSOR_H
+#define TILTSENSOR_H
 
 #include "global.h"
 #include "BaseSensor.h"

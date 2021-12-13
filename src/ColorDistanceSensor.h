@@ -17,8 +17,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef LegoPupColorDistance_h
-#define LegoPupColorDistance_h
+#ifndef COLOR_DISTANCESENSOR_H
+#define COLOR_DISTANCESENSOR_H
 
 #include "global.h"
 #include "lego_uart.h"

@@ -17,8 +17,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef BASICSENSOR_H
-#define BASICSENSOR_H
+#ifndef BASESENSOR_H
+#define BASESENSOR_H
 
 #include "global.h"
 #include "lego_uart.h"
@@ -67,4 +67,4 @@ protected:
     bool m_connected;
 };
 
-#endif // BASICSENSOR_H
+#endif // BASESENSOR_H
