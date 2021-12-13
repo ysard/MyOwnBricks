@@ -1,5 +1,5 @@
 /*
- * MyOwnBrick is a library for the emulation of PoweredUp sensors on microcontrollers.
+ * MyOwnBricks is a library for the emulation of PoweredUp sensors on microcontrollers.
  * Copyright (C) 2021 Ysard - <ysard@users.noreply.github.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
      GND      GND
 
      IR LED is connected to VCC via 1K resistance and GND via the collector of a
-     2N3094 transistor.
+     2N3904 transistor.
      The transistor base is driven via pin 5 through a 330 ohms resistance.
 
      Pro Micro:
@@ -49,6 +49,9 @@ LegoPupColorDistance lpup;
 bool connection_status;
 
 
+/**
+ * @brief Callback for IR code sent by the hub
+ */
 void IRCallback(const uint16_t value) {
     #if (defined(INFO) || defined(DEBUG))
     Serial.print(F("IR callback: "));

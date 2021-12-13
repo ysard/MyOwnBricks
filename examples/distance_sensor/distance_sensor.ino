@@ -1,5 +1,5 @@
 /*
- * MyOwnBrick is a library for the emulation of PoweredUp sensors on microcontrollers
+ * MyOwnBricks is a library for the emulation of PoweredUp sensors on microcontrollers
  * Copyright (C) 2021 Ysard - <ysard@users.noreply.github.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,7 +41,11 @@ uint8_t previousStatus;
 VL6180X sensor;
 ColorDistanceSensor lpup;
 
-void ISR_sensor() { // Callback for INT6 interrupt
+
+/**
+ * @brief Callback for INT6 interrupt
+ */
+void ISR_sensor() {
   sensorReady = true;
 }
 
