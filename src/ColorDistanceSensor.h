@@ -22,7 +22,7 @@
 
 #include "global.h"
 #include "lego_uart.h"
-#include "basicsensor.h"
+#include "BaseSensor.h"
 
 // Colors (detected & LED (except NONE for this last one)) expected values
 #define COLOR_NONE     0xFF
@@ -64,7 +64,7 @@
  * @param m_currentExtMode Extended mode switch for modes >= 8. Available values:
  *      EXT_MODE_0, EXT_MODE_8.
  */
-class ColorDistanceSensor : public BasicSensor {
+class ColorDistanceSensor : public BaseSensor {
     // LEGO POWERED UP Color and Distance Sensor modes
     // https://github.com/pybricks/pybricks-micropython/blob/master/pybricks/util_pb/pb_device.h
     enum {

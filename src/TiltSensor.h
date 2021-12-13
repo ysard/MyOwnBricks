@@ -21,7 +21,7 @@
 #define LegoPupTilt_h
 
 #include "global.h"
-#include "basicsensor.h"
+#include "BaseSensor.h"
 
 
 /**
@@ -35,7 +35,7 @@
  *      also called pitch/tangage.
  *      Continuous values ??...??
  */
-class TiltSensor : BasicSensor {
+class TiltSensor : BaseSensor {
     // LEGO POWERED UP WEDO 2.0 Tilt sensor modes
     // https://github.com/pybricks/pybricks-micropython/blob/master/pybricks/util_pb/pb_device.h
     enum {

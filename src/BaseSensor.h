@@ -36,10 +36,10 @@
  * @param m_lastAckTick Time flag used to detect disconnection from the hub.
  * @param m_connected Connection flag.
  */
-class BasicSensor {
+class BaseSensor {
 
 public:
-    BasicSensor();
+    BaseSensor();
     // virtual ~BasicSensor(){}
     void process();
     bool isConnected();
