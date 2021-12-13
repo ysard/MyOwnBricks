@@ -33,6 +33,8 @@
 #include <Wire.h>
 #include "src/tcs34725.h"
 #include "src/ColorDistanceSensor.h"
+#define MANHATTAN
+#include "color_detection_methods.hpp"
 
 #define SENSOR_INTERRUPT_PIN  8
 #define SENSOR_INTERRUPT_PORT PB4
@@ -63,38 +65,6 @@ ISR(PCINT0_vect) {
   // If PB4 is LOW, sensor is ready
   if (!tstPin(SENSOR_INTERRUPT_PORT))
     sensorReady = true;
-}
-
-
-/**
- * @brief Discretize colors and set sensorColor variable
- *    Available colors: COLOR_NONE, COLOR_BLACK, COLOR_BLUE, 
- *    COLOR_GREEN, COLOR_RED, COLOR_WHITE.
- */
-void detectColor() {
-  /*if (
-    (red >= green-10 && red <= green+10) 
-    && (green >= blue-10 && green <= blue+10) 
-    && (blue >= red-10 && blue <= red+10)) {
-    
-    //G=R=B=C/3 (a very rough estimation for white light)
-    
-      // white
-      sensorColor = COLOR_WHITE;
-  }*/
-
-  if ((red > green) && (red > blue)) {
-    // red
-    sensorColor = COLOR_RED;
-  } 
-  else if ((green > red) && (green > blue)) {
-    // green
-    sensorColor = COLOR_GREEN;
-  } 
-  else if ((blue > red) && (blue > green)) {
-    // blue
-    sensorColor = COLOR_BLUE;
-  }
 }
 
 
