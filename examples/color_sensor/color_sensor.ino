@@ -76,7 +76,7 @@ ISR(PCINT0_vect) {
  *      0% = MinRawValue * a + b
  */
 uint8_t getPercentage(const uint16_t rawValue, const float& a_coef, const float& b_coef) {
-    int8_t percent = static_cast<int8_t>(rawValue * a_coef - b_coef);
+    int8_t percent = static_cast<int8_t>(rawValue * a_coef + b_coef);
     if (percent > 100)
         return 100;
     if (percent < 0)
