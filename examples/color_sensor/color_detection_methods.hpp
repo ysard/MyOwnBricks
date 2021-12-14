@@ -34,10 +34,10 @@
  *          the same as during learning.
  *          https://fr.wikipedia.org/wiki/Distance_de_Manhattan
  *     - CANBERRA: A weighted version of Manhattan distance;
- *          Very heavy but brings a high accuracy and more tolerance to variations 
+ *          Very heavy but brings a higher accuracy and more tolerance/stability to variations
  *          in the measurement environment.
  *          Note: The manipulation of decimal numbers should be avoided 
- *          on microcontrollers...
+ *          on microcontrollers... Does it worth it? Probably not.
  *          https://en.wikipedia.org/wiki/Canberra_distance
  */
 //#define BASIC_RGB
@@ -62,22 +62,22 @@ void detectColor() {
 
 #if (defined(MANHATTAN) || defined(CANBERRA))
 const uint16_t SAMPLES[][3] = {
-  {19044, 5329, 3600}, // RED_1
-  {2778, 1343, 1103}, // RED_3
-  {2270, 9116, 12358}, // BLUE_1
-  {2268, 6069, 7432}, // BLUE_3
-  {5564, 16485, 16511}, // CYAN_1
-  {2352, 6315, 6263}, // CYAN_3
-  {7736, 9071, 2948}, // YELLOW_1
-  {4665, 4722, 1935}, // YELLOW_3
-  {21646, 23873, 7706}, // YELLOW_PLQ_1
-  {10227, 17135, 12897}, // WHITE_1
-  {5625, 8099, 6578}, // WHITE_3
-  {5703, 20655, 10476}, // GREEN_1
-  {3763, 6829, 4375}, // GREEN_3
-  {6645, 12134, 3710}, // GREEN_LIGHT_1
-  {3323, 4978, 2145}, // GREEN_LIGHT_3
-  {1688, 2228, 1806}, // BLACK_1
+ {297, 83, 56},  // RED_1
+ {43, 20, 17},   // RED_3
+ {35, 142, 193}, // BLUE_1
+ {35, 94, 116},  // BLUE_3
+ {86, 257, 257}, // CYAN_1
+ {36, 98, 97},   // CYAN_3
+ {120, 141, 46}, // YELLOW_1
+ {72, 73, 30},   // YELLOW_3
+ {338, 373, 120},// YELLOW_PLQ_1
+ {159, 267, 201},// WHITE_1
+ {87, 126, 102}, // WHITE_3
+ {89, 322, 163}, // GREEN_1
+ {58, 106, 68},  // GREEN_3
+ {103, 189, 57}, // GREEN_LIGHT_1
+ {51, 77, 33},   // GREEN_LIGHT_3
+ {26, 34, 28}    // BLACK_1
 };
 
 const uint8_t SAMPLES_MAP[] = {
@@ -92,29 +92,44 @@ const uint8_t SAMPLES_MAP[] = {
 };
 
 // Number of samples
-const byte samplesCount = sizeof(SAMPLES) / sizeof(SAMPLES[0]);
+const uint8_t samplesCount = sizeof(SAMPLES) / sizeof(SAMPLES[0]);
 
 void detectColor() {
-
+  #ifdef MANHATTAN
   uint16_t minDist = 10000;
   uint16_t expDist;
-  uint8_t bestSampleIndex;
+  #else
+  float minDist = 3;
+  float expDist;
+  #endif
+  uint8_t bestSampleIndex = 0;
 
   for (uint8_t i = 0; i < samplesCount; i++) {
     #ifdef MANHATTAN
     expDist = abs(red - SAMPLES[i][0]) + abs(green - SAMPLES[i][1]) + abs(blue - SAMPLES[i][2]);
     #else
-    expDist = (abs(red - SAMPLES[i][0]) / (red + SAMPLES[i][0])) 
-      + (abs(green - SAMPLES[i][1]) / (green + SAMPLES[i][1])) 
-      + (abs(blue - SAMPLES[i][2]) / (blue + SAMPLES[i][2]));
+    // Yeah it's ugly but abs() of Arduino is a macro different from the stl implementation
+    // moreover the parameter must be explicitly signed.
+    // The numerator or denominator must be a float.
+    // https://www.best-microcontroller-projects.com/arduino-absolute-value.html
+    // https://github.com/arduino/reference-en/issues/362
+    expDist = (abs(static_cast<int16_t>(red - SAMPLES[i][0])) / static_cast<float>(red + SAMPLES[i][0]))
+      + (abs(static_cast<int16_t>(green - SAMPLES[i][1])) / static_cast<float>(green + SAMPLES[i][1]))
+      + (abs(static_cast<int16_t>(blue - SAMPLES[i][2])) / static_cast<float>(blue + SAMPLES[i][2]));
     #endif
     if (expDist < minDist) {
       bestSampleIndex = i;
       minDist = expDist;
     }
   }
+  DEBUG_PRINTLN(expDist);
 
-  if (minDist > 6000) {
+  // Arbitrary threshold to avoid erroneous
+  #ifdef MANHATTAN
+  if (minDist > 100) {
+  #else
+  if (minDist > 1.9) { // Red color is quite difficult to identify even with this high threashold
+  #endif
     // Matching is not acceptable
     sensorColor = COLOR_NONE;
     return;

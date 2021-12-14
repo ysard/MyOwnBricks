@@ -109,7 +109,7 @@ void setup() {
     // Configure PinChange Interrupt
     // See https://github.com/NicoHood/PinChangeInterrupt
     // Note: INT-0,1,2,3 are occupied by UART and i2c transmissions on pro-micro
-    // /!\ DO NOT activate pullup from the arduino, the INT pin is usually already 
+    // /!\ DO NOT activate pullup from the arduino, the INT pin is usually already
     // pulled up into the sensor board itself to 3.3V. These pins (SCL, SDA, INT) 
     // ARE NOT tolerant to more than VDD + 0.5V. Note that I2C pins are connected
     // to level shifters, but not the others.
@@ -151,21 +151,21 @@ void loop() {
           ambientLight = LUX_TO_PERCENTAGE(lux); // cast ?
           
           // RGBC Channels are usable
-          red = rgb_sensor.r_comp, 
-          green = rgb_sensor.g_comp, 
-          blue = rgb_sensor.b_comp, 
-          clear = rgb_sensor.c_comp;
+          // Map values to max ~440; 
+          // Continuous values from 0-65535 (16bits) to 0-1023 (10bits)
+          // Note: 440 gives ~28000 (which is the quasi maximum value observed in the channels)
+          red   = rgb_sensor.r_comp >> 6,
+          green = rgb_sensor.g_comp >> 6,
+          blue  = rgb_sensor.b_comp >> 6,
+          clear = rgb_sensor.c_comp >> 6;
   
           // Set clear channel as reflected light - map 0-100
           reflectedLight = REFLECTED_LIGHT_TO_PERCENTAGE(clear);
   
           // Set RGB channels
-          // Map values to max ~440; 
-          // Continuous values from 0-65535 (16bits) to 0-1023 (10bits)
-          // Note: 440 gives ~28000 (which is the quasi maximum value observed in the channels)
-          sensorRGB[0] = red   >> 6;
-          sensorRGB[1] = green >> 6;
-          sensorRGB[2] = blue  >> 6;
+          sensorRGB[0] = red;
+          sensorRGB[1] = green;
+          sensorRGB[2] = blue;
   
           // Set detected color
           detectColor();
