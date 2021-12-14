@@ -34,9 +34,9 @@
 #define SENSOR_INTERRUPT_PIN  7
 uint8_t sensorDistance;
 bool connection_status;
-volatile bool sensorReady;
+volatile bool distSensorReady;
 uint16_t detectionCount;
-uint8_t previousStatus;
+uint8_t previousDistStatus;
 
 VL6180X sensor;
 ColorDistanceSensor lpup;
@@ -46,8 +46,9 @@ ColorDistanceSensor lpup;
  * @brief Callback for INT6 interrupt
  */
 void ISR_sensor() {
-  sensorReady = true;
+  distSensorReady = true;
 }
+
 
 /**
  * @brief Read reading of range; 
@@ -59,6 +60,7 @@ uint8_t readRangeNonBlocking() {
   return range;
 }
 
+
 /**
  * @brief Convert raw range value to millimeters.
  *    Mostly useful when the scale factor is modified to increase the measuring range.
@@ -66,6 +68,7 @@ uint8_t readRangeNonBlocking() {
 uint16_t readRangeNonBlockingMillimeters() {
   return static_cast<uint16_t>(readRangeNonBlocking() * sensor.getScaling());
 }
+
 
 /**
  * @brief Map values to percentages
@@ -83,6 +86,7 @@ uint8_t getDistancePercent(uint16_t &rawValue) {
     return 0;
   return static_cast<uint8_t>(percent);
 }
+
 
 void initSensor() {
     sensor.init();
@@ -107,6 +111,7 @@ void initSensor() {
     sensor.startRangeContinuous(); // default period = 100ms
 }
     
+
 void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
 
@@ -120,7 +125,7 @@ void setup() {
     // Device config
     lpup.setSensorDistance(&sensorDistance);
     connection_status = false;
-    sensorReady = false;
+    distSensorReady = false;
 
     // Distance sensor config
     // pin 7, INT6 EXT
@@ -138,8 +143,9 @@ void setup() {
     initSensor();
 }
 
+
 void loop() {
-    if (sensorReady) {
+    if (distSensorReady) {
       // Get distance
       uint16_t raw_distance = readRangeNonBlockingMillimeters(); // 1ms
       // Get error status
@@ -153,10 +159,10 @@ void loop() {
         // If previous status is 0 and this one is != 0: target is gone
         // If previous status is != 0 and this one is 0: target appears 
         //    => increment detection count 
-        //if (previousStatus != status && raw_distance <= 50)
+        //if (previousDistStatus != status && raw_distance <= 50)
         //  detectionCount++;
 
-        previousStatus = status;
+        previousDistStatus = status;
 
         INFO_PRINT("Distance (mm): ");
         INFO_PRINTLN(raw_distance);
@@ -165,7 +171,7 @@ void loop() {
         DEBUG_PRINTLN(status);
       }
 
-      sensorReady = false;
+      distSensorReady = false;
       EIFR &= ~(1 << INTF6); // clear interrupt flag in case of bounce
     }
     // Synchronous reading
