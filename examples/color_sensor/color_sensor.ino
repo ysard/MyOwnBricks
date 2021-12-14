@@ -31,8 +31,8 @@
      Serial1: pin 1 (TX), pin 0 (RX)
 */
 #include <Wire.h>
-#include "src/tcs34725.h"
-#include "src/ColorDistanceSensor.h"
+#include "tcs34725.h"
+#include "ColorDistanceSensor.h"
 #define MANHATTAN
 #include "color_detection_methods.hpp"
 

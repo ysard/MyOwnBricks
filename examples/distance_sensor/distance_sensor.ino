@@ -29,7 +29,7 @@
 */
 #include <Wire.h>
 #include <VL6180X.h>
-#include "src/ColorDistanceSensor.h"
+#include "ColorDistanceSensor.h"
 
 #define SENSOR_INTERRUPT_PIN  7
 uint8_t sensorDistance;

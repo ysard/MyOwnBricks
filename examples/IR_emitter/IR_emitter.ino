@@ -40,7 +40,7 @@
 #define NO_DECODER
 
 #include <IRremote.hpp>
-#include "src/ColorDistanceSensor.h"
+#include "ColorDistanceSensor.h"
 
 // Init IR sender
 IRsend irsend;
