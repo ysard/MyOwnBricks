@@ -106,7 +106,9 @@ void detectColor() {
 
   for (uint8_t i = 0; i < samplesCount; i++) {
     #ifdef MANHATTAN
-    expDist = abs(red - SAMPLES[i][0]) + abs(green - SAMPLES[i][1]) + abs(blue - SAMPLES[i][2]);
+    expDist = abs(static_cast<int16_t>(red - SAMPLES[i][0]))
+      + abs(static_cast<int16_t>(green - SAMPLES[i][1]))
+      + abs(static_cast<int16_t>(blue - SAMPLES[i][2]));
     #else
     // Yeah it's ugly but abs() of Arduino is a macro different from the stl implementation
     // moreover the parameter must be explicitly signed.
