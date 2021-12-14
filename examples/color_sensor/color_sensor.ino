@@ -19,7 +19,7 @@
      Sensor   Pro Micro
      SCL      SCL pin 3
      SDA      SDA pin 2
-     INT      PCINT4 pin 8
+     INT      PCINT4, port PB4, pin 8
      VIN      VCC (3.3V)
      GND      GND
 
@@ -32,9 +32,8 @@
 */
 #include <Wire.h>
 #include "tcs34725.h"
-#include "ColorDistanceSensor.h"
 #define MANHATTAN
-#include "color_detection_methods.hpp"
+#include "MyOwnBricks.h"
 
 #define RGB_SENSOR_INTERRUPT_PIN  8
 #define RGB_SENSOR_INTERRUPT_PORT PB4
