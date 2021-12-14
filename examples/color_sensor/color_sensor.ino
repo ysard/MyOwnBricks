@@ -36,8 +36,8 @@
 #define MANHATTAN
 #include "color_detection_methods.hpp"
 
-#define SENSOR_INTERRUPT_PIN  8
-#define SENSOR_INTERRUPT_PORT PB4
+#define RGB_SENSOR_INTERRUPT_PIN  8
+#define RGB_SENSOR_INTERRUPT_PORT PB4
 // Equivalent of digitalRead but for PORTB pins & much more quicker for a use in an ISR
 // https://www.arduino.cc/en/Reference/PortManipulation
 #define tstPin(b) ((PINB &(1<<(b))) != 0)
@@ -63,7 +63,7 @@ ColorDistanceSensor lpup;
  */
 ISR(PCINT0_vect) {
   // If PB4 is LOW, sensor is ready
-  if (!tstPin(SENSOR_INTERRUPT_PORT))
+  if (!tstPin(RGB_SENSOR_INTERRUPT_PORT))
     sensorReady = true;
 }
 
@@ -113,7 +113,7 @@ void setup() {
     // pulled up into the sensor board itself to 3.3V. These pins (SCL, SDA, INT) 
     // ARE NOT tolerant to more than VDD + 0.5V. Note that I2C pins are connected
     // to level shifters, but not the others.
-    pinMode(SENSOR_INTERRUPT_PIN, INPUT); // TCS interrupt output is Active-LOW and Open-Drain
+    pinMode(RGB_SENSOR_INTERRUPT_PIN, INPUT); // TCS interrupt output is Active-LOW and Open-Drain
     cli(); // Disable all interrupts: Avoid first and not wanted trigger of the interrupt
     PCICR |= 0b00000001;  // enable PORTB pin change interrupt
     PCMSK0 |= 0b00010000; // enable PB4, PCINT4, pin 8
@@ -202,7 +202,7 @@ void loop() {
         
         connection_status = true;
       }
-    } else {  
+    } else {
       INFO_PRINTLN(F("Not Connected !"));
       pinMode(LED_BUILTIN_TX,OUTPUT);
       pinMode(LED_BUILTIN_RX,OUTPUT);
