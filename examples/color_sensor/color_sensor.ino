@@ -143,7 +143,7 @@ void loop() {
 
         int16_t lux = lround(rgb_sensor.lux);
 
-        if (lux >= 0 && (static_cast<uint16_t>(lux) <= rgb_sensor.maxlux)) {
+        if (lux >= 40 && (static_cast<uint16_t>(lux) <= rgb_sensor.maxlux)) {
           // Sometimes lux values are below 0; this coincides with erroneous data
           
           // Set ambient light (lux) - map 0-100
