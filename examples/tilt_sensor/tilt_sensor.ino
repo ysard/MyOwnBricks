@@ -19,19 +19,18 @@
 
 int8_t sensorX;
 int8_t sensorY;
-bool connection_status;
+bool   connection_status;
 
-TiltSensor myOwnTilt(&sensorX, &sensorY);
+TiltSensor myOwnTilt(& sensorX, & sensorY);
 
 
 void setup() {
-
-    #if (defined(INFO) || defined(DEBUG))
+#if (defined(INFO) || defined(DEBUG))
     Serial.begin(115200); // USB CDC
     while (!Serial) {
-        ; // Wait for serial port to connect.
+        // Wait for serial port to connect.
     }
-    #endif
+#endif
 
     // Init roll & pitch values if not made via the constructor
     //myOwnTilt.setSensorTiltX(&sensorX);
@@ -43,12 +42,13 @@ void setup() {
 void loop() {
     // Get data from orientation sensor
     int arbitraryValue = 512;
+
     sensorX = map(arbitraryValue, 0, 1023, -45, 45);
     sensorY = map(arbitraryValue, 0, 1023, -45, 45);
 
     myOwnTilt.Process();
 
-    if(myOwnTilt.isConnected()){
+    if (myOwnTilt.isConnected()) {
         // Already connected ?
         if (!connection_status) {
             INFO_PRINTLN(F("Connected !"));

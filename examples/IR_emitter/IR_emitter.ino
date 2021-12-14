@@ -15,20 +15,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- /*
-     IR LED   Pro Micro
-     DATA     pin 5, Timer 10-bits High Speed
-     -        VCC (3.3V)
-     GND      GND
 
-     IR LED is connected to VCC via 1K resistance and GND via the collector of a
-     2N3904 transistor.
-     The transistor base is driven via pin 5 through a 330 ohms resistance.
-
-     Pro Micro:
-     Serial: UART via USB
-     Serial1: pin 1 (TX), pin 0 (RX)
-*/
+/*
+ *   IR LED   Pro Micro
+ *   DATA     pin 5, Timer 10-bits High Speed
+ *   -        VCC (3.3V)
+ *   GND      GND
+ *
+ *   IR LED is connected to VCC via 1K resistance and GND via the collector of a
+ *   2N3904 transistor.
+ *   The transistor base is driven via pin 5 through a 330 ohms resistance.
+ *
+ *   Pro Micro:
+ *   Serial: UART via USB
+ *   Serial1: pin 1 (TX), pin 0 (RX)
+ */
 // IRremote 3.5.x configuration
 // See defines in ~/Arduino/libraries/IRremote/IRremote.hpp
 // See pin alternatives: https://github.com/Arduino-IRremote/Arduino-IRremote#hardware-pwm-signal-generation-for-sending
@@ -43,20 +44,20 @@
 #include "ColorDistanceSensor.h"
 
 // Init IR sender
-IRsend irsend;
+IRsend               irsend;
 // Init sensor
 LegoPupColorDistance lpup;
-bool connection_status;
+bool                 connection_status;
 
 
 /**
  * @brief Callback for IR code sent by the hub
  */
 void IRCallback(const uint16_t value) {
-    #if (defined(INFO) || defined(DEBUG))
+#if (defined(INFO) || defined(DEBUG))
     Serial.print(F("IR callback: "));
     Serial.println(value, HEX);
-    #endif
+#endif
 
     irsend.sendLegoPowerFunctions(value, false);
 }
@@ -65,29 +66,30 @@ void IRCallback(const uint16_t value) {
 void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
 
-    #if (defined(INFO) || defined(DEBUG))
+#if (defined(INFO) || defined(DEBUG))
     Serial.begin(115200); // USB CDC
     while (!Serial) {
-      ; // Wait for serial port to connect.
+        // Wait for serial port to connect.
     }
-    #endif
+#endif
 
     // Device config
     lpup.setIRCallback(&IRCallback);
     connection_status = false;
 }
 
+
 void loop() {
     lpup.process();
 
-    if(lpup.isConnected()){
-      // Already connected ?
-      if (!connection_status) {
-        INFO_PRINTLN(F("Connected !"));
-        connection_status = true;
-      }
+    if (lpup.isConnected()) {
+        // Already connected ?
+        if (!connection_status) {
+            INFO_PRINTLN(F("Connected !"));
+            connection_status = true;
+        }
     } else {
-      INFO_PRINTLN(F("Not Connected !"));
-      connection_status = false;
+        INFO_PRINTLN(F("Not Connected !"));
+        connection_status = false;
     }
 }
