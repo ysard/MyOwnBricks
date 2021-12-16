@@ -71,7 +71,7 @@ ColorDistanceSensor::ColorDistanceSensor(uint8_t *pSensorColor, uint8_t *pSensor
 
 
 /**
- * @brief LegoPupColorDistance::~LegoPupColorDistance
+ * @brief Destructor
  */
 ColorDistanceSensor::~ColorDistanceSensor() {
     delete m_defaultIntVal;

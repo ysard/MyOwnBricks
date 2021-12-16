@@ -34,8 +34,8 @@
   */
 #define _(type)    static_cast<type>
 
-
-//#define DEBUG // Activate this for debug output on Serial CDC interface
+// Activate this for debug output on Serial CDC interface
+//#define DEBUG
 //#define INFO
 
 /**
