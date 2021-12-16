@@ -159,39 +159,39 @@ send/receive requests to the hub by calling the `process()` method of each objec
 proposed by `MyOwnBricks`.
 
 ```c++
-    #include "MyOwnBricks.h"
+#include "MyOwnBricks.h"
 
-    ColorDistanceSensor lpup;
-    bool connection_status;
+ColorDistanceSensor lpup;
+bool connection_status;
 
-    /**
-    * @brief Callback for IR code sent by the hub
-    */
-    void IRCallback(const uint16_t value) {
-        ...
-    }
+/**
+* @brief Callback for IR code sent by the hub
+*/
+void IRCallback(const uint16_t value) {
+    ...
+}
 
-    void setup() {
-        // Device config
-        myDevice.setIRCallback(&IRCallback);
+void setup() {
+    // Device config
+    myDevice.setIRCallback(&IRCallback);
+    connection_status = false;
+}
+
+void loop() {
+    ...
+
+    myDevice.process();
+    if (myDevice.isConnected()) {
+        // Already connected ?
+        if (!connection_status) {
+            Serial.println(F("Connected !"));
+            connection_status = true;
+        }
+    } else {
+        Serial.println(F("Not Connected !"));
         connection_status = false;
     }
-
-    void loop() {
-        ...
-
-        myDevice.process();
-        if (myDevice.isConnected()) {
-            // Already connected ?
-            if (!connection_status) {
-                Serial.println(F("Connected !"));
-                connection_status = true;
-            }
-        } else {
-            Serial.println(F("Not Connected !"));
-            connection_status = false;
-        }
-    }
+}
 ```
 
 
@@ -213,6 +213,8 @@ Note: Buy them separately, pre-wired connectors cost an arm and a leg.
 
 ## Distance sensor
 
+<img src="./images/VL6180X.jpg" width="350"/>
+
 * VL6180X
 
     Time-of-flight telemetry sensor; laser technology
@@ -223,6 +225,8 @@ Note: Buy them separately, pre-wired connectors cost an arm and a leg.
     VCC: 2.8V
 
 ## Color sensor
+
+<img src="./images/TCS34725.jpg" width="350"/>
 
 * TCS34725
 
@@ -454,39 +458,39 @@ puis à traiter les requêtes envoi/réception au hub par l'appel
 de la méthode `process()` de chaque objet proposé par `MyOwnBricks`.
 
 ```c++
-    #include "MyOwnBricks.h"
+#include "MyOwnBricks.h"
 
-    ColorDistanceSensor lpup;
-    bool connection_status;
+ColorDistanceSensor lpup;
+bool connection_status;
 
-    /**
-    * @brief Callback for IR code sent by the hub
-    */
-    void IRCallback(const uint16_t value) {
-        ...
-    }
+/**
+* @brief Callback for IR code sent by the hub
+*/
+void IRCallback(const uint16_t value) {
+    ...
+}
 
-    void setup() {
-        // Device config
-        myDevice.setIRCallback(&IRCallback);
+void setup() {
+    // Device config
+    myDevice.setIRCallback(&IRCallback);
+    connection_status = false;
+}
+
+void loop() {
+    ...
+
+    myDevice.process();
+    if (myDevice.isConnected()) {
+        // Already connected ?
+        if (!connection_status) {
+            Serial.println(F("Connected !"));
+            connection_status = true;
+        }
+    } else {
+        Serial.println(F("Not Connected !"));
         connection_status = false;
     }
-
-    void loop() {
-        ...
-
-        myDevice.process();
-        if (myDevice.isConnected()) {
-            // Already connected ?
-            if (!connection_status) {
-                Serial.println(F("Connected !"));
-                connection_status = true;
-            }
-        } else {
-            Serial.println(F("Not Connected !"));
-            connection_status = false;
-        }
-    }
+}
 ```
 
 # Matériel
@@ -502,6 +506,8 @@ Note: Achetez-les séparément, les connecteurs pré-câblés coutent les yeux d
 
 ## Capteur de distance
 
+<img src="./images/VL6180X.jpg" width="350"/>
+
 * VL6180X
 
     Capteur de télémétrie temps de vol; technologie laser
@@ -513,6 +519,8 @@ Note: Achetez-les séparément, les connecteurs pré-câblés coutent les yeux d
 
 
 ## Capteur de couleur
+
+<img src="./images/TCS34725.jpg" width="350"/>
 
 * TCS34725
 
