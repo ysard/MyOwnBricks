@@ -54,7 +54,7 @@ volatile bool sensorReady;
 
 // Default settings: TCS34725_GAIN_4X,  TCS34725_INTEGRATIONTIME_154MS
 TCS34725            rgb_sensor;
-ColorDistanceSensor lpup;
+ColorDistanceSensor myDevice;
 
 
 /**
@@ -98,10 +98,10 @@ void setup() {
     // Device config
     sensorColor = COLOR_NONE;
 
-    lpup.setSensorColor(&sensorColor);
-    lpup.setSensorReflectedLight(&reflectedLight);
-    lpup.setSensorAmbientLight(&ambientLight);
-    lpup.setSensorRGB(sensorRGB);
+    myDevice.setSensorColor(&sensorColor);
+    myDevice.setSensorReflectedLight(&reflectedLight);
+    myDevice.setSensorAmbientLight(&ambientLight);
+    myDevice.setSensorRGB(sensorRGB);
     connection_status = false;
 
     // Colour sensor config
@@ -202,9 +202,9 @@ void loop()
     }
 
     // Send data to PoweredUp Hub
-    lpup.process();
+    myDevice.process();
 
-    if (lpup.isConnected()) {
+    if (myDevice.isConnected()) {
         // Already connected ?
         if (!connection_status) {
             INFO_PRINTLN(F("Connected !"));

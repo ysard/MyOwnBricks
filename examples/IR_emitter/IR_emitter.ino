@@ -44,10 +44,10 @@
 #include "ColorDistanceSensor.h"
 
 // Init IR sender
-IRsend               irsend;
+IRsend              irsend;
 // Init sensor
-LegoPupColorDistance lpup;
-bool                 connection_status;
+ColorDistanceSensor myDevice;
+bool                connection_status;
 
 
 /**
@@ -74,15 +74,15 @@ void setup() {
 #endif
 
     // Device config
-    lpup.setIRCallback(&IRCallback);
+    myDevice.setIRCallback(&IRCallback);
     connection_status = false;
 }
 
 
 void loop() {
-    lpup.process();
+    myDevice.process();
 
-    if (lpup.isConnected()) {
+    if (myDevice.isConnected()) {
         // Already connected ?
         if (!connection_status) {
             INFO_PRINTLN(F("Connected !"));

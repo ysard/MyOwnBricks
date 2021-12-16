@@ -40,7 +40,7 @@ uint16_t      detectionCount;
 uint8_t       previousDistStatus;
 
 VL6180X             distSensor;
-ColorDistanceSensor lpup;
+ColorDistanceSensor myDevice;
 
 
 /**
@@ -125,7 +125,7 @@ void setup() {
 #endif
 
     // Device config
-    lpup.setSensorDistance(&sensorDistance);
+    myDevice.setSensorDistance(&sensorDistance);
     connection_status = false;
     distSensorReady   = false;
 
@@ -180,9 +180,9 @@ void loop() {
     //INFO_PRINTLN(sensor.readRangeContinuousMillimeters()); // 12ms, DON'T do this!
 
     // Send data to PoweredUp Hub
-    lpup.process();
+    myDevice.process();
 
-    if (lpup.isConnected()) {
+    if (myDevice.isConnected()) {
         // Already connected ?
         if (!connection_status) {
             INFO_PRINTLN("Connected !");
