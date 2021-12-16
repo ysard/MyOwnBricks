@@ -126,9 +126,9 @@ void setup() {
 
     // Set persistence filter to generate an interrupt for every RGB Cycle,
     // regardless of the integration limits
-    rgb_sensor.m_tcs.write8(TCS34725_PERS, TCS34725_PERS_NONE);
+    rgb_sensor.tcs.write8(TCS34725_PERS, TCS34725_PERS_NONE);
     // RGBC interrupt enable. When asserted, permits RGBC interrupts to be generated.
-    rgb_sensor.m_tcs.setInterrupt(true);
+    rgb_sensor.tcs.setInterrupt(true);
 }
 
 
@@ -196,7 +196,7 @@ void loop()
             INFO_PRINTLN(F("not valid data! wait next measure"));
         }
         // Interrupt tear down
-        rgb_sensor.m_tcs.clearInterrupt();
+        rgb_sensor.tcs.clearInterrupt();
         sensorReady = false;
         PCIFR      &= ~(1 << PCIF0); // clear PC interrupt flag in case of bounce
     }
