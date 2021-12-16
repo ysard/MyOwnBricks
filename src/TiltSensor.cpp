@@ -114,55 +114,44 @@ void TiltSensor::commSendInitSequence(){
  *      queries from the hub takes longer than 200ms, a disconnection
  *      will be performed here.
  */
-void TiltSensor::process(){
-    if (!m_connected) {
-        connectToHub();
-    } else {
-        // Connection established
-        if (SerialTTL.available() > 0) {
-            unsigned char header = SerialTTL.read();
+void TiltSensor::handleModes(){
+    if (SerialTTL.available() == 0)
+        return;
 
-            if (header == 0x02) {  // NACK
-                m_lastAckTick = millis();
+    unsigned char header = SerialTTL.read();
 
-                // Send default mode: 0 (angles data)
-                this->sensorAngleMode();
-            } else if (header == 0x43) {
-                // "Get value" commands (3 bytes message: header, mode, checksum)
-                size_t ret = SerialTTL.readBytes(m_rxBuf, 2);
-                if (ret < 2) {
-                    // check if all expected bytes are received without timeout
-                    DEBUG_PRINT("incomplete 0x43 message");
-                    return;
-                }
+    if (header == 0x02) {  // NACK
+        m_lastAckTick = millis();
 
-                switch (m_rxBuf[0]) {
-                    case TiltSensor::PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__ANGLE:
-                        this->sensorAngleMode();
-                        break;
-                    default:
-                        break;
-                }
-            }
+        // Send default mode: 0 (angles data)
+        this->sensorAngleMode();
+    } else if (header == 0x43) {
+        // "Get value" commands (3 bytes message: header, mode, checksum)
+        size_t ret = SerialTTL.readBytes(m_rxBuf, 2);
+        if (ret < 2) {
+            // check if all expected bytes are received without timeout
+            DEBUG_PRINT("incomplete 0x43 message");
+            return;
         }
 
-        // Check for disconnection from the Hub
-        if (millis() - m_lastAckTick > 200) {
-            INFO_PRINT("Disconnect; Too much time since last NACK - ");
-            INFO_PRINTLN(millis() - m_lastAckTick);
-            m_connected = false;
+        switch (m_rxBuf[0]) {
+            case TiltSensor::PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__ANGLE:
+                this->sensorAngleMode();
+                break;
+            default:
+                break;
         }
     }
 }
 
 
 /**
- * @brief Mode 0 response (read): Send X, Y angles.
+ * @brief Mode 0 response (read): Send X/roll/roulis, Y/pitch/tangage angles.
  */
 void TiltSensor::sensorAngleMode(){
     // Mode 0
     m_txBuf[0] = 0xC8;                       // header (LUMP_MSG_TYPE_DATA, mode 0, size 4)
-    m_txBuf[1] = _(uint8_t)(*m_sensorTiltX); // X [-45..45]
-    m_txBuf[2] = _(uint8_t)(*m_sensorTiltY); // Y [-45..45]
+    m_txBuf[1] = _(uint8_t)(*m_sensorTiltX); // X/roll
+    m_txBuf[2] = _(uint8_t)(*m_sensorTiltY); // Y/pitch
     sendUARTBuffer(2);
 }

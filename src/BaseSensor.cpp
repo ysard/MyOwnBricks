@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "basicsensor.h"
+#include "BaseSensor.h"
 
-BasicSensor::BasicSensor() :
+BaseSensor::BaseSensor() :
     m_connSerialRX_pin(0),
     m_connSerialTX_pin(1),
     m_lastAckTick(0),
@@ -30,7 +30,7 @@ BasicSensor::BasicSensor() :
  * @brief Get status of connection with the hub.
  * @return bool
  */
-bool BasicSensor::isConnected(){
+bool BaseSensor::isConnected(){
     return m_connected;
 }
 
@@ -41,7 +41,7 @@ bool BasicSensor::isConnected(){
  * @param length Length of the message
  * @return Checksum byte
  */
-uint8_t BasicSensor::calcChecksum(uint8_t *pData, int length){
+uint8_t BaseSensor::calcChecksum(uint8_t *pData, int length){
     uint8_t lRet, i;
 
     lRet = 0xFF;
@@ -56,7 +56,7 @@ uint8_t BasicSensor::calcChecksum(uint8_t *pData, int length){
  * @brief Wait until the hub is available on the serial RX line.
  *      Then, assert the TX line.
  */
-void BasicSensor::commWaitForHubIdle(){
+void BaseSensor::commWaitForHubIdle(){
     // Disable uart: manual control TX and RX pins
     SerialTTL.end();
 
@@ -95,7 +95,7 @@ void BasicSensor::commWaitForHubIdle(){
  *          - Wait ACK during 2s
  *          - Start UART connection at 115200 bauds
  */
-void BasicSensor::connectToHub() {
+void BaseSensor::connectToHub() {
     DEBUG_PRINTLN("INIT SENSOR");
 
     // Wait for HUB to idle it's TX pin (idle = High)
@@ -133,19 +133,43 @@ void BasicSensor::connectToHub() {
  *      This function is declared as virtual because connectToHub uses it
  *      and must use the derived method, sepcific of a sensor.
  */
-void BasicSensor::commSendInitSequence(){}
+void BaseSensor::commSendInitSequence(){}
 
 
 /**
  * @brief Handle the protocol queries & responses from/to the hub.
  *      Queries can be read/write according to the requested mode.
+ *      This function is specific to one sensor and MUST BE reimplemented.
+ * @warning In the situation where the processing of the responses to the
+ *      queries from the hub takes longer than 200ms, a disconnection
+ *      will be performed here.
+ */
+void BaseSensor::handleModes(){}
+
+
+/**
+ * @brief Handle the connection process to the hub.
+ * @see Protocol queries & responses are processed by `handleModes()`.
  * @warning Do not forget to check at each iteration if `millis() - m_lastAckTick > 200`.
  *      If true, the device must go in reset mode by setting the m_connected
  *      boolean to false.
  */
-//void BasicSensor::process(){
-//    // To implement
-//}
+void BaseSensor::process(){
+    if(!m_connected){
+        this->connectToHub();
+        return;
+    }
+
+    // Connection established
+    handleModes();
+
+    // Check disconnection from the Hub and go in reset/init mode if needed
+    if (millis() - m_lastAckTick > 200) {
+        INFO_PRINT(F("Disconnect; Too much time since last NACK - "));
+        INFO_PRINTLN(millis() - m_lastAckTick);
+        m_connected = false;
+    }
+}
 
 
 /**
@@ -158,7 +182,7 @@ void BasicSensor::commSendInitSequence(){}
  *      headers (There are restrictions due to the masks used).
  * @return
  */
-uint8_t BasicSensor::getHeader(
+uint8_t BaseSensor::getHeader(
         const lump_msg_type_t& msg_type,
         const uint8_t& mode,
         const uint8_t& msg_size){
@@ -176,7 +200,7 @@ uint8_t BasicSensor::getHeader(
  * @param mode Reference See the class enumeration of modes.
  * @param msg_size Reference to message size.
  */
-void BasicSensor::parseHeader(const uint8_t& header, uint8_t& mode, uint8_t& msg_size){
+void BaseSensor::parseHeader(const uint8_t& header, uint8_t& mode, uint8_t& msg_size){
     // Type is known to be LUMP_MSG_TYPE_DATA because of 0x46 header
     // msg_type = header & LUMP_MSG_TYPE_MASK;
     mode     = header & LUMP_MSG_CMD_MASK;
@@ -192,7 +216,7 @@ void BasicSensor::parseHeader(const uint8_t& header, uint8_t& mode, uint8_t& msg
  * @param header
  * @return Expected size
  */
-uint8_t BasicSensor::getMsgSize(const uint8_t& header){
+uint8_t BaseSensor::getMsgSize(const uint8_t& header){
     // Simplified version that implicitly asserts that msg_type is LUMP_MSG_TYPE_DATA
     return _(uint8_t) ((1 << (((header) >> 3) & 0x7)) + 2);
 }
@@ -203,7 +227,7 @@ uint8_t BasicSensor::getMsgSize(const uint8_t& header){
  *      Also add the checksum of the message.
  * @param msg_size Size of the message WITHOUT header & checksum.
  */
-void BasicSensor::sendUARTBuffer(uint8_t msg_size){
+void BaseSensor::sendUARTBuffer(uint8_t msg_size){
     // Add checksum to the last index
     m_txBuf[msg_size + 1] = calcChecksum(this->m_txBuf, msg_size + 1);
     // Send data

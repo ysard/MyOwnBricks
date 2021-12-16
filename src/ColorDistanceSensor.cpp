@@ -73,7 +73,7 @@ ColorDistanceSensor::ColorDistanceSensor(uint8_t *pSensorColor, uint8_t *pSensor
 
 
 /**
- * @brief LegoPupColorDistance::~LegoPupColorDistance
+ * @brief Destructor
  */
 ColorDistanceSensor::~ColorDistanceSensor() {
     delete m_defaultIntVal;
@@ -84,7 +84,7 @@ ColorDistanceSensor::~ColorDistanceSensor() {
  * @brief Setter for m_sensorColor
  * @param pData Pointer to a discretized detected color.
  *      Available values:
- *      COLOR_NONE, COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE.
+ *      COLOR_NONE, COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_WHITE.
  */
 void ColorDistanceSensor::setSensorColor(uint8_t *pData){
     m_sensorColor = pData;
@@ -142,7 +142,7 @@ void ColorDistanceSensor::setIRCallback(void(pfunc)(const uint16_t)){
  * @brief Setter for m_LEDColor
  * @param pData: Pointer to the current LED color.
  *      Available values:
- *      COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE.
+ *      COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_WHITE.
  */
 void ColorDistanceSensor::setSensorLEDColor(uint8_t *pData){
     // Free constructor's value
@@ -306,119 +306,105 @@ void ColorDistanceSensor::commSendInitSequence(){
  *      queries from the hub takes longer than 200ms, a disconnection
  *      will be performed here.
  */
-void ColorDistanceSensor::process(){
-    if(!this->m_connected){
-        connectToHub();
-    } else {
-        // Connection established
-        if (SerialTTL.available() > 0) {
-            unsigned char header;
-            unsigned char mode;
-            header = SerialTTL.read();
+void ColorDistanceSensor::handleModes(){
+    if (SerialTTL.available() == 0)
+        return;
 
-            DEBUG_PRINT(F("<\tHeader "));
-            DEBUG_PRINTLN(header, HEX);
+    unsigned char header;
+    unsigned char mode;
+    header = SerialTTL.read();
 
-            if (header == 0x02) { // NACK
-                m_lastAckTick = millis();
-                // Here we can send mode 0 or mode 8 according to the value of ExtMode
-                // And send extendedModeInfoResponse before any data response.
-                // Usually we go into mode 8, which automatically sends extendedModeInfoResponse
-                // Note: In practice the default mode is always the lowest (0).
-                this->m_currentExtMode = EXT_MODE_8;
-                this->sensorSpec1Mode();
-            } else if (header == 0x43) {
-                // "Get value" commands (3 bytes message: header, mode, checksum)
-                size_t ret = SerialTTL.readBytes(m_rxBuf, 2);
-                if (ret < 2) {
-                    // check if all expected bytes are received without timeout
-                    DEBUG_PRINT("incomplete 0x43 message");
-                    return;
-                }
-                mode = m_rxBuf[0];
-                DEBUG_PRINT(F("<\tAsked mode "));
-                DEBUG_PRINTLN(mode);
+    DEBUG_PRINT(F("<\tHeader "));
+    DEBUG_PRINTLN(header, HEX);
 
-                this->m_currentExtMode = (mode < 8) ? EXT_MODE_0 : EXT_MODE_8;
-
-                switch (mode) {
-                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COLOR:
-                        this->LEDColorMode();
-                        break;
-                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__PROX:
-                        this->sensorDistanceMode();
-                        break;
-                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COUNT:
-                        this->sensorDetectionCount();
-                        break;
-                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__REFLT:
-                        this->sensorReflectedLightMode();
-                        break;
-                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__AMBI:
-                        this->sensorAmbientLight();
-                        break;
-                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__RGB_I:
-                        this->sensorRGBIMode();
-                        break;
-                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__SPEC1:
-                        this->sensorSpec1Mode();
-                        break;
-                    #ifdef DEBUG
-                    // This implementation doesn't follow Lego's one
-                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__DEBUG:
-                        this->sensorDebugMode();
-                        break;
-                    #endif
-                    default:
-                        INFO_PRINT("unknown R mode: ");
-                        INFO_PRINTLN(mode, HEX);
-                        break;
-                }
-            } else if (header == 0x46) {
-                // "Set value" commands
-                // The message has 2 parts (each with header, value and checksum):
-                // - The EXT_MODE status as value
-                // - The LUMP_MSG_TYPE_DATA itself with its data as value
-
-                // Get data1, checksum1, header2 (header of the next message)
-                size_t ret = SerialTTL.readBytes(m_rxBuf, 3);
-                if (ret < 3)
-                    // check if all expected bytes are received without timeout
-                    return;
-
-                this->m_currentExtMode = m_rxBuf[0];
-
-                // Get mode and size of the message from the header
-                uint8_t msg_size;
-                parseHeader(m_rxBuf[2], mode, msg_size);
-                // TODO: avoid buffer overflow: check msg size <= size rx buffer
-
-                // Read the remaining bytes after the header (cheksum included)
-                // Data will be in the indexes [0;msg_size-2]
-                ret = SerialTTL.readBytes(m_rxBuf, msg_size - 1);
-                if (_(signed)(ret) != msg_size - 1)
-                    return;
-
-                switch(mode) {
-                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COL_O:
-                        this->setLEDColorMode();
-                        break;
-                    case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__IR_TX:
-                        this->setIRTXMode();
-                        break;
-                    default:
-                        INFO_PRINT("unknown W mode: ");
-                        INFO_PRINTLN(mode, HEX);
-                        break;
-                }
-            }
+    if (header == 0x02) { // NACK
+        m_lastAckTick = millis();
+        // Here we can send mode 0 or mode 8 according to the value of ExtMode
+        // And send extendedModeInfoResponse before any data response.
+        // Usually we go into mode 8, which automatically sends extendedModeInfoResponse
+        // Note: In practice the default mode is always the lowest (0).
+        this->m_currentExtMode = EXT_MODE_8;
+        this->sensorSpec1Mode();
+    } else if (header == 0x43) {
+        // "Get value" commands (3 bytes message: header, mode, checksum)
+        size_t ret = SerialTTL.readBytes(m_rxBuf, 2);
+        if (ret < 2) {
+            // check if all expected bytes are received without timeout
+            DEBUG_PRINT(F("incomplete 0x43 message"));
+            return;
         }
+        mode = m_rxBuf[0];
+        DEBUG_PRINT(F("<\tAsked mode "));
+        DEBUG_PRINTLN(mode);
 
-        // Check disconnection from the Hub and go in reset/init mode if needed
-        if (millis() - m_lastAckTick > 200) {
-            INFO_PRINT("Disconnect; Too much time since last NACK - ");
-            INFO_PRINTLN(millis() - m_lastAckTick);
-            m_connected = false;
+        this->m_currentExtMode = (mode < 8) ? EXT_MODE_0 : EXT_MODE_8;
+
+        switch (mode) {
+            case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COLOR:
+                this->LEDColorMode();
+                break;
+            case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__PROX:
+                this->sensorDistanceMode();
+                break;
+            case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__REFLT:
+                this->sensorReflectedLightMode();
+                break;
+            case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__AMBI:
+                this->sensorAmbientLight();
+                break;
+            case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__RGB_I:
+                this->sensorRGBIMode();
+                break;
+            case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__SPEC1:
+                this->sensorSpec1Mode();
+                break;
+            #ifdef DEBUG
+            // This implementation doesn't follow Lego's one
+            case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__DEBUG:
+                this->sensorDebugMode();
+                break;
+            #endif
+            default:
+                INFO_PRINT(F("unknown R mode: "));
+                INFO_PRINTLN(mode, HEX);
+                break;
+        }
+    } else if (header == 0x46) {
+        // "Set value" commands
+        // The message has 2 parts (each with header, value and checksum):
+        // - The EXT_MODE status as value
+        // - The LUMP_MSG_TYPE_DATA itself with its data as value
+
+        // Get data1, checksum1, header2 (header of the next message)
+        size_t ret = SerialTTL.readBytes(m_rxBuf, 3);
+        if (ret < 3)
+            // check if all expected bytes are received without timeout
+            return;
+
+        this->m_currentExtMode = m_rxBuf[0];
+
+        // Get mode and size of the message from the header
+        uint8_t msg_size;
+        parseHeader(m_rxBuf[2], mode, msg_size);
+        // TODO: avoid buffer overflow: check msg size <= size rx buffer
+
+        // Read the remaining bytes after the header (cheksum included)
+        // Data will be in the indexes [0;msg_size-2]
+        ret = SerialTTL.readBytes(m_rxBuf, msg_size - 1);
+        if (_(signed)(ret) != msg_size - 1)
+            return;
+
+        switch(mode) {
+            case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COL_O:
+                this->setLEDColorMode();
+                break;
+            case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__IR_TX:
+                this->setIRTXMode();
+                break;
+            default:
+                INFO_PRINT(F("unknown W mode: "));
+                INFO_PRINTLN(mode, HEX);
+                break;
         }
     }
 }

@@ -5,30 +5,31 @@
  * Based on the original work of Ahmed Jouirou - <ahmed.jouirou@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
+ * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef LegoPupColorDistance_h
-#define LegoPupColorDistance_h
+#ifndef COLOR_DISTANCESENSOR_H
+#define COLOR_DISTANCESENSOR_H
 
 #include "global.h"
 #include "lego_uart.h"
-#include "basicsensor.h"
+#include "BaseSensor.h"
 
 // Colors (detected & LED (except NONE for this last one)) expected values
 #define COLOR_NONE     0xFF
 #define COLOR_BLACK    0
 #define COLOR_BLUE     3
 #define COLOR_GREEN    5
+#define COLOR_YELLOW   7
 #define COLOR_RED      9
 #define COLOR_WHITE    10
 
@@ -41,7 +42,7 @@
  * Color & Distance sensor.
  *
  * @param m_LEDColor Current color of the LED; Available values:
- *      COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE.
+ *      COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_WHITE.
  * @param m_sensorDistance Distance measured to the the nearest object.
  *      Discretized values 0...10.
  * @param m_detectionCount Detection count; should be incremented each time
@@ -55,7 +56,7 @@
  *      Values should not exceed experimentally observed value of ~440.
  *      Continuous values 0..1023.
  * @param m_sensorColor Detected color; Available values:
- *      COLOR_NONE, COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_RED, COLOR_WHITE.
+ *      COLOR_NONE, COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_WHITE.
  * @param m_IR_code IR code for Power Functions IR devices
  *      (supposed to be transmitted via the Power Functions RC Protocol).
  * @param m_pIRfunc Callback set by user receiving m_IR_code.
@@ -64,8 +65,9 @@
  * @param m_currentExtMode Extended mode switch for modes >= 8. Available values:
  *      EXT_MODE_0, EXT_MODE_8.
  */
-class ColorDistanceSensor : public BasicSensor {
+class ColorDistanceSensor : public BaseSensor {
     // LEGO POWERED UP Color and Distance Sensor modes
+    // https://github.com/pybricks/pybricks-micropython/blob/master/pybricks/util_pb/pb_device.h
     enum {
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COLOR = 0, // read 1x int8_t
         PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__PROX  = 1, // read 1x int8_t
@@ -84,7 +86,6 @@ public:
     ColorDistanceSensor();
     ColorDistanceSensor(uint8_t *pSensorColor, uint8_t *pSensorDistance);
     virtual ~ColorDistanceSensor();
-    void process();
 
     uint16_t getSensorIRCode();
     void setSensorColor(uint8_t *pData);
@@ -98,6 +99,8 @@ public:
     void setSensorAmbientLight(uint8_t *pData);
 
 private:
+    // Process queries from/to hub
+    virtual void handleModes();
     // Protocol handy functions
     virtual void commSendInitSequence();
     void extendedModeInfoResponse();

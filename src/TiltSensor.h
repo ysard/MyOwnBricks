@@ -1,5 +1,5 @@
 /*
- * A library for the emulation of PoweredUp sensors on microcontrollers
+ * MyOwnBricks is a library for the emulation of PoweredUp sensors on microcontrollers
  * Copyright (C) 2021 Ysard - <ysard@users.noreply.github.com>
  *
  * Based on the original work of Ahmed Jouirou - <ahmed.jouirou@gmail.com>
@@ -17,14 +17,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef LegoPupTilt_h
-#define LegoPupTilt_h
+#ifndef TILTSENSOR_H
+#define TILTSENSOR_H
 
 #include "global.h"
-#include "basicsensor.h"
+#include "BaseSensor.h"
 
-class TiltSensor : BasicSensor {
+
+/**
+ * @brief Handle the LegoUART protocol and define modes of the
+ * Tilt sensor.
+ *
+ * @param m_sensorTiltX Angle value in degrees for rotation along x-axis
+ *      also called roll/roulis.
+ *      Continuous values ??...??
+ * @param m_sensorTiltY Angle value in degrees for rotation along y-axis
+ *      also called pitch/tangage.
+ *      Continuous values ??...??
+ */
+class TiltSensor : BaseSensor {
     // LEGO POWERED UP WEDO 2.0 Tilt sensor modes
+    // https://github.com/pybricks/pybricks-micropython/blob/master/pybricks/util_pb/pb_device.h
     enum {
         PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__ANGLE  = 0,  // read 2x int8_t
         //PBIO_IODEV_MODE_PUP_WEDO2_TILT_SENSOR__DIR    = 1,  // read 1x int8_t
@@ -35,7 +48,6 @@ class TiltSensor : BasicSensor {
 public:
     TiltSensor();
     TiltSensor(int8_t *pSensorTiltX, int8_t *pSensorTiltY);
-    void process();
 
     void setSensorTiltX(int8_t *pData);
     void setSensorTiltY(int8_t *pData);
@@ -43,6 +55,8 @@ public:
     void sensorAngleMode();
 
 private:
+    // Process queries from/to hub
+    virtual void handleModes();
     virtual void commSendInitSequence();
 
     int8_t *m_sensorTiltX;
