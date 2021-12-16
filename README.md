@@ -73,13 +73,13 @@ sensors.
 You can find the different examples in the "examples" folder of the project, or from the
 Arduino IDE via the menu "File/Examples/MyOwnBricks" menu.
 
-- color_distance_sensor**: Complete implementation of the official Color & Distance
+- **color_distance_sensor**: Complete implementation of the official Color & Distance
 sensor using a TCS34725 color sensor and a VL6180X distance sensor.
-- color_sensor**: Implementation of the color sensor only.
-- distance_sensor**: Distance sensor implementation only.
-- IR_emitter**: Implementation of an infrared transmitter. The use of a callback
+- **color_sensor**: Implementation of the color sensor only.
+- **distance_sensor**: Distance sensor implementation only.
+- **IR_emitter**: Implementation of an infrared transmitter. The use of a callback
 receiving the code sent from the the Hub is provided.
-- tilt_sensor**: Skeleton for the implementation of the generic orientation sensor.
+- **tilt_sensor**: Skeleton for the implementation of the generic orientation sensor.
 
 
 ## Connections
@@ -91,8 +91,9 @@ supporting PowerFunctions devices.
 
 Reminder of the pinout of Wedo 2.0/PoweredUp connectors ([source](https://www.philohome.com/wedo2reverse/connect.htm)):
 
-![schematic](PoweredUp_pinout.gif)
+![connector pinout](PoweredUp_pinout.gif)
 
+<table>
 <tbody><tr>
     <td>Pin</td>
     <td>Label</td>
@@ -129,7 +130,7 @@ Reminder of the pinout of Wedo 2.0/PoweredUp connectors ([source](https://www.ph
     <td>Analog identification line 2 / Serial data (device -&gt; hub)</td>
 </tr>
 </tbody>
-
+</table>
 
 ## Code blocks
 
@@ -137,8 +138,8 @@ Example of use of the Color & Distance Sensor in the PoweredUp application.
 The distance and the quantity of reflected light are displayed on 2 separate meters.
 The detected color is applied to the RGB LED of the Technic hub.
 
-![schematic](dist_color_led_small.png)
-![schematic](meters_small.png)
+![code blocks](dist_color_led_small.png)
+![PoweredUp meters](meters_small.png)
 
 Note: Reference documentation of the programmable blocks (not official because LEGO
 does not know how to document its informatics products...):
@@ -206,13 +207,14 @@ does not know how to document its informatics products...):
 * 28AWG flexible silicone cable
 * WEDO 2.0 connectors
 
-![schematic](wedo_connector.jpg)
+![connector pinout](wedo_connector.jpg)
 
 Note: Buy them separately, pre-wired connectors cost an arm and a leg.
 
 ## Distance sensor
 
 * VL6180X
+
     Time-of-flight telemetry sensor; laser technology
     Detection up to 20cm by default, can go up to 50cm at the expense of resolution.
     Modifiable i2c address
@@ -223,6 +225,7 @@ Note: Buy them separately, pre-wired connectors cost an arm and a leg.
 ## Color sensor
 
 * TCS34725
+
     RGB sensor + clear channel
     Calculation of light intensity in lux
     IR filter
@@ -234,6 +237,7 @@ Note: Buy them separately, pre-wired connectors cost an arm and a leg.
 ## Infrared emitter
 
 * IR LED
+
     940nm
     3-5V, 30mA
 
@@ -382,8 +386,9 @@ pour le support des périphériques PowerFunctions.
 
 Rappel des branchements des connecteurs Wedo 2.0 / PoweredUp ([source](https://www.philohome.com/wedo2reverse/connect.htm)):
 
-![schematic](PoweredUp_pinout.gif)
+![connector pinou](PoweredUp_pinout.gif)
 
+<table>
 <tbody><tr>
     <td>Pin</td>
     <td>Label</td>
@@ -420,7 +425,7 @@ Rappel des branchements des connecteurs Wedo 2.0 / PoweredUp ([source](https://w
     <td>Analog identification line 2 / Serial data (device -&gt; hub)</td>
 </tr>
 </tbody>
-
+</table>
 
 ## Code blocks
 
@@ -428,8 +433,8 @@ Exemple d'usage du capteur de couleur & distance dans l'application PoweredUp.
 La distance et la quantité de lumière réfléchie sont affichées sur 2 compteurs distincts.
 La couleur détectée est répercutée sur la LED RGB du hub Technic.
 
-![schematic](dist_color_led_small.png)
-![schematic](meters_small.png)
+![code blocks](dist_color_led_small.png)
+![PoweredUp meters](meters_small.png)
 
 Note: Documentation de référence des blocs programmables (non officielle car LEGO ne sait
 pas documenter ses produits informatiques...):
@@ -491,13 +496,14 @@ de la méthode `process()` de chaque objet proposé par `MyOwnBricks`.
 * Câble en silicone souple 28AWG
 * Connecteurs WEDO 2.0
 
-![schematic](wedo_connector.jpg)
+![connector pinout](wedo_connector.jpg)
 
 Note: Achetez-les séparément, les connecteurs pré-câblés coutent les yeux de la tête.
 
 ## Capteur de distance
 
 * VL6180X
+
     Capteur de télémétrie temps de vol; technologie laser
     Détection jusqu'à 20cm par défaut, peut aller jusqu'à 50cm au détriment de la résolution.
     Adresse i2c modifiable
@@ -509,6 +515,7 @@ Note: Achetez-les séparément, les connecteurs pré-câblés coutent les yeux d
 ## Capteur de couleur
 
 * TCS34725
+
     Capteur RGB + canal clear
     Calcul de l'intensité lumineuse en lux
     Filtre IR
@@ -520,6 +527,7 @@ Note: Achetez-les séparément, les connecteurs pré-câblés coutent les yeux d
 ## Emetteur infrarouge
 
 * LED IR
+
     940nm
     3-5V, 30mA
 
