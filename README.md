@@ -1,5 +1,5 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ysard/MyOwnBricks)](https://github.com/ysard/MyOwnBricks/releases/latest/)
-[![arduino-library-badge](https://www.ardu-badge.com/badge/MyOwnBricks.svg)](https://www.ardu-badge.com/MyOwnBricks)-->
+[![arduino-library-badge](https://www.ardu-badge.com/badge/MyOwnBricks.svg)](https://www.ardu-badge.com/MyOwnBricks)
 [![python docstring coverage](./images/interrogate_badge.svg)](https://interrogate.readthedocs.io/en/latest/)
 
 *English version (See at the end for the French version)*
@@ -66,7 +66,7 @@ exactly 3.3V. **Check voltages before connecting something to the Hub not powere
 
 Demo of a color sensor whose detected color is displayed on the Technic hub.
 
-![led_color_sensor_demo](led_color_sensor_demo.gif)
+![led_color_sensor_demo](./images/led_color_sensor_demo.gif)
 
 Examples of sketches are provided with a documentation to quickly start with the tested
 sensors.
@@ -87,11 +87,11 @@ receiving the code sent from the the Hub is provided.
 Connections for the color and distance sensors as well as the infrared transmitter for
 supporting PowerFunctions devices.
 
-![schematic](schematic.svg)
+![schematic](./images/schematic.svg)
 
 Reminder of the pinout of Wedo 2.0/PoweredUp connectors ([source](https://www.philohome.com/wedo2reverse/connect.htm)):
 
-![connector pinout](PoweredUp_pinout.gif)
+![connector pinout](./images/PoweredUp_pinout.gif)
 
 <table>
 <tbody><tr>
@@ -138,8 +138,8 @@ Example of use of the Color & Distance Sensor in the PoweredUp application.
 The distance and the quantity of reflected light are displayed on 2 separate meters.
 The detected color is applied to the RGB LED of the Technic hub.
 
-![code blocks](dist_color_led_small.png)
-![PoweredUp meters](meters_small.png)
+![code blocks](./images/dist_color_led_small.png)
+![PoweredUp meters](./images/meters_small.png)
 
 Note: Reference documentation of the programmable blocks (not official because LEGO
 does not know how to document its informatics products...):
@@ -207,7 +207,7 @@ does not know how to document its informatics products...):
 * 28AWG flexible silicone cable
 * WEDO 2.0 connectors
 
-![connector pinout](wedo_connector.jpg)
+![connector pinout](./images/wedo_connector.jpg)
 
 Note: Buy them separately, pre-wired connectors cost an arm and a leg.
 
@@ -361,7 +361,7 @@ qui ne soit pas alimenté par lui.**
 Démo de fonctionnement d'un capteur de couleur dont la couleur détectée est affichée sur
 le hub Technic.
 
-![led_color_sensor_demo](led_color_sensor_demo.gif)
+![led_color_sensor_demo](./images/led_color_sensor_demo.gif)
 
 
 Des exemples de sketchs sont fournis avec une documentation permettent de démarrer
@@ -382,11 +382,11 @@ recevant le code envoyé depuis le Hub est démontré.
 Branchements des capteurs de couleur et de distance ainsi que de l'émetteur infrarouge
 pour le support des périphériques PowerFunctions.
 
-![schematic](schematic.svg)
+![schematic](./images/schematic.svg)
 
 Rappel des branchements des connecteurs Wedo 2.0 / PoweredUp ([source](https://www.philohome.com/wedo2reverse/connect.htm)):
 
-![connector pinou](PoweredUp_pinout.gif)
+![connector pinou](./images/PoweredUp_pinout.gif)
 
 <table>
 <tbody><tr>
@@ -433,8 +433,8 @@ Exemple d'usage du capteur de couleur & distance dans l'application PoweredUp.
 La distance et la quantité de lumière réfléchie sont affichées sur 2 compteurs distincts.
 La couleur détectée est répercutée sur la LED RGB du hub Technic.
 
-![code blocks](dist_color_led_small.png)
-![PoweredUp meters](meters_small.png)
+![code blocks](./images/dist_color_led_small.png)
+![PoweredUp meters](./images/meters_small.png)
 
 Note: Documentation de référence des blocs programmables (non officielle car LEGO ne sait
 pas documenter ses produits informatiques...):
@@ -496,7 +496,7 @@ de la méthode `process()` de chaque objet proposé par `MyOwnBricks`.
 * Câble en silicone souple 28AWG
 * Connecteurs WEDO 2.0
 
-![connector pinout](wedo_connector.jpg)
+![connector pinout](./images/wedo_connector.jpg)
 
 Note: Achetez-les séparément, les connecteurs pré-câblés coutent les yeux de la tête.
 
