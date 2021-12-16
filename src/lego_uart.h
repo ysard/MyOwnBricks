@@ -15,8 +15,8 @@
 
 // Note: This file is a partial copy of
 // https://github.com/pybricks/pybricks-micropython/blob/master/lib/lego/lego_uart.h
-#ifndef _LEGO_UART_H_
-#define _LEGO_UART_H_
+#ifndef LEGO_UART_H
+#define LEGO_UART_H
 
 // Header byte
 
@@ -144,4 +144,4 @@ typedef enum {
 
 } lump_cmd_t;
 
-#endif // _LEGO_UART_H_
+#endif // LEGO_UART_H
