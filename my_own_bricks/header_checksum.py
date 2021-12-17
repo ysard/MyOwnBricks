@@ -219,12 +219,15 @@ def get_all_possible_device_headers():
     Since the header is in 1 byte, we test all 256 combinations.
     Used to show size restrictions of messages. This could explain 0 padding
     of some messages shorter than their real transmitted size.
+
+    Note that some combinations of settings for a header will never happen
+    due to mask constraints on the bits.
     """
     for i in range(256):
         ret = parse_device_header(i)
         if ret == ("LUMP_MSG_TYPE_DATA", 6, 8):  # < this will never happen
             print(ret, i)
-            break
+            raise ValueError
 
 
 def get_cheksum(data):

@@ -89,8 +89,9 @@ def _get_serial_handler(serial_path, baudrate):
 def get_serial_handler(serial_path, baudrate):
     """Try to open serial port and return serial handler
 
+    :raise: <IOError> if serial port is not available.
     :return: Serial port handler. Test it 5 times until return None.
-    :rtype: serial.Serial
+    :rtype: serial.Serial or None
     """
     error = 0
     while error < 5:
@@ -99,6 +100,7 @@ def get_serial_handler(serial_path, baudrate):
             return serial_handler
         error += 1
         time.sleep(1)
+    raise IOError("Serial port <%s> not available!" % serial_path)
 
 
 def connect_to_hub():
@@ -122,7 +124,7 @@ def connect_to_hub():
 
         if not ack_exchanged and response and response[-1] == 0x04:
             print("ACK received, send a ACK to end the init phase")
-            assert response in colour_expected_init_seq, colour_expected_init_seq
+            assert response in colour_expected_init_seq, "Not expected init seq, please just retry"
             serial_handler.write(b"\x04")
             ack_exchanged = True
 
