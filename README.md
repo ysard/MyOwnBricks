@@ -238,6 +238,11 @@ Note: Buy them separately, pre-wired connectors cost an arm and a leg.
     VIN: 3-5V
     VCC: 3.3V
 
+**Note: For this sensor you should use my own version of the lib of Adafruit
+(it still requires that the adafruit one to be installed).**
+More details [here](https://github.com/ysard/TCS34725).
+
+
 ## Infrared emitter
 
 * IR LED
@@ -531,6 +536,10 @@ Note: Achetez-les séparément, les connecteurs pré-câblés coutent les yeux d
     Pins: LED, interrupt
     VIN: 3-5V
     VCC: 3.3V
+
+**Note: Pour ce capteur vous devriez utiliser ma propre version de la librairie
+Adafruit (la librairie d'origine doit toujours être installée)**
+Plus de détails [ici](https://github.com/ysard/TCS34725).
 
 ## Emetteur infrarouge
 
