@@ -274,8 +274,10 @@ specific to the new sensor.
 
 ## Cloning & installation
 
-    cd ~/Arduino/libraries/
-    git clone https://...
+    git clone https://github.com:ysard/MyOwnBricks.git
+
+or download the zip file of the project and install it via the Arduino IDE:
+`"Sketch/Include a library/Add a ZIP library"`.
 
 ## How to participate ?
 
@@ -570,8 +572,10 @@ au nouveau capteur.
 
 ## Clonage & installation
 
-    cd ~/Arduino/libraries/
-    git clone https://...
+    git clone https://github.com:ysard/MyOwnBricks.git
+
+ou téléchargez le fichier zip du projet et installez-le via l'IDE Arduino:
+`"Croquis/Inclure une bibliothèque/Ajouter la bibliothèque .ZIP"`.
 
 ## Comment participer ?
 
