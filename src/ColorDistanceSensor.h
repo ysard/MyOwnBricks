@@ -90,7 +90,9 @@ public:
     uint16_t getSensorIRCode();
     void setSensorColor(uint8_t *pData);
     void setSensorDistance(uint8_t *pData);
+#ifdef COLOR_DISTANCE_COUNTER
     void setSensorDetectionCount(uint32_t *pData);
+#endif
     void setSensorRGB(uint16_t *pData);
     void setIRCallback(void(pfunc)(const uint16_t));
     void setSensorLEDColor(uint8_t *pData);
@@ -110,23 +112,27 @@ private:
     void setIRTXMode();
     void LEDColorMode();
     void sensorDistanceMode();
+#ifdef COLOR_DISTANCE_COUNTER
     void sensorDetectionCount();
+#endif
     void sensorReflectedLightMode();
     void sensorAmbientLight();
     void sensorRGBIMode();
     void sensorSpec1Mode();
     void sensorDebugMode();
 
-    uint8_t *m_LEDColor;
-    uint8_t *m_sensorDistance;
+    uint8_t  *m_LEDColor;
+    uint8_t  *m_sensorDistance;
+#ifdef COLOR_DISTANCE_COUNTER
     uint32_t *m_detectionCount;
-    uint8_t *m_reflectedLight;
-    uint8_t *m_ambientLight;
+#endif
+    uint8_t  *m_reflectedLight;
+    uint8_t  *m_ambientLight;
     uint16_t *m_sensorRGB;
     uint16_t m_IR_code;
-    uint8_t *m_sensorColor;
-    void (*m_pIRfunc)(const uint16_t);      // Callback for IR change
-    void (*m_pLEDColorfunc)(const uint8_t); // Callback for Led color change
+    uint8_t  *m_sensorColor;
+    void     (*m_pIRfunc)(const uint16_t); // Callback for IR change
+    void     (*m_pLEDColorfunc)(const uint8_t);// Callback for Led color change
 
     uint8_t m_currentExtMode;
     uint8_t *m_defaultIntVal;

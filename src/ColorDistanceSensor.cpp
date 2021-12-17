@@ -30,7 +30,9 @@ ColorDistanceSensor::ColorDistanceSensor(){
     m_sensorColor    = m_defaultIntVal;
     m_sensorDistance = m_defaultIntVal;
     m_LEDColor       = new uint8_t(0);
+#ifdef COLOR_DISTANCE_COUNTER
     m_detectionCount = new uint32_t(0);
+#endif
     m_reflectedLight = m_defaultIntVal;
     m_ambientLight   = m_defaultIntVal;
     m_sensorRGB      = defaultRGB;
@@ -59,7 +61,9 @@ ColorDistanceSensor::ColorDistanceSensor(uint8_t *pSensorColor, uint8_t *pSensor
     m_sensorDistance = pSensorDistance;
     // Sensor default values
     m_LEDColor       = new uint8_t(0);
+#ifdef COLOR_DISTANCE_COUNTER
     m_detectionCount = new uint32_t(0);
+#endif
     m_reflectedLight = m_defaultIntVal;
     m_ambientLight   = m_defaultIntVal;
     m_sensorRGB      = defaultRGB;
@@ -104,11 +108,13 @@ void ColorDistanceSensor::setSensorDistance(uint8_t *pData){
  * @brief Setter for m_detectionCount
  * @param pData Pointer to a counter of detections.
  */
+#ifdef COLOR_DISTANCE_COUNTER
 void ColorDistanceSensor::setSensorDetectionCount(uint32_t *pData){
     // Free constructor's value
     delete this->m_detectionCount;
     this->m_detectionCount = pData;
 }
+#endif
 
 /**
  * @brief Setter for m_sensorRGB; Raw values of Red Green Blue channels.
@@ -346,6 +352,11 @@ void ColorDistanceSensor::handleModes(){
             case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__PROX:
                 this->sensorDistanceMode();
                 break;
+            #ifdef COLOR_DISTANCE_COUNTER
+            case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__COUNT:
+                this->sensorDetectionCount();
+                break;
+            #endif
             case ColorDistanceSensor::PBIO_IODEV_MODE_PUP_COLOR_DISTANCE_SENSOR__REFLT:
                 this->sensorReflectedLightMode();
                 break;
@@ -497,6 +508,7 @@ void ColorDistanceSensor::sensorDistanceMode(){
  *      (2inches in useless non metric system).
  * @note Packet size: 10 (not a power of 2 size... to be tested).
  */
+#ifdef COLOR_DISTANCE_COUNTER
 void ColorDistanceSensor::sensorDetectionCount(){
     // Mode 2
     m_txBuf[0] = 0xda;                      // header
@@ -506,6 +518,7 @@ void ColorDistanceSensor::sensorDetectionCount(){
     }
     sendUARTBuffer(8);
 }
+#endif
 
 /**
  * @brief Mode 3 response (read): Send reflected light measure.

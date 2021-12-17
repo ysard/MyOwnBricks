@@ -38,6 +38,9 @@
 //#define DEBUG
 //#define INFO
 
+// Add facultative mode 2 "occurrence counter" to Color & Distance Sensor
+//#define COLOR_DISTANCE_COUNTER
+
 /**
  * Debug directives
  */
