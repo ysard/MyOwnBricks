@@ -17,6 +17,7 @@
 import pytest
 from my_own_bricks.header_checksum import get_hub_header, parse_device_header, get_device_header
 from my_own_bricks.header_checksum import lump_msg_type_t, lump_cmd_t
+from my_own_bricks.header_checksum import get_all_possible_device_headers
 
 
 def test_parse_device_header():
@@ -102,3 +103,8 @@ def test_get_hub_header():
 
     with pytest.raises(ValueError, match=r"Message size must be.*"):
         get_hub_header(lump_msg_type_t["LUMP_MSG_TYPE_DATA"], 5, 0)
+
+
+def test_get_all_possible_device_headers():
+    """No exception should be raised during the enumeration of all possible headers"""
+    get_all_possible_device_headers()

@@ -51,6 +51,11 @@ def unexpected_init_sequence():
 
 
 def test_modes():
+    """Test most common modes of Color & Distance sensor
+
+    This test must be conducted with the test sketch executed on the device.
+    Mode 2 (count occurrences) is not tested.
+    """
     found_messages = list()
     expected_messages = [
         (0x46, b'\x08'),  # NACK response
