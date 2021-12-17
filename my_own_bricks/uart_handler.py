@@ -75,7 +75,7 @@ def _get_serial_handler(serial_path, baudrate):
         # time.sleep(0.5)
         assert serial_handler.is_open
 
-    except serial.serialutil.SerialException as e:
+    except serial.serialutil.SerialException as e:  # pragma: no cover
         # LOGGER.exception(e)
         print(e)
         return
@@ -161,9 +161,6 @@ def autoconnect():
             if "retry" in e.__str__():
                 i += 1
                 continue
-            else:
-                # Another error ?
-                raise
         break
     if i == 3:
         # Max attempts
