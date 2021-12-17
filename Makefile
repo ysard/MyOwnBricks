@@ -1,5 +1,5 @@
 test:
-	pytest tests
+	pytest tests -vv
 
 coverage:
 	pytest --cov=my_own_bricks --cov-report term-missing -vv
