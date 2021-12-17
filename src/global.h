@@ -18,10 +18,11 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#if !defined(ARDUINO_AVR_PROMICRO) && !defined(ARDUINO_AVR_MICRO)
+#if !defined(__AVR__)
 #include <cinttypes>
 #endif
 
+// Enable Serial CDC (USB) for Atmega32u4 (Pro-Micro only for now ?)
 #if defined(ARDUINO_AVR_PROMICRO)
 #define SerialTTL    Serial1
 #define DbgSerial    Serial
@@ -34,7 +35,7 @@
   */
 #define _(type)    static_cast<type>
 
-// Activate this for debug output on Serial CDC interface
+// Enable this for debug output on Serial CDC interface
 //#define DEBUG
 //#define INFO
 
