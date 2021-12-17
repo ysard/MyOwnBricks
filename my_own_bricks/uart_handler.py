@@ -140,3 +140,31 @@ def connect_to_hub():
     # serial_handler = get_serial_handler(SERIAL_PORT, BAUDRATE)
     serial_handler.baudrate = BAUDRATE
     return serial_handler
+
+
+def autoconnect():
+    """Automatic connection via 3 attempts to find device on serial line
+    Sometimes init sequence can be missed, this function accept 5 fails.
+
+    .. seealso:: `connect_to_hub`
+
+    :return: Serial handler
+    :rtype: serial.Serial
+    """
+    i = 0
+    serial_handler = None
+    while i < 3:
+        try:
+            serial_handler = connect_to_hub()
+        except AssertionError as e:
+            if "retry" in e.__str__():
+                i += 1
+                continue
+            else:
+                # Another error ?
+                raise
+        break
+    if i == 3:
+        # Max attempts
+        raise IOError("Device not found on Serial line")
+    return serial_handler
