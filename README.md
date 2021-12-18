@@ -1,6 +1,7 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ysard/MyOwnBricks)](https://github.com/ysard/MyOwnBricks/releases/latest/)
 [![arduino-library-badge](https://www.ardu-badge.com/badge/MyOwnBricks.svg)](https://www.ardu-badge.com/MyOwnBricks)
 [![python docstring coverage](./images/interrogate_badge.svg)](https://interrogate.readthedocs.io/en/latest/)
+[![python test coverage](./images/coverage.svg)](https://docs.pytest.org/en/latest/)
 
 *English version (See at the end for the French version)*
 
