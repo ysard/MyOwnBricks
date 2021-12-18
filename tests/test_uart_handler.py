@@ -77,7 +77,8 @@ def test_modes():
     modes = iter((0, 1, 3, 4, 5, 6, 7, 8))
 
     # Begin communication
-    serial_handler = connect_to_hub()
+    serial_handler = autoconnect()
+    assert serial_handler is not None
     serial_handler.timeout = 0.1
 
     # Keep-alive packet: Send NACK to force the device response
@@ -110,7 +111,7 @@ def test_modes():
 
         # LUMP_CMD_EXT_MODE packet: expect a 2nd part
         # Do not send another query between those 2 packets
-        multipart_packet = (header == 0x46)
+        # multipart_packet = (header == 0x46)
 
         # Check checksum
         checksum = get_cheksum(bytearray(response[:-1])) ^ header
