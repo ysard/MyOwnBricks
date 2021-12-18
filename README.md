@@ -195,10 +195,7 @@ void loop() {
 }
 ```
 
-
-Note: Reference documentation of the programmable blocks (not official because LEGO
-does not know how to document its informatics products...):
-[racingbrick.com](https://racingbrick.com/powered-up-code-block-guide/)
+Note: The loglevel of the lib can be adjusted by editing the file [`global.h`](./src/global.h).
 
 
 # Hardware
@@ -500,6 +497,10 @@ void loop() {
     }
 }
 ```
+
+Note: Le niveau de debuggage de la librairie peut être réglé en éditant le fichier
+[`global.h`](./src/global.h).
+
 
 # Matériel
 
