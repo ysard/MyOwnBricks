@@ -20,7 +20,6 @@
 #ifndef TILTSENSOR_H
 #define TILTSENSOR_H
 
-#include "global.h"
 #include "BaseSensor.h"
 
 

@@ -20,9 +20,8 @@
 #ifndef COLOR_DISTANCESENSOR_H
 #define COLOR_DISTANCESENSOR_H
 
-#include "global.h"
-#include "lego_uart.h"
 #include "BaseSensor.h"
+
 
 // Colors (detected & LED (except NONE for this last one)) expected values
 #define COLOR_NONE     0xFF
