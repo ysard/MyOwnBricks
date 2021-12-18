@@ -59,19 +59,19 @@ def test_modes():
     found_messages = list()
     expected_messages = [
         (0x46, b'\x08'),  # NACK response
-        (0xd0, b'\x03\x0A\x00\x02'),  # Mode 8 response, sensor color, distance, LED color, reflected
+        (0xd0, b'\x03\x0A\x00\x01'),  # Mode 8 response, sensor color, distance, LED color, reflected
         (0xc0, b'\x00'),  # Mode 0; LED color
-        (0x46, b'\x08'), (0xd0, b'\x03\x0A\x00\x02'),  # NACK response
+        (0x46, b'\x08'), (0xd0, b'\x03\x0A\x00\x01'),  # NACK response
         (0xc1, b'\x0A'),  # Mode 1; distance
-        (0x46, b'\x08'), (0xd0, b'\x03\x0A\x00\x02'),  # NACK response
-        (0xc3, b'\x02'),  # Mode 3; reflected
-        (0x46, b'\x08'), (0xd0, b'\x03\x0A\x00\x02'),  # NACK response
-        (0xc4, b'\x03'),  # Mode 4; ambient
-        (0x46, b'\x08'), (0xd0, b'\x03\x0A\x00\x02'),  # NACK response
+        (0x46, b'\x08'), (0xd0, b'\x03\x0A\x00\x01'),  # NACK response
+        (0xc3, b'\x01'),  # Mode 3; reflected
+        (0x46, b'\x08'), (0xd0, b'\x03\x0A\x00\x01'),  # NACK response
+        (0xc4, b'\x02'),  # Mode 4; ambient
+        (0x46, b'\x08'), (0xd0, b'\x03\x0A\x00\x01'),  # NACK response
         (0x46, b'\x08'),  # NACK response
-        (0xd0, b'\x03\x0A\x42\x02'),  # Mode 5 effect: LED color change to 0x42
+        (0xd0, b'\x03\x0A\x42\x01'),  # Mode 5 effect: LED color change to 0x42
         (0xde, b'\x04\x00\x05\x00\x06\x00\x00\x00'),  # Mode 6; RGB
-        (0x46, b'\x08'), (0xd0, b'\x03\x0A\x42\x02'),  # NACK response
+        (0x46, b'\x08'), (0xd0, b'\x03\x0A\x42\x01'),  # NACK response
         # Mode 7; No visible effect
     ]
     modes = iter((0, 1, 3, 4, 5, 6, 7, 8))
@@ -79,7 +79,8 @@ def test_modes():
     # Begin communication
     serial_handler = autoconnect()
     assert serial_handler is not None
-    serial_handler.timeout = 0.1
+    # Small adjustment in place of the commons.LOOP_TIMEOUT value
+    serial_handler.timeout = 0.09
 
     # Keep-alive packet: Send NACK to force the device response
     # serial_handler.write(b"\x02")
