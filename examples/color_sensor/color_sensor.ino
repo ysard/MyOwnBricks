@@ -158,10 +158,9 @@ void loop()
                 red   = rgb_sensor.r_comp >> 6,
                 green = rgb_sensor.g_comp >> 6,
                 blue  = rgb_sensor.b_comp >> 6,
-                clear = rgb_sensor.c_comp >> 6;
 
                 // Set clear channel as reflected light - map 0-100
-                reflectedLight = REFLECTED_LIGHT_TO_PERCENTAGE(clear);
+                reflectedLight = REFLECTED_LIGHT_TO_PERCENTAGE(rgb_sensor.c_comp);
 
                 // Set RGB channels
                 sensorRGB[0] = red;
@@ -174,7 +173,7 @@ void loop()
                 sensorColor = COLOR_NONE;
             }
 #if (defined(INFO) || defined(DEBUG))
-
+            clear = rgb_sensor.c_comp >> 6;
             /*
             Serial.print("Lux: "); Serial.print(rgb_sensor.lux, DEC);
             Serial.print("; max: "); Serial.print(rgb_sensor.maxlux);
