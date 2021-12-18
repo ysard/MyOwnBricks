@@ -85,6 +85,24 @@ void ISR_sensor() {
 
 
 /**
+ * @brief Callback for LED color change.
+ *
+ * @note You may want to disable the TCS LEDs when the selected color is black.
+ *      The LED pin should be connected to an arduino pin driven here.
+ */
+void LEDColorChanged(uint8_t color) {
+    if (color == COLOR_BLACK) {
+        // Disable the LEDs of rgb sensor
+        // Do stuff here to deassert LED pin by setting it to LOW...
+        return;
+    }
+    // Enable the LEDs of rgb sensor
+    // DO stuff here to set the LED pin to HIGH or follow the status of the
+    // interrupt pin.
+}
+
+
+/**
  * @brief Map lux/reflected light values to percentages
  *    Weights of the equation must be calculated empirically
  *    Map equation: y = ax + b
@@ -162,6 +180,7 @@ void setup() {
     myDevice.setSensorAmbientLight(&ambientLight);
     myDevice.setSensorRGB(sensorRGB);
     myDevice.setSensorDistance(&sensorDistance);
+    // myDevice.setLEDColorCallback(&LEDColorChanged); // See notes
     connection_status = false;
     rgbSensorReady    = false;
     distSensorReady   = false;
