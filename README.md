@@ -164,7 +164,7 @@ proposed by `MyOwnBricks`.
 ```c++
 #include "MyOwnBricks.h"
 
-ColorDistanceSensor lpup;
+ColorDistanceSensor myDevice;
 bool connection_status;
 
 /**
@@ -274,10 +274,14 @@ specific to the new sensor.
 
 ## Cloning & installation
 
-    git clone https://github.com:ysard/MyOwnBricks.git
+You can choose one of the following methods:
 
-or download the zip file of the project and install it via the Arduino IDE:
+- Install the library via the Arduino IDE library manageror
+- Download the zip file of the project and install it via the Arduino IDE:
 `"Sketch/Include a library/Add a ZIP library"`.
+- Contribute to the development by cloning the repository:
+    `git clone https://github.com:ysard/MyOwnBricks.git`
+
 
 ## How to participate ?
 
@@ -469,7 +473,7 @@ de la méthode `process()` de chaque objet proposé par `MyOwnBricks`.
 ```c++
 #include "MyOwnBricks.h"
 
-ColorDistanceSensor lpup;
+ColorDistanceSensor myDevice;
 bool connection_status;
 
 /**
@@ -578,10 +582,13 @@ au nouveau capteur.
 
 ## Clonage & installation
 
-    git clone https://github.com:ysard/MyOwnBricks.git
+Vous pouvez suivre une des méthodes suivantes :
 
-ou téléchargez le fichier zip du projet et installez-le via l'IDE Arduino:
+- Installer la librairie depuis le gestionnaire de librairies de l'IDE Arduino
+- Télécharger le fichier zip du projet et l'installer via l'IDE Arduino:
 `"Croquis/Inclure une bibliothèque/Ajouter la bibliothèque .ZIP"`.
+- Participer au développement en clonant le dépôt:
+    `git clone https://github.com:ysard/MyOwnBricks.git`
 
 ## Comment participer ?
 
