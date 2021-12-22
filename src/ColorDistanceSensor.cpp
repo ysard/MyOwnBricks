@@ -50,7 +50,7 @@ ColorDistanceSensor::ColorDistanceSensor(){
  * @overload
  * @param pSensorColor Pointer to a discretized detected color. See m_LEDColor.
  * @param pSensorDistance Pointer to a discreztized distance measured to the
- *      the nearest object. Discretized values 0...10.
+ *      the nearest object. Continuous values 0...10.
  */
 ColorDistanceSensor::ColorDistanceSensor(uint8_t *pSensorColor, uint8_t *pSensorDistance){
     m_defaultIntVal  = new uint8_t(0);
@@ -98,7 +98,7 @@ void ColorDistanceSensor::setSensorColor(uint8_t *pData){
 /**
  * @brief Setter for m_sensorDistance
  * @param pData Pointer to a discreztized distance measured to the
- *      the nearest object. Discretized values 0...10.
+ *      the nearest object. Continuous values 0...10.
  */
 void ColorDistanceSensor::setSensorDistance(uint8_t *pData){
     m_sensorDistance = pData;
@@ -436,6 +436,11 @@ void ColorDistanceSensor::extendedModeInfoResponse(){
 
 /**
  * @brief Mode 5 response (write)
+ *      Set m_LEDColor attribute with the given color.
+ *      The color is supposed to change the color of the RGB LED attached to the sensor.
+ *      Available values:
+ *      COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_WHITE.
+ *      Note that COLOR_BLACK should turn off the LED.
  *      Also call LEDColor callback if defined. See m_pLEDColorfunc.
  */
 void ColorDistanceSensor::setLEDColorMode(){
@@ -453,6 +458,7 @@ void ColorDistanceSensor::setLEDColorMode(){
 
 /**
  * @brief Mode 7 response (write)
+ *      Set m_IR_code attribute with the given code.
  *      Also call IR callback if defined. See m_pIRfunc.
  * @todo
  *      Repeated pulses: count 5 IR codes in x loops: multi callback call
@@ -554,11 +560,11 @@ void ColorDistanceSensor::sensorRGBIMode() {
     // TODO: we send: device header: 0xde => type LUMP_MSG_TYPE_DATA mode 6 tot size 10
     // size = 10 !! 8 bytes useful / 10
     m_txBuf[0] = getHeader(lump_msg_type_t::LUMP_MSG_TYPE_DATA, 6, 10); // 0xde
-    m_txBuf[1] = this->m_sensorRGB[0] & 0xFF;           // Send LSB
+    m_txBuf[1] = this->m_sensorRGB[0] & 0xFF;           // Send LSB of red value
     m_txBuf[2] = (this->m_sensorRGB[0] >> 8) & 0xFF;    // Send MSB
-    m_txBuf[3] = this->m_sensorRGB[1] & 0xFF;
+    m_txBuf[3] = this->m_sensorRGB[1] & 0xFF;           // Send LSB of green value
     m_txBuf[4] = (this->m_sensorRGB[1] >> 8) & 0xFF;
-    m_txBuf[5] = this->m_sensorRGB[2] & 0xFF;
+    m_txBuf[5] = this->m_sensorRGB[2] & 0xFF;           // Send LSB of blue value
     m_txBuf[6] = (this->m_sensorRGB[2] >> 8) & 0xFF;
     m_txBuf[7] = 0;                                     // Padding
     m_txBuf[8] = 0;                                     // Padding

@@ -43,7 +43,7 @@
  * @param m_LEDColor Current color of the LED; Available values:
  *      COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_WHITE.
  * @param m_sensorDistance Distance measured to the the nearest object.
- *      Discretized values 0...10.
+ *      Continuous values 0...10.
  * @param m_detectionCount Detection count; should be incremented each time
  *      the sensor detects a distance < 5cm.
  * @param m_reflectedLight Reflected light (from clear channel value or
