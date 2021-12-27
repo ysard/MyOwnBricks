@@ -24,17 +24,22 @@
 
 
 // Colors (detected & LED (except NONE for this last one)) expected values
-#define COLOR_NONE     0xFF
-#define COLOR_BLACK    0
-#define COLOR_BLUE     3
-#define COLOR_GREEN    5
-#define COLOR_YELLOW   7
-#define COLOR_RED      9
-#define COLOR_WHITE    10
+#define COLOR_NONE      0xFF
+#define COLOR_BLACK     0
+#define COLOR_PINK      1
+#define COLOR_PURPLE    2
+#define COLOR_BLUE      3
+#define COLOR_LIGHTBLUE 4
+#define COLOR_CYAN      5
+#define COLOR_GREEN     6
+#define COLOR_YELLOW    7
+#define COLOR_ORANGE    8
+#define COLOR_RED       9
+#define COLOR_WHITE     10
 
 // CMD_EXT_MODE payload
-#define EXT_MODE_0     0x00  // for mode numbers < 8
-#define EXT_MODE_8     0x08  // for mode numbers >= 8
+#define EXT_MODE_0      0x00  // for mode numbers < 8
+#define EXT_MODE_8      0x08  // for mode numbers >= 8
 
 /**
  * @brief Handle the LegoUART protocol and define modes of the
