@@ -2,10 +2,14 @@
 COLOR_MAP = {
     0xFF: "NONE",
     0: "BLACK",
+    1: "PINK",
+    2: "PURPLE",
     3: "BLUE",
+    4: "LIGHTBLUE",
     5: "CYAN",
     6: "GREEN",
     7: "YELLOW",
+    8: "ORANGE",
     9: "RED",
     10: "WHITE",
 }
