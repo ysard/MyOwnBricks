@@ -39,6 +39,8 @@ Currently all PoweredUp hubs are compatible:
 * LEGO Technic Hub 88012
 * LEGO BOOST Move Hub 88006
 * LEGO City Hub 88009
+* [Raspberry Pi Build HAT](https://www.raspberrypi.com/news/raspberry-pi-build-hat-lego-education/)
+(A programmable Technic Hub for 25$)
 
 The following sensors are implemented:
 
@@ -79,7 +81,8 @@ Complete implementation of the official Color & Distance
 sensor using a TCS34725 color sensor and a VL6180X distance sensor.
 - **[color_sensor](./examples/color_sensor/)**: Implementation of the color sensor only.
 - **[distance_sensor](./examples/distance_sensor/)**: Distance sensor implementation only.
-- **[IR_emitter](./examples/IR_emitter/)**: Implementation of an infrared transmitter.
+- **[IR_emitter](./examples/IR_emitter/)**: Implementation of an infrared transmitter
+for PowerFunctions modules.
 The use of a callback receiving the code sent from the the Hub is provided.
 - **[tilt_sensor](./examples/tilt_sensor/)**:
 Skeleton for the implementation of the generic orientation sensor.
@@ -345,6 +348,8 @@ Actuellement tous les hubs PoweredUp sont compatibles:
 * LEGO Technic Hub 88012
 * LEGO BOOST Move Hub 88006
 * LEGO City Hub 88009
+* [Raspberry Pi Build HAT](https://www.framboise314.fr/raspberry-pi-build-hat-pour-piloter-vos-projets-lego/)
+(Un Hub Technic programmable pour 25€)
 
 Les capteurs suivants sont implémentés:
 
@@ -389,8 +394,9 @@ Implémentation complète du capteur Color & Distance
 officiel utilisant le capteur de couleur TCS34725 et le capteur de distance VL6180X.
 - **[color_sensor](./examples/color_sensor/)**: Implémentation seule du capteur de couleur.
 - **[distance_sensor](./examples/distance_sensor/)**: Implémentation seule du capteur de distance.
-- **[IR_emitter](./examples/IR_emitter/)**: Implémentation d'un transmetteur infrarouge.
-L'usage d'un callback recevant le code envoyé depuis le Hub est démontré.
+- **[IR_emitter](./examples/IR_emitter/)**: Implémentation d'un transmetteur infrarouge pour
+les modules PowerFunctions.
+L'usage d'un callback recevant le code envoyé depuis le Hub y est démontré.
 - **[tilt_sensor](./examples/tilt_sensor/)**:
 Squelette pour l'implémentation du capteur d'orientation générique.
 
