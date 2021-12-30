@@ -26,7 +26,7 @@ from my_own_bricks.commons import LOOP_TIMEOUT
 
 
 def get_device_messages():
-    """Generator/Coroutine for device responses
+    """Coroutine for device responses
 
     It's a wrapper that fully encapsulates the LEGO UART protocol. The user the
     user only has to provide the desired modes and eventually the data to be
