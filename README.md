@@ -86,7 +86,10 @@ for PowerFunctions modules.
 The use of a callback receiving the code sent from the the Hub is provided.
 - **[tilt_sensor](./examples/tilt_sensor/)**:
 Skeleton for the implementation of the generic orientation sensor.
-
+- **[Python Hub spoofing](./examples/python_hub_spoof/)**:
+Concept proof of hub spoofing via a UART serial link;
+it allows to easily debug a code implementing a sensor on the microcontroller side
+without using an official hub.
 
 ## Connections
 
@@ -399,6 +402,10 @@ les modules PowerFunctions.
 L'usage d'un callback recevant le code envoyé depuis le Hub y est démontré.
 - **[tilt_sensor](./examples/tilt_sensor/)**:
 Squelette pour l'implémentation du capteur d'orientation générique.
+- **[Usurpation de Hub en Python](./examples/python_hub_spoof/)**:
+Preuve de concept simulant un Hub au travers d'une liaison série (UART);
+cet exemple est utile pour débugger l'implémentation d'un capteur sur un microcontrôleur
+sans passer par le Hub officiel.
 
 ## Branchements
 
