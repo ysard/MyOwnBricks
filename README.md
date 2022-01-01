@@ -5,6 +5,27 @@
 
 *English version (See at the end for the French version)*
 
+# Table of contents
+
+* [MyOwnBricks](#myownbricks)
+* [Supported Programmable Bricks &amp; Hubs](#supported-programmable-bricks--hubs)
+* [Which microcontroller ?](#which-microcontroller-)
+* [Usage](#usage)
+    * [Connections](#connections)
+    * [Code blocks](#code-blocks)
+    * [Arduino code](#arduino-code)
+* [Hardware](#hardware)
+    * [Hub connection](#hub-connection)
+    * [Distance sensor](#distance-sensor)
+    * [Color sensor](#color-sensor)
+    * [Infrared emitter](#infrared-emitter)
+* [Development](#development)
+    * [Cloning &amp; installation](#cloning--installation)
+    * [How to participate ?](#how-to-participate-)
+* [MyOwnBricks is free AND open source](#myownbricks-is-free-and-open-source)
+* [Credits](#credits)
+
+
 # MyOwnBricks
 
 MyOwnBricks is a library for building your own sensors and devices compatible with the
@@ -314,6 +335,27 @@ Thanks to @ahmedjouirou for the first implementation https://github.com/ahmedjou
 
 ---
 *Version française*
+
+# Table des matières
+
+* [MyOwnBricks](#myownbricks-1)
+* [Hubs et capteurs officiels supportés](#hubs-et-capteurs-officiels-supportés)
+* [Quel microcontrôleur ?](#quel-microcontrôleur-)
+* [Usage](#usage-1)
+    * [Branchements](#branchements)
+    * [Code blocks](#code-blocks-1)
+    * [Code Arduino](#code-arduino)
+* [Matériel](#matériel)
+    * [Connexion au hub](#connexion-au-hub)
+    * [Capteur de distance](#capteur-de-distance)
+    * [Capteur de couleur](#capteur-de-couleur)
+    * [Emetteur infrarouge](#emetteur-infrarouge)
+* [Développement](#développement)
+    * [Clonage &amp; installation](#clonage--installation)
+    * [Comment participer ?](#comment-participer-)
+* [MyOwnBricks est libre ET open source](#myownbricks-est-libre-et-open-source)
+* [Crédits](#crédits)
+
 
 # MyOwnBricks
 
