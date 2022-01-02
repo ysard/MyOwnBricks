@@ -11,6 +11,7 @@
 * [Supported Programmable Bricks &amp; Hubs](#supported-programmable-bricks--hubs)
 * [Which microcontroller ?](#which-microcontroller-)
 * [Usage](#usage)
+    * [Examples](#examples)
     * [Connections](#connections)
     * [Code blocks](#code-blocks)
     * [Arduino code](#arduino-code)
@@ -91,6 +92,8 @@ exactly 3.3V. **Check voltages before connecting something to the Hub not powere
 Demo of a color sensor whose detected color is displayed on the Technic hub.
 
 ![led_color_sensor_demo](./images/led_color_sensor_demo.gif)
+
+## Examples
 
 Examples of sketches are provided with a documentation to quickly start with the tested
 sensors.
@@ -342,6 +345,7 @@ Thanks to @ahmedjouirou for the first implementation https://github.com/ahmedjou
 * [Hubs et capteurs officiels supportés](#hubs-et-capteurs-officiels-supportés)
 * [Quel microcontrôleur ?](#quel-microcontrôleur-)
 * [Usage](#usage-1)
+    * [Exemples](#exemples)
     * [Branchements](#branchements)
     * [Code blocks](#code-blocks-1)
     * [Code Arduino](#code-arduino)
@@ -428,6 +432,7 @@ le hub Technic.
 
 ![led_color_sensor_demo](./images/led_color_sensor_demo.gif)
 
+## Exemples
 
 Des exemples de sketchs sont fournis avec une documentation permettent de démarrer
 rapidement avec les capteurs testés.
