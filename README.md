@@ -3,7 +3,7 @@
 [![python docstring coverage](./images/interrogate_badge.svg)](https://interrogate.readthedocs.io/en/latest/)
 [![python test coverage](./images/coverage.svg)](https://docs.pytest.org/en/latest/)
 
-*English version (See at the end for the French version)*
+*English version ([See at the end for the French version](#table-des-matières))*
 
 # Table of contents
 
