@@ -1,0 +1,4 @@
+pyserial==3.5
+pytest==6.1.1
+pytest-cov==2.6.1
+interrogate==1.5.0
