@@ -25,14 +25,14 @@ def get_hex_msg(data):
 
 
 def forge_mode_msg(mode):
-    """Force read mode message
+    """Force read mode message initiated from hub, sent to device
 
     :Example: For mode 9:
         0x43, 0x09, 0xb5,
-            ^     ^     ^
-            |     |     checksum
-            |     MODE_9
-            MSG_TYPE_CMD | LENGTH_1 | CMD_SELECT
+        ^     ^     ^
+        |     |     checksum
+        |     MODE_9
+        MSG_TYPE_CMD | LENGTH_1 | CMD_SELECT
 
     :return: <bytes>
     """
@@ -41,17 +41,17 @@ def forge_mode_msg(mode):
 
 
 def forge_write_mode_msg(mode, data=0x04):
-    """Forge write mode message (5, 7)
+    """Forge write mode message (5, 7) initiated from hub, sent to device
 
     :Example: For mode 5:
         0x46, 0x00, 0xb9, 0xC5, 0x00, 0x3a
-            ^     ^     ^     ^     ^     ^
-            |     |     |     |     |     checksum
-            |     |     |     |     color index = 0
-            |     |     |     MESSAGE_DATA | LENGTH_1 | MODE_5
-            |     |     checksum
-            |     EXT_MODE_0
-            MESSAGE_CMD | LENGTH_1 | CMD_SELECT
+        ^     ^     ^     ^     ^     ^
+        |     |     |     |     |     checksum
+        |     |     |     |     color index = 0
+        |     |     |     MESSAGE_DATA | LENGTH_1 | MODE_5
+        |     |     checksum
+        |     EXT_MODE_0
+        MESSAGE_CMD | LENGTH_1 | CMD_SELECT
 
     :param mode: Write mode queried. Must be 5 or 7.
     :param data: Value to set (1 int for now).

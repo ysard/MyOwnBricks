@@ -15,6 +15,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """Handy functions implementing the UART protocol about messages headers, modes
 sizes and checksums.
+
+Doc:
+https://github.com/pybricks/technical-info/blob/master/uart-protocol.md
 """
 LUMP_MSG_TYPE_MASK = 0xC0
 
@@ -178,6 +181,7 @@ def parse_device_header(header):
 
     .. seealso:: pbio_uartdev_parse_msg() in
         https://github.com/pybricks/pybricks-micropython/blob/master/lib/pbio/src/uartdev.c
+        https://github.com/pybricks/technical-info/blob/master/uart-protocol.md
     :return: Tuple of type, mode, size values.
     :rtype: <tuple <int>, <int>, <int>>
     """
@@ -201,6 +205,7 @@ def get_device_header(msg_type, mode, msg_size):
     .. seealso:: `_get_hub_header`
     .. warning:: For some reason, msg_size is multiplied by 3 to fit in
         expected sizes decoded in the hub.
+        (There are restrictions of sizes due to the masks used).
 
     :param msg_size: payload size only, WITHOUT header & checksum.
     :type msg_type: <int>
