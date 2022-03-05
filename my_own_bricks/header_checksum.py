@@ -186,13 +186,21 @@ def parse_device_header(header):
     :rtype: <tuple <int>, <int>, <int>>
     """
     msg_type = rev_lump_msg_type_t[header & LUMP_MSG_TYPE_MASK]
-    cmd = rev_lump_cmd_t[header & LUMP_MSG_CMD_MASK]
     mode = header & LUMP_MSG_CMD_MASK
+    cmd = rev_lump_cmd_t[mode]
     msg_size = get_size(header)
     if msg_type == "LUMP_MSG_TYPE_DATA":
-        # cmd message is useless, assimilated to mode in integer value
+        # cmd message is useless in this case, it's assimilated to the mode (integer value)
+        # Also display a meaning mapping of modes for the color & distance sensor
         print("device header:", hex(header), "=> type", msg_type, "mode", mode,
               f"({rev_color_distance_modes[mode]})", "tot size", msg_size)
+    elif msg_type == "LUMP_MSG_TYPE_INFO":
+        # Meaning of the header is mainly due to the byte next to the header,
+        # which is unknown here.
+        # Also, the mode obtained is modulo INFO_MODE_PLUS_8, which is also set
+        # in the next byte.
+        print("device header:", hex(header), "=> type", msg_type, "cmd ? mode",
+              "{}/{}".format(mode, mode + 8), "tot size", msg_size)
     else:
         print("device header:", hex(header), "=> type", msg_type, "cmd", cmd,
               "tot size", msg_size)

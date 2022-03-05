@@ -66,8 +66,10 @@ def forge_write_mode_msg(mode, data=0x04):
     headers = get_hub_header(lump_msg_type_t["LUMP_MSG_TYPE_DATA"], mode, data_bytes_nb)
     assert headers[0] == 0x46
 
-    # First part of the message is fixed (modes 5, 7 don't require EXT_MODE_8)
-    msg = bytearray(b"\x46\x00\xb9")  # EXT_MODE_0 at index 1
+    # First part of the message is fixed
+    # modes 5, 7 don't require EXT_MODE_8,
+    # so we have EXT_MODE_0 at index 1
+    msg = bytearray(b"\x46\x00\xb9")
     # Second part
     msg += headers[1].to_bytes(1, byteorder='little')  # Header
     # Get byte number
