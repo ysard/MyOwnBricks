@@ -367,7 +367,7 @@ MyOwnBricks est une librairie pour construire ses propres capteurs et périphér
 compatibles avec le système moderne LEGO PoweredUp.
 
 MyOwnBricks est développé en C++ et peut être exécuté sur les plateformes ESP et Arduino.
-Ce projet rend accessible (dans la limite de l'API Lego actuelle et de son application)
+Ce projet rend accessible (dans la limite de l'API Lego actuelle et de son application mobile)
 le prototypage électronique depuis l'écosystème LEGO.
 
 
@@ -378,7 +378,7 @@ détection de plus de couleurs, etc.).
 Le détournement de capteurs comme le Capteur de Couleur et de Distance ouvre également
 la voie à de nombreuses actions commandées depuis l'application officielle en réponse
 par exemple, à une demande de changement de couleur: l'activation de robots, trains,
-mécanismes, capteurs, écran OLED/LCD, interrupteurs ou encore phares colorés.
+mécanismes, capteurs, écran OLED/LCD, relais ou encore phares colorés.
 
 
 Ce projet est compatible avec le projet de firmware alternatif
@@ -521,7 +521,7 @@ pas documenter ses produits informatiques...):
 ## Code Arduino
 
 Le code de base est le suivant; déclarez une variable de type `ColorDistanceSensor` ou
-`TiltSensor` puis l'initialisez dans la fonction `setup()`.
+`TiltSensor` puis initialisez-la dans la fonction `setup()`.
 
 Les callbacks servant à être notifié de l'envoi d'un code IR ou d'un changement de couleur
 sont aussi configurés dans `setup()`.
@@ -613,7 +613,7 @@ Note: Achetez-les séparément, les connecteurs pré-câblés coutent les yeux d
 Adafruit (la librairie d'origine doit toujours être installée)**
 Plus de détails [ici](https://github.com/ysard/TCS34725).
 
-## Emetteur infrarouge
+## Émetteur infrarouge
 
 * LED IR
 
