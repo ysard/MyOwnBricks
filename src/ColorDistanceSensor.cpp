@@ -193,10 +193,10 @@ void ColorDistanceSensor::commSendInitSequence(){
     // Initialize uart
     SerialTTL.begin(2400);
 
-    SerialTTL.write("\x40\x25\x9A",3);
-    SerialTTL.write("\x51\x07\x07\x0A\x07\xA3",6);
-    SerialTTL.write("\x52\x00\xC2\x01\x00\x6E",6); // SPEED 115200
-    SerialTTL.write("\x5F\x00\x00\x00\x10\x00\x00\x00\x10\xA0",10);
+    SerialTTL.write("\x40\x25\x9A",3); // Type ID: 0x25
+    SerialTTL.write("\x51\x07\x07\x0A\x07\xA3",6); // CMD_MODES
+    SerialTTL.write("\x52\x00\xC2\x01\x00\x6E",6); // CMD_SPEED: 115200
+    SerialTTL.write("\x5F\x00\x00\x00\x10\x00\x00\x00\x10\xA0",10); // CMD_VERSION
     SerialTTL.flush();
     delay(10);
     SerialTTL.write("\x9A\x20\x43\x41\x4C\x49\x42\x00\x00\x00\x00",11);
@@ -328,7 +328,7 @@ void ColorDistanceSensor::handleModes(){
         // Here we can send mode 0 or mode 8 according to the value of ExtMode
         // And send extendedModeInfoResponse before any data response.
         // Usually we go into mode 8, which automatically sends extendedModeInfoResponse
-        // Note: In practice the default mode is always the lowest (0).
+        // Note: In theory the default mode is always the lowest (0).
         this->m_currentExtMode = EXT_MODE_8;
         this->sensorSpec1Mode();
     } else if (header == 0x43) {
