@@ -1,6 +1,6 @@
 /*
  * MyOwnBricks is a library for the emulation of PoweredUp sensors on microcontrollers
- * Copyright (C) 2021 Ysard - <ysard@users.noreply.github.com>
+ * Copyright (C) 2021-2022 Ysard - <ysard@users.noreply.github.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
