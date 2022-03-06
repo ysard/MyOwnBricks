@@ -449,7 +449,7 @@ void ColorDistanceSensor::setLEDColorMode(){
     *this->m_LEDColor = m_rxBuf[0];
 
     DEBUG_PRINT(F("LEDcolor set: "));
-    DEBUG_PRINTLN(*m_LEDColor, HEX);
+    DEBUG_PRINTLN(*this->m_LEDColor, HEX);
 
     if (this->m_pLEDColorfunc != nullptr)
         this->m_pLEDColorfunc(*this->m_LEDColor);
@@ -467,6 +467,8 @@ void ColorDistanceSensor::setLEDColorMode(){
  *      LEGO protocol needs 5 repetitions, the delay between 2 repetitions is
  *      channel dependent, the length of a message is 16ms (doc), ~11ms in IRremote.
  *      channel delays: 1: 110ms, 2: 148ms, 3: 189ms, 4: 230ms (100 to 200ms in IRremote)
+ *
+ *      For the repetitions purpose, the getter getSensorIRCode() should be used.
  *
  *      See:
  *      https://github.com/Arduino-IRremote/Arduino-IRremote/blob/e06b594fbefac384d7e1c12aa3e014fca9ee0e6b/src/ir_Lego.hpp#L123
