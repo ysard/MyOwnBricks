@@ -71,7 +71,8 @@
  *      Continuous values 0..1023.
  * @param m_sensorHSV Raw values of Hue, Saturation, Value/Brightness channels.
  *      Continuous values 0..1023.
- * @param m_pLEDBrightnessesfunc Callback set by user receiving m_LEDBrightnesses.
+ * @param m_pLEDBrightnessesfunc Callback set by user, receiving m_LEDBrightnesses
+ *      when it's values are changed by the hub.
  *
  * @param m_currentExtMode Extended mode switch for modes >= 8. Available values:
  *      EXT_MODE_0, EXT_MODE_8.

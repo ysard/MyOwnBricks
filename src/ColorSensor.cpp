@@ -304,9 +304,9 @@ void ColorSensor::handleModes(){
             case ColorSensor::PBIO_IODEV_MODE_PUP_COLOR_SENSOR__AMBI:
                 this->sensorAmbientLight();
                 break;
-            /*case ColorSensor::PBIO_IODEV_MODE_PUP_COLOR_SENSOR__RREFL:
-                this->sensorReflectedLightMode();
-                break;*/
+            //case ColorSensor::PBIO_IODEV_MODE_PUP_COLOR_SENSOR__RREFL:
+            //    this->sensorReflectedLightMode();
+            //    break;
             case ColorSensor::PBIO_IODEV_MODE_PUP_COLOR_SENSOR__RGB_I:
                 this->sensorRGB_IMode();
                 break;
