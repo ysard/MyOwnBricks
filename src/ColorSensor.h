@@ -130,9 +130,10 @@ private:
     uint16_t *m_sensorRGB_I;
     uint16_t *m_sensorHSV;
     void     (*m_pLEDBrightnessesfunc)(const uint8_t*); // Callback for Led brightness change
-
-    uint8_t m_currentExtMode;
     uint8_t *m_defaultIntVal;
+
+    // UART protocol
+    uint8_t m_currentExtMode = 0;
 };
 
 #endif

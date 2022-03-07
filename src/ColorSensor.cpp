@@ -36,9 +36,6 @@ ColorSensor::ColorSensor(){
     m_sensorHSV            = defaultHSV;
     m_LEDBrightnesses      = LEDBrightnesses;
     m_pLEDBrightnessesfunc = nullptr;
-
-    // UART protocol
-    m_currentExtMode = 0;
 }
 
 
@@ -63,9 +60,6 @@ ColorSensor::ColorSensor(uint8_t *pSensorColor, uint16_t *pRGB_I, uint16_t *pHSV
     m_ambientLight         = m_defaultIntVal;
     m_LEDBrightnesses      = LEDBrightnesses;
     m_pLEDBrightnessesfunc = nullptr;
-
-    // UART protocol
-    m_currentExtMode = 0;
 }
 
 
