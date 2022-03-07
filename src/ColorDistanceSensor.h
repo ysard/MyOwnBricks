@@ -63,8 +63,8 @@
  *      COLOR_NONE, COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_YELLOW, COLOR_RED, COLOR_WHITE.
  * @param m_IR_code IR code for Power Functions IR devices
  *      (supposed to be transmitted via the Power Functions RC Protocol).
- * @param m_pIRfunc Callback set by user receiving m_IR_code.
- * @param m_pLEDColorfunc Callback set by user receiving m_LEDColor.
+ * @param m_pIRfunc Callback set by user receiving m_IR_code, when it's changed by the hub.
+ * @param m_pLEDColorfunc Callback set by user receiving m_LEDColor, when it's changed by the hub.
  *
  * @param m_currentExtMode Extended mode switch for modes >= 8. Available values:
  *      EXT_MODE_0, EXT_MODE_8.
