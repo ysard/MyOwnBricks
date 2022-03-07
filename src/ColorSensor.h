@@ -123,6 +123,10 @@ private:
     void sensorHSVMode();
     //void sensorSHSVMode();
     void sensorDebugMode();
+    void defaultCombosMode();
+
+    void ackResetCombosMode();
+    void ackSetCombosMode();
 
     uint8_t  *m_sensorColor;
     uint8_t  *m_reflectedLight;
@@ -130,8 +134,9 @@ private:
     uint8_t  *m_LEDBrightnesses;
     uint16_t *m_sensorRGB_I;
     uint16_t *m_sensorHSV;
-    void     (*m_pLEDBrightnessesfunc)(const uint8_t*); // Callback for Led brightness change
-    uint8_t *m_defaultIntVal;
+    void     (*m_pLEDBrightnessesfunc)(const uint8_t*);
+    bool     m_defaultComboModesEnabled;
+    uint8_t  *m_defaultIntVal;
 
     // UART protocol
     uint8_t m_currentExtMode = 0;

@@ -29,13 +29,14 @@ ColorSensor::ColorSensor(){
     uint8_t  LEDBrightnesses[3] = { 0, 0, 0 };
 
     // Sensor default values
-    m_sensorColor          = m_defaultIntVal;
-    m_reflectedLight       = m_defaultIntVal;
-    m_ambientLight         = m_defaultIntVal;
-    m_sensorRGB_I          = defaultRGB;
-    m_sensorHSV            = defaultHSV;
-    m_LEDBrightnesses      = LEDBrightnesses;
-    m_pLEDBrightnessesfunc = nullptr;
+    m_sensorColor              = m_defaultIntVal;
+    m_reflectedLight           = m_defaultIntVal;
+    m_ambientLight             = m_defaultIntVal;
+    m_sensorRGB_I              = defaultRGB;
+    m_sensorHSV                = defaultHSV;
+    m_LEDBrightnesses          = LEDBrightnesses;
+    m_pLEDBrightnessesfunc     = nullptr;
+    m_defaultComboModesEnabled = false;
 }
 
 
@@ -56,10 +57,11 @@ ColorSensor::ColorSensor(uint8_t *pSensorColor, uint16_t *pRGB_I, uint16_t *pHSV
     m_sensorHSV   = pHSV;
 
     // Sensor default values
-    m_reflectedLight       = m_defaultIntVal;
-    m_ambientLight         = m_defaultIntVal;
-    m_LEDBrightnesses      = LEDBrightnesses;
-    m_pLEDBrightnessesfunc = nullptr;
+    m_reflectedLight           = m_defaultIntVal;
+    m_ambientLight             = m_defaultIntVal;
+    m_LEDBrightnesses          = LEDBrightnesses;
+    m_pLEDBrightnessesfunc     = nullptr;
+    m_defaultComboModesEnabled = false;
 }
 
 
@@ -279,7 +281,11 @@ void ColorSensor::handleModes(){
     if (header == 0x02) { // NACK
         m_lastAckTick = millis();
         // Note: In theory the default mode is always the lowest (0).
-        this->sensorColorMode();
+        // If combos mode is enabled, prefer to send this data
+        if (m_defaultComboModesEnabled)
+            this->defaultCombosMode();
+        else
+            this->sensorColorMode();
     } else if (header == 0x43) {
         // "Get value" commands (3 bytes message: header, mode, checksum)
         size_t ret = SerialTTL.readBytes(m_rxBuf, 2);
@@ -361,6 +367,50 @@ void ColorSensor::handleModes(){
                 INFO_PRINTLN(mode, HEX);
                 break;
         }
+    } else if (header == 0x4C) {
+        // Reset the Combination modes (supposed to)
+        // Currently (03/2022) the packet is the following:
+        // { 4C 20 00 93 }
+        // Note: There is no parsing of the message, we just check the checksum
+        // and discard the message if it doesn't match.
+
+        // Get data (4 bytes message)
+        size_t ret = SerialTTL.readBytes(m_rxBuf, 3);
+        if (ret < 3) {
+            // check if all expected bytes are received without timeout
+            return;
+        }
+
+        if (m_rxBuf[2] != 0x93)
+            // Structure not expected
+            return;
+
+        this->m_defaultComboModesEnabled = false;
+        // Send acknowledgement
+        this->ackResetCombosMode();
+
+    } else if (header == 0x5C) {
+        // Receive a combination modes query to define the default data to send after each NACK
+        // Currently (03/2022) the packet is the following:
+        // { 5C 25 00 10 00 50 51 52 00 C5 }
+        // Note: There is no parsing of the message, we just check the checksum
+        // and discard the message if it doesn't match.
+
+        // Get data (10 bytes message)
+        size_t ret = SerialTTL.readBytes(m_rxBuf, 9);
+        if (ret < 9) {
+            // check if all expected bytes are received without timeout
+            DEBUG_PRINT(F("incomplete 0x5C message"));
+            return;
+        }
+
+        if (m_rxBuf[8] != 0xC5)
+            // Structure not expected
+            return;
+
+        this->m_defaultComboModesEnabled = true;
+        // Send acknowledgement
+        this->ackSetCombosMode();
     }
 }
 
@@ -512,4 +562,71 @@ void ColorSensor::sensorDebugMode(){
     m_rxBuf[0] = 0x80; // 128: 50%
     m_rxBuf[0] = 0x40; // 64: 25%
     this->setLEDBrightnessesMode();
+}
+
+
+/**
+ * @brief Combo mode / multi-mode: Overwrite default Mode 0 response after receiving a NACK
+ *      from the hub.
+ *
+ *      Packet dissection:
+ *          5C 25 00 10 00 50 51 52 00 C5
+ *          5C: header
+ *          25: 0x20 | 0x05 : 5 bytes of tuples to follow
+ *          00: unknown
+ *          10: mode 1 value 0
+ *          00: mode 0 value 0
+ *          50: mode 5 value 0
+ *          51: mode 5 value 1
+ *          52: mode 5 value 2
+ *          00: padding
+ *          C5: checksum
+ * @todo Parse dynamically the received packet. Have a struct that could map
+ *      mode ids and values for an easier access.
+ */
+void ColorSensor::defaultCombosMode(){
+    // Send data; payload size = 8, but total msg_size = 10
+    DEBUG_PRINTLN(F("Default combos mode"));
+
+    // Send data
+    m_txBuf[0] = getHeader(lump_msg_type_t::LUMP_MSG_TYPE_DATA, 0, 10); // header: 0xd8
+    m_txBuf[1] = *this->m_reflectedLight;                               // mode 1 value 0
+    m_txBuf[2] = *this->m_sensorColor;                                  // mode 0 value 0
+                                                                        // mode 5: values 0, 1, 2
+    m_txBuf[3] = this->m_sensorRGB_I[0] & 0xFF;                         // Send LSB of red value
+    m_txBuf[4] = (this->m_sensorRGB_I[0] >> 8) & 0xFF;                  // Send MSB
+    m_txBuf[5] = this->m_sensorRGB_I[1] & 0xFF;                         // Send LSB of green value
+    m_txBuf[6] = (this->m_sensorRGB_I[1] >> 8) & 0xFF;
+    m_txBuf[7] = this->m_sensorRGB_I[2] & 0xFF;                         // Send LSB of blue value
+    m_txBuf[8] = (this->m_sensorRGB_I[2] >> 8) & 0xFF;
+    sendUARTBuffer(8);
+}
+
+
+/**
+ * @brief Response to a reset combo mode query.
+ */
+void ColorSensor::ackResetCombosMode(){
+    m_txBuf[0] = 0x44;
+    m_txBuf[1] = 0x20;
+    sendUARTBuffer(1);
+}
+
+
+/**
+ * @brief Response to a combo mode query.
+ *      It's the same package as the one received.
+ * @todo Replay the received packet instead manually setting it.
+ */
+void ColorSensor::ackSetCombosMode(){
+    m_txBuf[0] = 0x5C;
+    m_txBuf[1] = 0x25;
+    m_txBuf[2] = 0x00;
+    m_txBuf[3] = 0x10;
+    m_txBuf[4] = 0x00;
+    m_txBuf[5] = 0x50;
+    m_txBuf[6] = 0x51;
+    m_txBuf[7] = 0x52;
+    m_txBuf[8] = 0x00;
+    sendUARTBuffer(8);
 }
