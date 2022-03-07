@@ -39,9 +39,6 @@ ColorDistanceSensor::ColorDistanceSensor(){
     m_IR_code        = 0;
     m_pIRfunc        = nullptr;
     m_pLEDColorfunc  = nullptr;
-
-    // UART protocol
-    m_currentExtMode = 0;
 }
 
 
@@ -70,9 +67,6 @@ ColorDistanceSensor::ColorDistanceSensor(uint8_t *pSensorColor, uint8_t *pSensor
     m_IR_code        = 0;
     m_pIRfunc        = nullptr;
     m_pLEDColorfunc  = nullptr;
-
-    // UART protocol
-    m_currentExtMode = 0;
 }
 
 

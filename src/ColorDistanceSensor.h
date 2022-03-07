@@ -138,8 +138,10 @@ private:
     void     (*m_pIRfunc)(const uint16_t); // Callback for IR change
     void     (*m_pLEDColorfunc)(const uint8_t);// Callback for Led color change
 
-    uint8_t m_currentExtMode;
     uint8_t *m_defaultIntVal;
+
+    // UART protocol
+    uint8_t m_currentExtMode = 0;
 };
 
 #endif
