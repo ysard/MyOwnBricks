@@ -73,6 +73,11 @@
  *      Continuous values 0..1023.
  * @param m_pLEDBrightnessesfunc Callback set by user, receiving m_LEDBrightnesses
  *      when it's values are changed by the hub.
+ * @param m_defaultComboModesEnabled Boolean set to true if the device receives
+ *      a combo mode / multi-mode packet. This packet should overwrite the default
+ *      0 mode by asking specific values to the device after each NACK received.
+ *      See: https://lego.github.io/MINDSTORMS-Robot-Inventor-hub-API/class_device.html
+ *      See: https://github.com/pybricks/technical-info/blob/master/uart-protocol.md
  *
  * @param m_currentExtMode Extended mode switch for modes >= 8. Available values:
  *      EXT_MODE_0, EXT_MODE_8.
