@@ -2,8 +2,6 @@
  * A library for the emulation of PoweredUp sensors on microcontrollers
  * Copyright (C) 2022 Ysard - <ysard@users.noreply.github.com>
  *
- * Based on the original work of Ahmed Jouirou - <ahmed.jouirou@gmail.com>
- *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
