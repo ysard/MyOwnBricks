@@ -135,7 +135,7 @@ void ColorSensor::setSensorAmbientLight(uint8_t *pData){
 
 
 /**
- * @brief Send initialization sequences for the current Color & Distance sensor.
+ * @brief Send initialization sequences for the current sensor.
  * @see https://github.com/pybricks/pybricks-micropython/lib/pbio/test/src/uartdev.c
  */
 void ColorSensor::commSendInitSequence(){
