@@ -61,11 +61,14 @@ Currently all PoweredUp hubs are compatible:
 * LEGO Technic Hub 88012
 * LEGO BOOST Move Hub 88006
 * LEGO City Hub 88009
+* LEGO Technic Large Hub - SPIKE Prime 45601
+* LEGO Technic Small Hub - SPIKE Essential 45609
 * [Raspberry Pi Build HAT](https://www.raspberrypi.com/news/raspberry-pi-build-hat-lego-education/)
 (A programmable Technic Hub for 25$)
 
 The following sensors are implemented:
 
+* LEGO SPIKE Prime Color Sensor 45605
 * LEGO Color & Distance Sensor 88007
 * LEGO Tilt Sensor 45305
 
@@ -114,6 +117,8 @@ Skeleton for the implementation of the generic orientation sensor.
 Concept proof of hub spoofing via a UART serial link;
 it allows to easily debug a code implementing a sensor on the microcontroller side
 without using an official hub.
+- **[spike_color_sensor](./examples/spike_color_sensor/)**: Demonstration of emulation of
+the SPIKE Prime Color Sensor 45605.
 
 ## Connections
 
@@ -397,11 +402,14 @@ Actuellement tous les hubs PoweredUp sont compatibles:
 * LEGO Technic Hub 88012
 * LEGO BOOST Move Hub 88006
 * LEGO City Hub 88009
+* LEGO Technic Large Hub - SPIKE Prime 45601
+* LEGO Technic Small Hub - SPIKE Essential 45609
 * [Raspberry Pi Build HAT](https://www.framboise314.fr/raspberry-pi-build-hat-pour-piloter-vos-projets-lego/)
 (Un Hub Technic programmable pour 25€)
 
 Les capteurs suivants sont implémentés:
 
+* LEGO SPIKE Prime Color Sensor 45605
 * LEGO Color & Distance Sensor 88007
 * LEGO Tilt Sensor 45305
 
@@ -453,6 +461,8 @@ Squelette pour l'implémentation du capteur d'orientation générique.
 Preuve de concept simulant un Hub au travers d'une liaison série (UART);
 cet exemple est utile pour débugger l'implémentation d'un capteur sur un microcontrôleur
 sans passer par le Hub officiel.
+- **[spike_color_sensor](./examples/spike_color_sensor/)**: Demonstration de l'émulation du
+capteur SPIKE Prime Color 45605.
 
 ## Branchements
 
