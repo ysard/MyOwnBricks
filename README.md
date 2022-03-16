@@ -117,6 +117,8 @@ Skeleton for the implementation of the generic orientation sensor.
 Concept proof of hub spoofing via a UART serial link;
 it allows to easily debug a code implementing a sensor on the microcontroller side
 without using an official hub.
+- **[spike_color_sensor](./examples/spike_color_sensor/)**: Demonstration of emulation of
+the SPIKE Prime Color Sensor 45605.
 
 ## Connections
 
@@ -459,6 +461,8 @@ Squelette pour l'implémentation du capteur d'orientation générique.
 Preuve de concept simulant un Hub au travers d'une liaison série (UART);
 cet exemple est utile pour débugger l'implémentation d'un capteur sur un microcontrôleur
 sans passer par le Hub officiel.
+- **[spike_color_sensor](./examples/spike_color_sensor/)**: Demonstration de l'émulation du
+capteur SPIKE Prime Color 45605.
 
 ## Branchements
 
