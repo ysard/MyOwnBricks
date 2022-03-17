@@ -176,11 +176,15 @@ void BaseSensor::process(){
  * @brief Get header from the given message type, mode and size
  * @param msg_type Basically lump_msg_type_t::LUMP_MSG_TYPE_DATA for emitted messages.
  * @param mode Mode number.
- * @param msg_size Size of the message WITHOUT header & checksum!
+ * @param msg_size Size of the message WITH header & checksum!
  *
- * @warning: msg_size is multiplied by 3 in order the given params fits in expected
+ * @warning msg_size is multiplied by 3 in order the given params fits in expected
  *      headers (There are restrictions due to the masks used).
- * @return
+ * @todo Maybe we should expect the payload size instead of the full message size.
+ *      It is already the use case of sendUARTBuffer and it's not intuitive to have
+ *      2 behaviors... Also this function is able to automatically add padding bytes
+ *      to it's computation (Ex: payload of size 8 is considered of size 10).
+ * @return Header byte
  */
 uint8_t BaseSensor::getHeader(
         const lump_msg_type_t& msg_type,
