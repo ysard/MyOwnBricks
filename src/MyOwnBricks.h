@@ -25,6 +25,7 @@
 #include "ColorDistanceSensor.h"
 #include "TiltSensor.h"
 #include "ColorSensor.h"
+#include "ForceSensor.h"
 #include "utilities/color_detection_methods.hpp"
 
 #endif // MyOwnBricks_h
