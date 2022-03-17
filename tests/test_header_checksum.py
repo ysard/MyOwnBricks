@@ -15,9 +15,23 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """Test header & checksum API"""
 import pytest
-from my_own_bricks.header_checksum import get_hub_header, parse_device_header, get_device_header
+from my_own_bricks.header_checksum import (
+    get_hub_header,
+    parse_device_header,
+    get_device_header,
+    get_cheksum,
+)
 from my_own_bricks.header_checksum import lump_msg_type_t, lump_cmd_t
 from my_own_bricks.header_checksum import get_all_possible_device_headers
+
+
+def test_get_cheksum():
+    """Test checksum computation on a given packet (header + payload)"""
+
+    ret = get_cheksum(
+        [bytes.fromhex(val)[0] for val in "5C 23 00 00 10 40 00 00 00".split()]
+    )
+    assert ret == 0xD0
 
 
 def test_parse_device_header():
