@@ -41,10 +41,10 @@
  *      The higher the pressure, the higher the value is.
  *
  *      Based on 3 internal values used for calibration:
- *          raw_offset:
- *          raw_end: Max value supported by the sensor
- *          raw_released: Minimal value supported by the sensor
- *      With raw_released < raw_end.
+ *          m_raw_offset: ?;
+ *          m_raw_released: Minimal value supported by the sensor;
+ *          m_raw_end: Max value supported by the sensor.
+ *      With m_raw_released < m_raw_end.
  *
  * @param m_defaultComboModesEnabled Boolean set to true if the device receives
  *      a combo mode / multi-mode packet. This packet should overwrite the default
@@ -75,6 +75,7 @@ public:
     void setSensorTouched(bool *pData);
     void setSensorTapped(uint8_t *pData);
     void setSensorRawForce(uint16_t *pData);
+    void setSensorCalibrationValues(uint16_t raw_offset, uint16_t raw_released, uint16_t raw_end);
 
 private:
     // Process queries from/to hub
@@ -88,6 +89,7 @@ private:
     void sensorTouchedMode();
     void sensorTappedMode();
     void sensorForceRawMode();
+    void sensorCalibrationMode();
     void defaultCombosMode();
 
     void ackResetCombosMode();
@@ -97,6 +99,11 @@ private:
     uint16_t *m_rawForce;
     bool     *m_touched;
     uint8_t  *m_tapped;
+
+    // Internal sensor calibration data
+    uint16_t m_raw_offset;
+    uint16_t m_raw_released;
+    uint16_t m_raw_end;
 
     bool     m_defaultComboModesEnabled;
 };

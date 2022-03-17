@@ -82,6 +82,19 @@ void ForceSensor::setSensorRawForce(uint16_t *pData){
 
 
 /**
+ * @brief Setter for sensor calibration values.
+ * @param raw_offset
+ * @param raw_released
+ * @param raw_end
+ */
+void ForceSensor::setSensorCalibrationValues(uint16_t raw_offset, uint16_t raw_released, uint16_t raw_end){
+    m_raw_offset   = raw_offset;
+    m_raw_released = raw_released;
+    m_raw_end      = raw_end;
+}
+
+
+/**
  * @brief Send initialization sequences for the current sensor.
  * @see https://github.com/pybricks/pybricks-micropython/lib/pbio/test/src/uartdev.c
  * @todo fullfill init sequence
@@ -143,6 +156,9 @@ void ForceSensor::handleModes(){
                 break;
             case ForceSensor::PBIO_IODEV_MODE_PUP_FORCE_SENSOR__FRAW:
                 this->sensorForceRawMode();
+                break;
+            case ForceSensor::PBIO_IODEV_MODE_PUP_FORCE_SENSOR__CALIB:
+                this->sensorCalibrationMode();
                 break;
             default:
                 break;
@@ -233,6 +249,34 @@ void ForceSensor::sensorForceRawMode(){
     m_txBuf[1] = (m_rawForce) ? m_rawForce & 0xFF : 0;        // Send LSB
     m_txBuf[2] = (m_rawForce) ? (m_rawForce >> 8) & 0xFF : 0; // Send MSB
     sendUARTBuffer(2);
+}
+
+
+/**
+ * @brief Mode 6 response (read): Send calibration array.
+ *      Positions:
+ *          1: raw_offset
+ *          2: raw_released
+ *          6: raw_end
+ */
+void ForceSensor::sensorCalibrationMode(){
+    // Send data; payload size = 16; total msg_size = 18
+    m_txBuf[0] = getHeader(lump_msg_type_t::LUMP_MSG_TYPE_DATA, 0, 18); // header: 0xe6
+
+    // Init the array
+    for (uint8_t i=1; i<= 16; i++) {
+        m_txBuf[i] = 0;
+    }
+    // 2nd value
+    m_txBuf[3] = m_raw_offset  & 0xFF;              // Send LSB
+    m_txBuf[4] = (m_raw_offset >> 8) & 0xFF;        // Send MSB
+    // 3rd value
+    m_txBuf[5] = m_raw_released  & 0xFF;
+    m_txBuf[6] = (m_raw_released >> 8) & 0xFF;
+    // 6th value
+    m_txBuf[13] = m_raw_end & 0xFF;
+    m_txBuf[14] = (m_raw_end >> 8) & 0xFF;
+    sendUARTBuffer(14);
 }
 
 
