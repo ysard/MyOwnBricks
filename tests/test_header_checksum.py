@@ -52,8 +52,9 @@ def test_parse_device_header():
 
 def test_get_device_header():
     """Forge device header: msg_type, mode, msg_size"""
-    header = get_device_header(lump_msg_type_t["LUMP_MSG_TYPE_CMD"],
-                               lump_cmd_t["LUMP_CMD_EXT_MODE"], 1)
+    header = get_device_header(
+        lump_msg_type_t["LUMP_MSG_TYPE_CMD"], lump_cmd_t["LUMP_CMD_EXT_MODE"], 1
+    )
     print("device header extened mode info:", hex(header))
     assert header == 0x46
 
@@ -74,7 +75,7 @@ def test_get_device_header():
     ret = parse_device_header(header)
     assert ret == ("LUMP_MSG_TYPE_DATA", 6, 10)
 
-    # taille payload = 4, tot 6
+    # size payload = 4, tot 6
     # size soit 16 0x10 LUMP_MSG_SIZE_4 ou 18 ??, recognized 6
     header = get_device_header(lump_msg_type_t["LUMP_MSG_TYPE_DATA"], 8, 6)
     print("device header mode 8:", hex(header))
@@ -91,8 +92,7 @@ def test_get_hub_header():
     # msg type, cmd, length
     # 1: The mode is sent as "data" (index 1) in a 0x43 packet, NOT in the header
     ret = get_hub_header(
-        lump_msg_type_t["LUMP_MSG_TYPE_CMD"],
-        lump_cmd_t["LUMP_CMD_SELECT"], 1
+        lump_msg_type_t["LUMP_MSG_TYPE_CMD"], lump_cmd_t["LUMP_CMD_SELECT"], 1
     )
     assert ret == (None, 0x43)
 
@@ -102,8 +102,7 @@ def test_get_hub_header():
     # LUMP_MSG_TYPE_DATA).
     # 1: The mode is sent as "data" (index 1) in a 0x43 packet, NOT in the header
     _ = get_hub_header(
-        lump_msg_type_t["LUMP_MSG_TYPE_CMD"],
-        lump_cmd_t["LUMP_CMD_SELECT"], 1
+        lump_msg_type_t["LUMP_MSG_TYPE_CMD"], lump_cmd_t["LUMP_CMD_SELECT"], 1
     )
     # 2: Mode 5 (set color idx): write 1 x 1 bytes (int8),
     # the mode is sent in the "cmd" field this time.
