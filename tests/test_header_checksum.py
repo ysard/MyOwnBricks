@@ -69,6 +69,7 @@ def test_get_device_header():
     # size payload = 6, tot 8
     # size 24 0x18, LUMP_MSG_SIZE_8 recognized 10 !!!!!!!!!!!!
     # => 2 padding bytes here
+    # The header is the same for a payload with a size of 8 and 10
     header = get_device_header(lump_msg_type_t["LUMP_MSG_TYPE_DATA"], 6, 8)
     print("device header mode 6:", hex(header))
     assert header == 0xde
