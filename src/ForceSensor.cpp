@@ -261,7 +261,7 @@ void ForceSensor::sensorForceRawMode(){
  */
 void ForceSensor::sensorCalibrationMode(){
     // Send data; payload size = 16; total msg_size = 18
-    m_txBuf[0] = getHeader(lump_msg_type_t::LUMP_MSG_TYPE_DATA, 0, 18); // header: 0xe6
+    m_txBuf[0] = getHeader(lump_msg_type_t::LUMP_MSG_TYPE_DATA, 6, 18); // header: 0xe6
 
     // Init the array
     for (uint8_t i=1; i<=16; i++) {
