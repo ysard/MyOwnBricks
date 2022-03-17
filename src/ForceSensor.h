@@ -25,7 +25,7 @@
  *      Spike/Technic Force Sensor.
  *
  * @param m_force Detected force applied
- *      Expected force applied: 2.5 to 10 Newtons.
+ *      Expected force applied: 2.5 to 10 Newtons (~1Kg).
  *      Resolution: 0.1 Newton.
  *      Continuous values 0...10.
  * @param m_touched Boolean set to true if the sensor is touched.
