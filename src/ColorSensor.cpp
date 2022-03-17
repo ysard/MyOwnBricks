@@ -398,7 +398,7 @@ void ColorSensor::handleModes(){
         size_t ret = SerialTTL.readBytes(m_rxBuf, 9);
         if (ret < 9) {
             // check if all expected bytes are received without timeout
-            DEBUG_PRINT(F("incomplete 0x5C message"));
+            DEBUG_PRINT(F("incomplete combos message"));
             return;
         }
 

@@ -264,7 +264,7 @@ void ForceSensor::sensorCalibrationMode(){
     m_txBuf[0] = getHeader(lump_msg_type_t::LUMP_MSG_TYPE_DATA, 0, 18); // header: 0xe6
 
     // Init the array
-    for (uint8_t i=1; i<= 16; i++) {
+    for (uint8_t i=1; i<=16; i++) {
         m_txBuf[i] = 0;
     }
     // 2nd value
