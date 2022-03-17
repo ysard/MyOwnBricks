@@ -38,14 +38,14 @@ bool BaseSensor::isConnected(){
 /**
  * @brief Get checksum for the given message
  * @param pData Message array: Header + Payload
- * @param length Length of the message
+ * @param length Length of the payload (size WITHOUT header & checksum)
  * @return Checksum byte
  */
 uint8_t BaseSensor::calcChecksum(uint8_t *pData, int length){
     uint8_t lRet, i;
 
     lRet = 0xFF;
-    for(i=0; i<length; i++){
+    for(i=0; i<=length; i++){
         lRet ^= pData[i];
     }
     return lRet;
@@ -229,12 +229,12 @@ uint8_t BaseSensor::getMsgSize(const uint8_t& header){
 /**
  * @brief Send the TX buffer content to the hub
  *      Also add the checksum of the message.
- * @param msg_size Size of the message WITHOUT header & checksum.
+ * @param msg_size Size of the message WITHOUT header & checksum: Payload size.
  */
 void BaseSensor::sendUARTBuffer(uint8_t msg_size){
     // Add checksum to the last index
-    m_txBuf[msg_size + 1] = calcChecksum(this->m_txBuf, msg_size + 1);
-    // Send data
+    m_txBuf[msg_size + 1] = calcChecksum(this->m_txBuf, msg_size);
+    // Send data (size = payload + header + checksum = payload + 2)
     SerialTTL.write((char *)this->m_txBuf, msg_size + 2);
     SerialTTL.flush();
 }
