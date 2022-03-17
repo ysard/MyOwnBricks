@@ -310,7 +310,7 @@ void ForceSensor::defaultCombosMode(){
                                                                         // mode 4: value 0
     m_txBuf[3] = (m_rawForce) ? m_rawForce & 0xFF : 0;                  // Send LSB
     m_txBuf[4] = (m_rawForce) ? (m_rawForce >> 8) & 0xFF : 0;           // Send MSB
-    sendUARTBuffer(8);
+    sendUARTBuffer(4);
 }
 
 
