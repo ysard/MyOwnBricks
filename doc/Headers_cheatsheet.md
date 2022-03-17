@@ -1,5 +1,43 @@
 # Headers cheatsheet
 
+## Compute a header for a payload
+
+Here is a method for calculating a header that will be sent to the hub with the Python binding.
+
+```python
+>>> from my_own_bricks.header_checksum import (
+...     get_hub_header,
+...     parse_device_header,
+...     get_device_header,
+...     get_cheksum,
+... )
+>>> from my_own_bricks.header_checksum import lump_msg_type_t, lump_cmd_t
+>>> header = get_device_header(lump_msg_type_t["LUMP_MSG_TYPE_CMD"], lump_cmd_t["LUMP_CMD_WRITE"], 10)
+>>> print(hex(header))
+'0x5c'
+>>> # Let's check it
+>>> parse_device_header(0x5c)
+device header: 0x5c => type LUMP_MSG_TYPE_CMD cmd LUMP_CMD_WRITE tot size 10
+('LUMP_MSG_TYPE_CMD', 4, 10)
+```
+
+This function is able to automatically compute a padding for a payload with a
+smaller size than that allowed (See the allowed list in the following section).
+
+```python
+>>> # Let's take a data packet sent by a device on the mode 6, with 8 bytes of payload
+>>> header = get_device_header(lump_msg_type_t["LUMP_MSG_TYPE_DATA"], 6, 8)
+>>> assert header == 0xde
+>>> # A size of 8 is not allowed and is extended to next allowed size: 10
+>>> header = get_device_header(lump_msg_type_t["LUMP_MSG_TYPE_DATA"], 6, 10)
+>>> assert header == 0xde
+>>> # Let's check it
+>>> ret = parse_device_header(header)
+>>> assert ret == ("LUMP_MSG_TYPE_DATA", 6, 10)
+```
+
+## List of all existing headers
+
 Here is the list of all the possible headers (encoded on 1 byte from 0 to 255)
 and their meanings (type of message, command, mode and total size of packet).
 
