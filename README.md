@@ -69,6 +69,7 @@ Currently all PoweredUp hubs are compatible:
 The following sensors are implemented:
 
 * LEGO SPIKE Prime Color Sensor 45605
+* LEGO SPIKE Prime Force Sensor 45606
 * LEGO Color & Distance Sensor 88007
 * LEGO Tilt Sensor 45305
 
@@ -410,6 +411,7 @@ Actuellement tous les hubs PoweredUp sont compatibles:
 Les capteurs suivants sont implémentés:
 
 * LEGO SPIKE Prime Color Sensor 45605
+* LEGO SPIKE Prime Force Sensor 45606
 * LEGO Color & Distance Sensor 88007
 * LEGO Tilt Sensor 45305
 
