@@ -254,7 +254,7 @@ void ForceSensor::sensorForceRawMode(){
 
 /**
  * @brief Mode 6 response (read): Send calibration array.
- *      Positions:
+ *      Index in the array (start from 0):
  *          1: raw_offset
  *          2: raw_released
  *          6: raw_end
@@ -273,10 +273,10 @@ void ForceSensor::sensorCalibrationMode(){
     // 3rd value
     m_txBuf[5] = m_raw_released  & 0xFF;
     m_txBuf[6] = (m_raw_released >> 8) & 0xFF;
-    // 6th value
+    // 7th value
     m_txBuf[13] = m_raw_end & 0xFF;
     m_txBuf[14] = (m_raw_end >> 8) & 0xFF;
-    sendUARTBuffer(14);
+    sendUARTBuffer(16);
 }
 
 
