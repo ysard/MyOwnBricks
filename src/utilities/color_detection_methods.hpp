@@ -62,6 +62,8 @@ void detectColor() {
 
 
 #if (defined(MANHATTAN) || defined(CANBERRA))
+// *_1: measures at 1 cm
+// *_3: measures at 3 cms
 const uint16_t SAMPLES[][3] = {
     { 297,  83,  56 }, // RED_1
     {  43,  20,  17 }, // RED_3
@@ -127,7 +129,7 @@ void detectColor() {
     }
     DEBUG_PRINTLN(expDist);
 
-    // Arbitrary threshold to avoid erroneous
+    // Arbitrary threshold to avoid erroneous identifications
 #ifdef MANHATTAN
     if (minDist > 100) {
 #else

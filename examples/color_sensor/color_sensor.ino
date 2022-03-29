@@ -37,7 +37,7 @@
 #include "MyOwnBricks.h"
 
 #define RGB_SENSOR_INTERRUPT_PIN     8
-#define RGB_SENSOR_INTERRUPT_PORT    PB4
+#define RGB_SENSOR_INTERRUPT_PORT    PB4 // Port alias of pin 8 to be used in tstPin()
 // Equivalent of digitalRead but for PORTB pins & much more quicker for a use in an ISR
 // https://www.arduino.cc/en/Reference/PortManipulation
 #define tstPin(b)                             ((PINB & (1 << (b))) != 0)
@@ -61,7 +61,7 @@ ColorDistanceSensor myDevice;
  * @brief Callback for PCINT4 interrupt (PCINT0 - PCINT7)
  */
 ISR(PCINT0_vect) {
-    // If PB4 is LOW, sensor is ready
+    // If RGB_SENSOR_INTERRUPT_PORT is LOW, sensor is ready
     if (!tstPin(RGB_SENSOR_INTERRUPT_PORT))
         sensorReady = true;
 }
@@ -155,7 +155,7 @@ void loop()
 {
     if (sensorReady) {
         // Data measurement
-        boolean status = rgb_sensor.updateData(true);
+        bool status = rgb_sensor.updateData(true);
 
         if (status) {
             // Ambient light (lux) computation
