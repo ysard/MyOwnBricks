@@ -20,8 +20,6 @@ Or if you don't know the header, let's compute it before:
 
 ```python
 >>> from my_own_bricks.header_checksum import (
-...     get_hub_header,
-...     parse_device_header,
 ...     get_device_header,
 ...     get_cheksum,
 ... )
