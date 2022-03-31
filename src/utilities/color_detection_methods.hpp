@@ -17,7 +17,7 @@
  */
 
 /**
- * @brief Discretize colors and set sensorColor variable
+ * @brief Discretize colors and return uint8_t color code.
  *    Available colors: COLOR_NONE, COLOR_BLACK, COLOR_BLUE,
  *    COLOR_GREEN, COLOR_RED, COLOR_WHITE.
  *
@@ -44,18 +44,15 @@
 //#define BASIC_RGB
 //#define MANHATTAN
 //#define CANBERRA
-extern uint8_t  sensorColor;
-extern uint16_t red, green, blue, clear, lux;
-
 
 #ifdef BASIC_RGB
-void detectColor() {
+uint8_t detectColor(const uint16_t &red, const uint16_t &green, const uint16_t &blue) {
     if ((red > green) && (red > blue)) {
-        sensorColor = COLOR_RED;
+        return COLOR_RED;
     } else if ((green > red) && (green > blue)) {
-        sensorColor = COLOR_GREEN;
+        return COLOR_GREEN;
     } else if ((blue > red) && (blue > green)) {
-        sensorColor = COLOR_BLUE;
+        return COLOR_BLUE;
     }
 }
 #endif
@@ -97,7 +94,7 @@ const uint8_t SAMPLES_MAP[] = {
 // Number of samples
 const uint8_t samplesCount = sizeof(SAMPLES) / sizeof(SAMPLES[0]);
 
-void detectColor() {
+uint8_t detectColor(const uint16_t &red, const uint16_t &green, const uint16_t &blue) {
 #ifdef MANHATTAN
     uint16_t minDist = 10000;
     uint16_t expDist;
@@ -136,11 +133,10 @@ void detectColor() {
     if (minDist > 1.9) { // Red color is quite difficult to identify even with this high threashold
 #endif
         // Matching is not acceptable
-        sensorColor = COLOR_NONE;
-        return;
+        return COLOR_NONE;
     }
     // Get color value expected by the hub
-    sensorColor = SAMPLES_MAP[bestSampleIndex];
+    return SAMPLES_MAP[bestSampleIndex];
 }
 
 
