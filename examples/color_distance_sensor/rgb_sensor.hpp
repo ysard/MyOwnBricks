@@ -67,13 +67,14 @@ void handleRGBSensorData() {
             sensorRGB[2] = blue;
 
             // Set detected color
-            detectColor();
+            sensorColor = detectColor(red, green, blue);
         } else {
             sensorColor = COLOR_NONE;
         }
 #if (defined(INFO) || defined(DEBUG))
         clear = rgb_sensor.c_comp >> 6;
         /*
+        // Human readable debugging
         Serial.print("Lux: "); Serial.print(rgb_sensor.lux, DEC);
         Serial.print("; max: "); Serial.print(rgb_sensor.maxlux);
         Serial.print("; R: "); Serial.print(red, DEC);
@@ -82,6 +83,7 @@ void handleRGBSensorData() {
         Serial.print("; C: "); Serial.println(clear, DEC);
         */
 
+        // Spreadsheet debugging
         Serial.print(rgb_sensor.lux, DEC); Serial.print(";");
         Serial.print(rgb_sensor.maxlux); Serial.print(";");
         Serial.print(red, DEC); Serial.print(";");
