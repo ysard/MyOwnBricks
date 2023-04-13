@@ -71,40 +71,40 @@ void TiltSensor::commSendInitSequence(){
     SerialTTL.write("\x5F\x00\x00\x00\x10\x00\x00\x00\x10\xA0", 10); // CMD_VERSION: fw-version: 1.0.0.0, hw-version: 1.0.0.0
     SerialTTL.flush();
 
-    SerialTTL.write("\x9B\x00\x4C\x50\x46\x32\x2D\x43\x41\x4C\x6F", 11);
-    SerialTTL.write("\x9B\x01\x00\x00\x34\xC2\x00\x00\x34\x42\xE5", 11);
-    SerialTTL.write("\x9B\x02\x00\x00\xC8\xC2\x00\x00\xC8\x42\xE6", 11);
-    SerialTTL.write("\x9B\x03\x00\x00\x34\xC2\x00\x00\x34\x42\xE7", 11);
-    SerialTTL.write("\x93\x04\x43\x41\x4C\x00\x26", 7);
-    SerialTTL.write("\x8B\x05\x10\x00\x61", 5);
-    SerialTTL.write("\x93\x80\x03\x00\x03\x00\xEC", 7);
+    SerialTTL.write("\x9B\x00\x4C\x50\x46\x32\x2D\x43\x41\x4C\x6F", 11);                                 // Name: "LPF2-CAL"
+    SerialTTL.write("\x9B\x01\x00\x00\x34\xC2\x00\x00\x34\x42\xE5", 11);                                 // Range: -45.0 to 45.0
+    SerialTTL.write("\x9B\x02\x00\x00\xC8\xC2\x00\x00\xC8\x42\xE6", 11);                                 // PCT Range: -100.0% to 100.0%
+    SerialTTL.write("\x9B\x03\x00\x00\x34\xC2\x00\x00\x34\x42\xE7", 11);                                 // Si Range: -45.0 to 45.0
+    SerialTTL.write("\x93\x04\x43\x41\x4C\x00\x26", 7);                                                  // Si Symbol: CAL
+    SerialTTL.write("\x8B\x05\x10\x00\x61", 5);                                                          // input_flags: Absolute, output_flags: None
+    SerialTTL.write("\x93\x80\x03\x00\x03\x00\xEC", 7);                                                  // Format: 3 int8, each 3 chars, 0 decimals
     SerialTTL.flush();
 
-    SerialTTL.write("\xA2\x00\x4C\x50\x46\x32\x2D\x43\x52\x41\x53\x48\x00\x00\x00\x00\x00\x00\x53", 19);
-    SerialTTL.write("\x9A\x01\x00\x00\x00\x00\x00\x00\xC8\x42\xEE", 11);
-    SerialTTL.write("\x9A\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xED", 11);
-    SerialTTL.write("\x9A\x03\x00\x00\x00\x00\x00\x00\xC8\x42\xEC", 11);
-    SerialTTL.write("\x92\x04\x43\x4E\x54\x00\x30", 7);
-    SerialTTL.write("\x8A\x05\x10\x00\x60", 5);
-    SerialTTL.write("\x92\x80\x03\x00\x03\x00\xED", 7);
+    SerialTTL.write("\xA2\x00\x4C\x50\x46\x32\x2D\x43\x52\x41\x53\x48\x00\x00\x00\x00\x00\x00\x53", 19); // Name: "LPF2-CRASH"
+    SerialTTL.write("\x9A\x01\x00\x00\x00\x00\x00\x00\xC8\x42\xEE", 11);                                 // Range:0.0 to 100.0
+    SerialTTL.write("\x9A\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xED", 11);                                 // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x9A\x03\x00\x00\x00\x00\x00\x00\xC8\x42\xEC", 11);                                 // Si Range: 0.0 to 100.0
+    SerialTTL.write("\x92\x04\x43\x4E\x54\x00\x30", 7);                                                  // Si Symbol: CNT
+    SerialTTL.write("\x8A\x05\x10\x00\x60", 5);                                                          // input_flags: Absolute, output_flags: None
+    SerialTTL.write("\x92\x80\x03\x00\x03\x00\xED", 7);                                                  // Format: 3 int8, each 3 chars, 0 decimals
     SerialTTL.flush();
 
-    SerialTTL.write("\xA1\x00\x4C\x50\x46\x32\x2D\x54\x49\x4C\x54\x00\x00\x00\x00\x00\x00\x00\x1E", 19);
-    SerialTTL.write("\x99\x01\x00\x00\x00\x00\x00\x00\x20\x41\x06", 11);
-    SerialTTL.write("\x99\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEE", 11);
-    SerialTTL.write("\x99\x03\x00\x00\x00\x00\x00\x00\x20\x41\x04", 11);
-    SerialTTL.write("\x91\x04\x44\x49\x52\x00\x35", 7);
-    SerialTTL.write("\x89\x05\x04\x00\x77", 5);
-    SerialTTL.write("\x91\x80\x01\x00\x02\x00\xED", 7);
+    SerialTTL.write("\xA1\x00\x4C\x50\x46\x32\x2D\x54\x49\x4C\x54\x00\x00\x00\x00\x00\x00\x00\x1E", 19); // Name: "LPF2-TILT"+ flags
+    SerialTTL.write("\x99\x01\x00\x00\x00\x00\x00\x00\x20\x41\x06", 11);                                 // Range: 0.0 to 10.0
+    SerialTTL.write("\x99\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEE", 11);                                 // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x99\x03\x00\x00\x00\x00\x00\x00\x20\x41\x04", 11);                                 // Si Range: 0.0 to 10.0
+    SerialTTL.write("\x91\x04\x44\x49\x52\x00\x35", 7);                                                  // Si Symbol: DIR
+    SerialTTL.write("\x89\x05\x04\x00\x77", 5);                                                          // input_flags: Discrete, output_flags: None
+    SerialTTL.write("\x91\x80\x01\x00\x02\x00\xED", 7);                                                  // Format: 1 int8, each 2 chars, 0 decimals
     SerialTTL.flush();
 
-    SerialTTL.write("\xA0\x00\x4C\x50\x46\x32\x2D\x41\x4E\x47\x4C\x45\x00\x00\x00\x00\x00\x00\x5B", 19);
-    SerialTTL.write("\x98\x01\x00\x00\x34\xC2\x00\x00\x34\x42\xE6", 11);
-    SerialTTL.write("\x98\x02\x00\x00\xC8\xC2\x00\x00\xC8\x42\xE5", 11);
-    SerialTTL.write("\x98\x03\x00\x00\x34\xC2\x00\x00\x34\x42\xE4", 11);
-    SerialTTL.write("\x90\x04\x44\x45\x47\x00\x2D", 7);
-    SerialTTL.write("\x88\x05\x10\x00\x62", 5);
-    SerialTTL.write("\x90\x80\x02\x00\x03\x00\xEE", 7);
+    SerialTTL.write("\xA0\x00\x4C\x50\x46\x32\x2D\x41\x4E\x47\x4C\x45\x00\x00\x00\x00\x00\x00\x5B", 19); // Name: "LPF2-ANGLE"+ flags
+    SerialTTL.write("\x98\x01\x00\x00\x34\xC2\x00\x00\x34\x42\xE6", 11);                                 // Range: -45.0 to 45.0
+    SerialTTL.write("\x98\x02\x00\x00\xC8\xC2\x00\x00\xC8\x42\xE5", 11);                                 // PCT Range: -100.0% to 100.0%
+    SerialTTL.write("\x98\x03\x00\x00\x34\xC2\x00\x00\x34\x42\xE4", 11);                                 // Si Range: -45.0 to 45.0
+    SerialTTL.write("\x90\x04\x44\x45\x47\x00\x2D", 7);                                                  // Si Symbol: DEG
+    SerialTTL.write("\x88\x05\x10\x00\x62", 5);                                                          // input_flags: Absolute, output_flags: None
+    SerialTTL.write("\x90\x80\x02\x00\x03\x00\xEE", 7);                                                  // Format: 2 int8, each 3 chars, 0 decimals
     SerialTTL.flush();
 
     SerialTTL.write("\x04", 1); // ACK
