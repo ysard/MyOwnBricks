@@ -46,12 +46,12 @@ are displayed for information purposes.
 
 Notes:
 
-- with LUMP_MSG_TYPE_DATA msg, cmd message is useless,
-it's assimilated to the mode
+- with `LUMP_MSG_TYPE_DATA` msg, `cmd` message is useless,
+it's assimilated to the `mode`.
 
-- with LUMP_MSG_TYPE_INFO msg, mode is obtained with INFO_MODE_PLUS_8
+- with `LUMP_MSG_TYPE_INFO` msg, `mode` is obtained with `INFO_MODE_PLUS_8`
 flag which is set in the next byte (not the header).
-cmd message is also useless it's the info_type data that is useful,
+`cmd` message is also useless it's the `info_type` data that is useful,
 also in the next byte.
 
 This output is obtained via the following code:
