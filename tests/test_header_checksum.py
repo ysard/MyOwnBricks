@@ -35,19 +35,28 @@ def test_get_cheksum():
 
 
 def test_parse_device_header():
-    """Parse headers from responses from device"""
+    """Parse headers from responses from device
+    .. note::
+        with LUMP_MSG_TYPE_DATA msg, cmd message is useless,
+        it's assimilated to the mode
+
+        with LUMP_MSG_TYPE_INFO msg, mode is obtained with INFO_MODE_PLUS_8
+        flag which is set in the next byte (not the header)
+    """
     # extened mode info: LUMP_MSG_TYPE_CMD + LUMP_CMD_EXT_MODE + size 3
-    parse_device_header(0x46)
+    ret = parse_device_header(0x46)
+    assert ret == ('LUMP_MSG_TYPE_CMD', 6, 'LUMP_CMD_EXT_MODE', 3)
+    # data messages => cmd (pos 2) is nonsense
     ret = parse_device_header(0xC0)  # mode 0 data
-    assert ret == ("LUMP_MSG_TYPE_DATA", 0, 3)
+    assert (ret[0], ret[1], ret[3]) == ("LUMP_MSG_TYPE_DATA", 0, 3)
     ret = parse_device_header(0xC1)  # mode 1 data
-    assert ret == ("LUMP_MSG_TYPE_DATA", 1, 3)
+    assert (ret[0], ret[1], ret[3]) == ("LUMP_MSG_TYPE_DATA", 1, 3)
     ret = parse_device_header(0xC5)  # mode 5 data
-    assert ret == ("LUMP_MSG_TYPE_DATA", 5, 3)
+    assert (ret[0], ret[1], ret[3]) == ("LUMP_MSG_TYPE_DATA", 5, 3)
     ret = parse_device_header(0xDE)  # mode 6 data
-    assert ret == ("LUMP_MSG_TYPE_DATA", 6, 10)
+    assert (ret[0], ret[1], ret[3]) == ("LUMP_MSG_TYPE_DATA", 6, 10)
     ret = parse_device_header(0xD0)  # mode 8 data
-    assert ret == ("LUMP_MSG_TYPE_DATA", 0, 6), ret
+    assert (ret[0], ret[1], ret[3]) == ("LUMP_MSG_TYPE_DATA", 0, 6), ret
 
 
 def test_get_device_header():
@@ -74,15 +83,17 @@ def test_get_device_header():
     print("device header mode 6:", hex(header))
     assert header == 0xde
     ret = parse_device_header(header)
-    assert ret == ("LUMP_MSG_TYPE_DATA", 6, 10)
+    # data messages => cmd (pos 2) is nonsense
+    assert (ret[0], ret[1], ret[3]) == ("LUMP_MSG_TYPE_DATA", 6, 10)
 
     # size payload = 4, tot 6
     # size soit 16 0x10 LUMP_MSG_SIZE_4 ou 18 ??, recognized 6
     header = get_device_header(lump_msg_type_t["LUMP_MSG_TYPE_DATA"], 8, 6)
     print("device header mode 8:", hex(header))
     assert header == 0xD0
+    # data messages => cmd (pos 2) is nonsense
     ret = parse_device_header(header)
-    assert ret == ("LUMP_MSG_TYPE_DATA", 0, 6)
+    assert (ret[0], ret[1], ret[3]) == ("LUMP_MSG_TYPE_DATA", 0, 6)
 
 
 def test_get_hub_header():
