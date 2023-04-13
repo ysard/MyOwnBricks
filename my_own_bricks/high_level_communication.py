@@ -103,7 +103,7 @@ def get_device_messages():
             continue
         header = ord(raw_val)
         print("<\t", end="")
-        msg_type, cmd_mode, msg_size = parse_device_header(header)
+        msg_type, cmd_mode, cmd, msg_size = parse_device_header(header)
 
         # Get the full message (minus the header)
         # NOTE: If we are here, data is already pending after header reception
