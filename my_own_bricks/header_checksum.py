@@ -182,8 +182,8 @@ def parse_device_header(header):
     .. seealso:: pbio_uartdev_parse_msg() in
         https://github.com/pybricks/pybricks-micropython/blob/master/lib/pbio/src/uartdev.c
         https://github.com/pybricks/technical-info/blob/master/uart-protocol.md
-    :return: Tuple of type, mode, size values.
-    :rtype: <tuple <int>, <int>, <int>>
+    :return: Tuple of type, mode, cmd, size values.
+    :rtype: <tuple <str>, <int>, <str>, <int>>
     """
     msg_type = rev_lump_msg_type_t[header & LUMP_MSG_TYPE_MASK]
     mode = header & LUMP_MSG_CMD_MASK
@@ -195,16 +195,16 @@ def parse_device_header(header):
         print("device header:", hex(header), "=> type", msg_type, "mode", mode,
               f"({rev_color_distance_modes[mode]})", "tot size", msg_size)
     elif msg_type == "LUMP_MSG_TYPE_INFO":
-        # Meaning of the header is mainly due to the byte next to the header,
+        # /!\ Meaning of the header is mainly due to the byte next to the header,
         # which is unknown here.
         # Also, the mode obtained is modulo INFO_MODE_PLUS_8, which is also set
-        # in the next byte.
-        print("device header:", hex(header), "=> type", msg_type, "cmd ? mode",
+        # in the next byte in the message.
+        print("device header:", hex(header), "=> type", msg_type, "mode",
               "{}/{}".format(mode, mode + 8), "tot size", msg_size)
     else:
         print("device header:", hex(header), "=> type", msg_type, "cmd", cmd,
               "tot size", msg_size)
-    return msg_type, mode, msg_size
+    return msg_type, mode, cmd, msg_size
 
 
 def get_device_header(msg_type, mode, msg_size):
