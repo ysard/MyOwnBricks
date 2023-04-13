@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#ifndef MOB_GLOBAL_H
+#define MOB_GLOBAL_H
 
 #if !defined(__AVR__)
 #include <cinttypes>
@@ -76,4 +76,4 @@
     #define INFO_PRINTLN(...) void()
 #endif
 
-#endif
+#endif // MOB_GLOBAL_H
