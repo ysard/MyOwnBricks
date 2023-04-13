@@ -40,9 +40,15 @@ smaller size than that allowed (See the allowed list in the following section).
 
 Here is the list of all the possible headers (encoded on 1 byte from 0 to 255)
 and their meanings (type of message, command, mode and total size of packet).
+Keep in mind that in reality, the data is limited to 32 bytes (thus a message with
+its header & payload is limited to 34 bytes).<br>
+Longer messages do not meet the protocol.
+
 
 For type `LUMP_MSG_TYPE_DATA`, modes meanings for Boost Color & Distance Sensor
 are displayed for information purposes.
+This sensor is a good example because it has 8 standard modes + 3 extended modes,
+showing the use of extended modes.
 
 Notes:
 
