@@ -321,7 +321,7 @@ You can choose one of the following methods:
 ## Debugging packages - (Python library, devtools)
 
 An important part of the reverse engineering work relies on the use of a Python library
-included in the repository in the <./my_own_bricks)> folder.
+included in the repository in the [./my_own_bricks](./my_own_bricks) folder.
 
 This library is used in particular in the example given to debug the implementation of a
 sensor on a microcontroller without using the official Hub (Hub emulation).
@@ -329,9 +329,7 @@ sensor on a microcontroller without using the official Hub (Hub emulation).
 Many functions are available to process the headers and the checksums of the packets.
 As well as to process the data of some of them (analysis of the initialization sequence).
 
-For more information, read the documents in the <./doc/> folder and the tests <./tests/>.
-
-Translated with www.DeepL.com/Translator (free version)
+For more information, read the documents in the [./doc](./doc/) folder and the tests [./tests/](./tests/).
 
 ## How to participate ?
 
@@ -679,7 +677,7 @@ Vous pouvez suivre une des méthodes suivantes :
 ## Debugger les paquets - (Librairie Python, devtools)
 
 Une part importante du travail de rétro-ingénierie repose sur l'usage d'une bibliothèque Python
-incluse dans le dépôt dans le dossier <./my_own_bricks)>.
+incluse dans le dépôt dans le dossier [./my_own_bricks](./my_own_bricks).
 
 Cette librairie est sert notament dans l'exemple donné pour débugger l'implémentation d'un
 capteur sur un microcontrôleur sans passer par le Hub officiel (émulation de Hub).
@@ -687,7 +685,7 @@ capteur sur un microcontrôleur sans passer par le Hub officiel (émulation de H
 De nombreuses fonctions sont disponibles pour traiter les en-têtes et checksums des paquets.
 Ainsi que traiter les données de certains d'entre eux (analyse de la séquence d'initialisation).
 
-Pour plus d'informations, lisez les documents dans le dossier <./doc/> et les tests <./tests/>.
+Pour plus d'informations, lisez les documents dans le dossier [./doc](./doc/) et les tests [./tests/](./tests/).
 
 ## Comment participer ?
 
