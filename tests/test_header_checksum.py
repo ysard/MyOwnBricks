@@ -41,7 +41,9 @@ def test_parse_device_header():
         it's assimilated to the mode
 
         with LUMP_MSG_TYPE_INFO msg, mode is obtained with INFO_MODE_PLUS_8
-        flag which is set in the next byte (not the header)
+        flag which is set in the next byte (not the header).
+        cmd message is also useless it's the info_type data that is useful,
+        also in the next byte.
     """
     # extened mode info: LUMP_MSG_TYPE_CMD + LUMP_CMD_EXT_MODE + size 3
     ret = parse_device_header(0x46)

@@ -199,6 +199,8 @@ def parse_device_header(header):
         # which is unknown here.
         # Also, the mode obtained is modulo INFO_MODE_PLUS_8, which is also set
         # in the next byte in the message.
+        # cmd message is also useless it's the info_type data that is useful,
+        # also in the next byte.
         print("device header:", hex(header), "=> type", msg_type, "mode",
               "{}/{}".format(mode, mode + 8), "tot size", msg_size)
     else:
