@@ -265,3 +265,93 @@ def test_parse_cmd_modes(expected, message):
 
     assert expected_raw_text == raw_text
     assert expected_text == text
+
+
+def test_parse_messages():
+    """Functional test for the main messages parser applied to a full sequence of bytes"""
+    # Tilt sensor init seq
+    data = "\x40\x22\x9D\x49\x03\x02\xB7\x52\x00\xC2\x01\x00\x6E\x5F\x00\x00\x00\x10\x00\x00\x00\x10\xA0\x9B\x00\x4C\x50\x46\x32\x2D\x43\x41\x4C\x6F\x9B\x01\x00\x00\x34\xC2\x00\x00\x34\x42\xE5\x9B\x02\x00\x00\xC8\xC2\x00\x00\xC8\x42\xE6\x9B\x03\x00\x00\x34\xC2\x00\x00\x34\x42\xE7\x93\x04\x43\x41\x4C\x00\x26\x8B\x05\x10\x00\x61\x93\x80\x03\x00\x03\x00\xEC\xA2\x00\x4C\x50\x46\x32\x2D\x43\x52\x41\x53\x48\x00\x00\x00\x00\x00\x00\x53\x9A\x01\x00\x00\x00\x00\x00\x00\xC8\x42\xEE\x9A\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xED\x9A\x03\x00\x00\x00\x00\x00\x00\xC8\x42\xEC\x92\x04\x43\x4E\x54\x00\x30\x8A\x05\x10\x00\x60\x92\x80\x03\x00\x03\x00\xED\xA1\x00\x4C\x50\x46\x32\x2D\x54\x49\x4C\x54\x00\x00\x00\x00\x00\x00\x00\x1E\x99\x01\x00\x00\x00\x00\x00\x00\x20\x41\x06\x99\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEE\x99\x03\x00\x00\x00\x00\x00\x00\x20\x41\x04\x91\x04\x44\x49\x52\x00\x35\x89\x05\x04\x00\x77\x91\x80\x01\x00\x02\x00\xED\xA0\x00\x4C\x50\x46\x32\x2D\x41\x4E\x47\x4C\x45\x00\x00\x00\x00\x00\x00\x5B\x98\x01\x00\x00\x34\xC2\x00\x00\x34\x42\xE6\x98\x02\x00\x00\xC8\xC2\x00\x00\xC8\x42\xE5\x98\x03\x00\x00\x34\xC2\x00\x00\x34\x42\xE4\x90\x04\x44\x45\x47\x00\x2D\x88\x05\x10\x00\x62\x90\x80\x02\x00\x03\x00\xEE"
+
+    expected_analysis = (
+        34,
+        {"modes": 4, "views": 3},
+        115200,
+        {"fw-version": (1, 0, 0, 0), "hw-version": (1, 0, 0, 0)},
+        "LPF2-CAL",
+        (-45.0, 45.0),
+        (-100.0, 100.0),
+        (-45.0, 45.0),
+        "CAL",
+        {"input_flags": ["Absolute"], "output_flags": []},
+        (3, 0, 3, 0),
+        "LPF2-CRASH",
+        (0.0, 100.0),
+        (0.0, 100.0),
+        (0.0, 100.0),
+        "CNT",
+        {"input_flags": ["Absolute"], "output_flags": []},
+        (3, 0, 3, 0),
+        "LPF2-TILT",
+        (0.0, 10.0),
+        (0.0, 100.0),
+        (0.0, 10.0),
+        "DIR",
+        {"input_flags": ["Discrete"], "output_flags": []},
+        (1, 0, 2, 0),
+        "LPF2-ANGLE",
+        (-45.0, 45.0),
+        (-100.0, 100.0),
+        (-45.0, 45.0),
+        "DEG",
+        {"input_flags": ["Absolute"], "output_flags": []},
+        (2, 0, 3, 0),
+    )
+
+    expected_descr = (
+        "LUMP_CMD_TYPE",
+        "LUMP_CMD_MODES",
+        "LUMP_CMD_SPEED",
+        "LUMP_CMD_VERSION",
+        "INFO_NAME",
+        "INFO_RAW",
+        "INFO_PCT",
+        "INFO_SI",
+        "INFO_UNITS",
+        "INFO_MAPPING",
+        "INFO_FORMAT",
+        "INFO_NAME",
+        "INFO_RAW",
+        "INFO_PCT",
+        "INFO_SI",
+        "INFO_UNITS",
+        "INFO_MAPPING",
+        "INFO_FORMAT",
+        "INFO_NAME",
+        "INFO_RAW",
+        "INFO_PCT",
+        "INFO_SI",
+        "INFO_UNITS",
+        "INFO_MAPPING",
+        "INFO_FORMAT",
+        "INFO_NAME",
+        "INFO_RAW",
+        "INFO_PCT",
+        "INFO_SI",
+        "INFO_UNITS",
+        "INFO_MAPPING",
+        "INFO_FORMAT",
+    )
+
+    messages = [msg_analysis for msg_analysis in parse_messages(data)]
+
+    assert len(messages) == 32
+
+    unzip = lambda l: list(zip(*l))
+
+    msgs_descr, msgs_data, msgs_analysis = unzip(messages)
+
+    print(msgs_analysis)
+    assert expected_analysis == msgs_analysis
+
+    print(msgs_descr)
+    assert expected_descr == msgs_descr
