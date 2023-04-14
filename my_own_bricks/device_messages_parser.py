@@ -27,7 +27,7 @@ from struct import unpack
 from functools import partial
 
 # Custom imports
-from my_own_bricks.header_checksum import parse_device_header
+from my_own_bricks.header_checksum import parse_device_header, get_cheksum
 
 
 def parse_info_name(payload):
@@ -303,8 +303,6 @@ def parse_message(stream):
     .. note:: Support for CMD_SELECT & CMD_WRITE messages is basic
         (the raw payload is returned).
 
-    .. warning:: For now, checksum is not tested.
-
     """
     # Bit flag used in powered up devices to indicate that the
     # mode is 8 + the mode specified in the first byte
@@ -396,8 +394,14 @@ def parse_message(stream):
             print("\tMODE", mode, msg_descr, text)
 
         else:
-            payload = [next(message) for _ in range(payload_size + 1)]  # +1 ????
+            payload = [next(stream) for _ in range(payload_size + 1)]  # +1 ????
             print(payload_size + 1, payload, len(payload))
 
         # Throw the last byte (checksum)
-        next(message)
+        found_checksum = ord(next(stream))
+
+        # Compare checksums
+        expected_checksum = get_cheksum(message + list(map(ord, payload)))
+
+        if found_checksum != expected_checksum:
+            print("ERROR: Bad checksum! Found vs expected:", found_checksum, expected_checksum)
