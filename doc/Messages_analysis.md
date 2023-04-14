@@ -4,7 +4,7 @@ You might want to analyze the packets sent by a module connected to the hub.
 The initialization sequence is cryptic and a parser is very useful to know
 the capabilities of a Powered Up module to be able to replicate it.
 
-The `parse_message()` function of the `device_messages_parser` module is there for that.
+The `parse_messages()` function of the `device_messages_parser` module is there for that.
 
 Let's take the example of the initialization sequence of the Tilt Sensor module
 module (see [source](https://github.com/ysard/MyOwnBricks/blob/master/src/TiltSensor.cpp)).
@@ -18,8 +18,8 @@ It can be reduced to a succession of bytes:
 Let's see what we can learn from this:
 
 ```python
->>> from my_own_bricks.device_messages_parser import parse_message
->>> parse_message(message)
+>>> from my_own_bricks.device_messages_parser import parse_messages
+>>> list(parse_messages(message))
 device header: 0x40 => type LUMP_MSG_TYPE_CMD cmd LUMP_CMD_TYPE tot size 3
         LUMP_CMD_TYPE Type ID: 0x22
 device header: 0x49 => type LUMP_MSG_TYPE_CMD cmd LUMP_CMD_MODES tot size 4
@@ -87,3 +87,10 @@ device header: 0x90 => type LUMP_MSG_TYPE_INFO mode 0/8 tot size 7
 ```
 
 All headers are analyzed, and the description of each mode (0 to 3) is detailed for each packet.
+
+`parse_messages()` also returns message descriptions (`info_type` converted into
+human readable format for `LUMP_MSG_TYPE_INFO` messages, `cmd` otherwise).
+The message itself and analysed data in the payload are also returned.
+
+See [test examples](https://github.com/ysard/MyOwnBricks/blob/master/tests/test_device_messages_parser.py#L270)
+for more information.
