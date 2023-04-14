@@ -209,7 +209,7 @@ def parse_info_format(payload):
 
 
 def parse_cmd_type(payload):
-    """Get the type of device
+    """Get the type id of device
 
     .. seealso::
         https://github.com/pybricks/technical-info/blob/master/uart-protocol.md#cmd_type
