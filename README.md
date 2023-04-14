@@ -22,7 +22,7 @@
     * [Infrared emitter](#infrared-emitter)
 * [Development](#development)
     * [Cloning &amp; installation](#cloning--installation)
-    * [Debugging packages - (Python library, devtools)](#debugging-packages---python-library-devtools)
+    * [Debugging packets - (Python library, devtools)](#debugging-packets---python-library-devtools)
     * [How to participate ?](#how-to-participate-)
 * [MyOwnBricks is free AND open source](#myownbricks-is-free-and-open-source)
 * [Credits](#credits)
@@ -318,7 +318,7 @@ You can choose one of the following methods:
 - Contribute to the development by cloning the repository:
     `git clone https://github.com:ysard/MyOwnBricks.git`
 
-## Debugging packages - (Python library, devtools)
+## Debugging packets - (Python library, devtools)
 
 An important part of the reverse engineering work relies on the use of a Python library
 included in the repository in the [./my_own_bricks](./my_own_bricks) folder.
