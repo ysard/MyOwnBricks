@@ -365,9 +365,7 @@ def parse_message(message):
                 payload
             )
 
-            print(cmd, end=" ")
-            print(text)
-            print()
+            print("\t" + cmd, text)
 
         elif msg_type == "LUMP_MSG_TYPE_INFO":
             info_type = ord(next(message))
@@ -382,15 +380,13 @@ def parse_message(message):
             # Note: The range explicitly removes the checksum from the payload size
             payload = [next(message) for _ in range(payload_size)]
 
-            print("MODE", mode, end=" ")
-            print(info_type_descr_mapping.get(info_type, "UKN"), end=" ")
+            msg_descr = info_type_descr_mapping.get(info_type, "UKN")
 
             raw_data, text = info_type_mapping.get(
                 info_type, lambda x: (x, "Not supported")
             )(payload)
 
-            print(text)
-            print()
+            print("\tMODE", mode, msg_descr, text)
 
         else:
             payload = [next(message) for _ in range(payload_size + 1)]  # +1 ????
