@@ -376,3 +376,19 @@ def test_parse_messages():
 
     print(msgs_descr)
     assert expected_descr == msgs_descr
+
+
+def test_parse_messages_bad_checksum(capsys):
+    """Test with bad checksum in message
+    For now, it should output a message on stdout
+    """
+    # Bad checksum (0x00 instead of 0x3f)
+    data = "\xC0\x00\x00"
+
+    messages = [msg_analysis for msg_analysis in parse_messages(data)]
+
+    assert len(messages) == 1
+
+    captured = capsys.readouterr()
+
+    assert "Bad checksum! Found vs expected: 0x0 0x3f\n" in captured.out
