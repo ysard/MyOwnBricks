@@ -300,7 +300,7 @@ def parse_cmd_modes(payload):
     return modes, text
 
 
-def parse_message(stream):
+def parse_messages(stream):
     """Main parser method for messages coming from a device
 
     Support is mainly focused on LUMP_MSG_TYPE_INFO & LUMP_MSG_TYPE_CMD messages.
@@ -308,8 +308,10 @@ def parse_message(stream):
     .. note:: Support for CMD_SELECT & CMD_WRITE messages is basic
         (the raw payload is returned).
 
-    .. todo:: This function could be a generator of data used to iterate over
-        analysed messages (yield raw_data).
+    :return: Generator of message descriptions (info_type converted into
+        human readable format for LUMP_MSG_TYPE_INFO messages, cmd otherwise).
+        The message itself and analysed data in its payload are also yielded.
+    :rtype: <generator <tuple <str>, <list>, <object>>
     """
     # Bit flag used in powered up devices to indicate that the
     # mode is 8 + the mode specified in the first byte
@@ -406,9 +408,13 @@ def parse_message(stream):
 
         # Throw the last byte (checksum)
         found_checksum = ord(next(stream))
-
+        payload_values = list(map(ord, payload))
+        message += payload_values
         # Compare checksums
-        expected_checksum = get_cheksum(message + list(map(ord, payload)))
+        expected_checksum = get_cheksum(message)
 
         if found_checksum != expected_checksum:
             print("ERROR: Bad checksum! Found vs expected:", found_checksum, expected_checksum)
+
+        message.append(expected_checksum)
+        yield  msg_descr if msg_type == "LUMP_MSG_TYPE_INFO" else cmd, message, raw_data
