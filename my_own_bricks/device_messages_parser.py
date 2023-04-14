@@ -119,14 +119,19 @@ def parse_info_mapping(payload):
     text_flags = dict()
     for flags_type, flags in raw_flags.items():
         found_flags = [
-            descr if flag & flags else ''
+            descr if flag & flags else ""
             for flag, descr in info_mapping.items()
             # Do not show unset flag
             if flag & flags
         ]
         raw_flags[flags_type] = found_flags
         text_flags[flags_type] = ",".join(found_flags)
-    return raw_flags, ", ".join([f"{k}: {v if v else 'None'}" for k, v in text_flags.items()])
+
+    text = ", ".join(
+        [f"{k}: {v if v else 'None'}" for k, v in text_flags.items()]
+    )
+    return raw_flags, text
+
 
 def parse_info_mode_combos(payload):
     """Provide mode combination info for Powered Up devices
@@ -149,12 +154,13 @@ def parse_info_mode_combos(payload):
     payload = "".join(payload).encode("latin1")
     # data values are 16-bit flags
     # The number of data values will depend on the device
-    all_flags = unpack("<" + "h"*(len(payload) // 2), payload)
+    all_flags = unpack("<" + "h" * (len(payload) // 2), payload)
 
     # Each bit representing a mode
     found_flags = [
-        i if (1 << i) & flags else ''
-        for flags in all_flags for i in range(16)
+        i if (1 << i) & flags else ""
+        for flags in all_flags
+        for i in range(16)
         if (1 << i) & flags
     ]
     text = ", ".join(map(str, found_flags))
@@ -189,10 +195,9 @@ def parse_info_format(payload):
         0x01: "int16",  # 16-bit little-endian signed integer
         0x02: "int32",  # 32-bit little-endian signed integer
         0x03: "float32",  # 32-bit little-endian IEEE 754 floating point
-
     }
     data_sets, data_format, figures, decimals = map(ord, payload)
-    #text = f"data_sets: {data_sets}, data_format: {data_formats[data_format]}, figures: {figures}, decimals: {decimals}"
+    # text = f"data_sets: {data_sets}, data_format: {data_formats[data_format]}, figures: {figures}, decimals: {decimals}"
     text = f"{data_sets} {data_formats2[data_format]}, each {figures} chars, {decimals} decimals"
 
     return (data_sets, data_format, figures, decimals), text
@@ -285,6 +290,6 @@ def parse_cmd_modes(payload):
     # Increase by 1 all values
     # By default there are 8 modes starting from 0 to 7),
     # or 15 modes for modes2 & views2 starting from 0 to 15)
-    modes = dict(zip(expected_names, [val +1 for val in map(ord, payload)]))
+    modes = dict(zip(expected_names, [val + 1 for val in map(ord, payload)]))
     text = ", ".join([f"{k}: {v}" for k, v in modes.items()])
     return modes, text
