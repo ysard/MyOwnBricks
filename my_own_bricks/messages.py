@@ -31,7 +31,7 @@ def forge_mode_msg(mode):
     """Force read mode message initiated from hub, sent to device
 
     :Example: For mode 9:
-        0x43, 0x09, 0xb5,
+        0x43, 0x09, 0xb5
         ^     ^     ^
         |     |     checksum
         |     MODE_9
