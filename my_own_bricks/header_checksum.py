@@ -248,7 +248,7 @@ def get_all_possible_device_headers():
 def get_cheksum(data):
     """Compute checksum for the given data
 
-    :param data: Iterable of values
+    :param data: Iterable of values (header and message data are expected)
     :return: checksum
     :rtype: <int>
     """

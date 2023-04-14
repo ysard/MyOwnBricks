@@ -14,7 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """Forge messages sent to a device"""
+# Standard imports
 from math import ceil
+
+# Custom imports
 from my_own_bricks.header_checksum import get_cheksum, get_hub_header
 from my_own_bricks.header_checksum import lump_msg_type_t
 
