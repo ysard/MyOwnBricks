@@ -62,10 +62,14 @@ def parse_info_name(payload):
 def parse_info_raw(payload, percentage=False):
     """Provide info about the scaling (min/max) of the raw sensor (legacy)
 
+    Used for INFO_RAW, INFO_SI and INFO_PCT (with percentage param set to True).
+
     .. seealso::
         https://github.com/pybricks/technical-info/blob/master/uart-protocol.md#info_raw
 
     :param payload: List of chars found in the data part of a message.
+    :key percentage: Only for INFO_PCT messages. Just add '%' symbol for each
+        values in human readable text.
     :type payload: <list <str>>
     :return: Raw data parsed (min/max values) and human readable formatted data
     :rtype <tuple <tuple <float>, <float>>, <float>>, <str>>
