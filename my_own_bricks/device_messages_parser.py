@@ -21,11 +21,13 @@ documentation of PyBricks available at:
 https://github.com/pybricks/technical-info/blob/master/uart-protocol.md
 
 The functions are focused on 'Command Messages' and 'Mode Information Messages'.
-
-.. note:: CMD_SELECT & CMD_WRITE are basically supported (the raw payload is returned)
 """
 # Standard imports
 from struct import unpack
+from functools import partial
+
+# Custom imports
+from my_own_bricks.header_checksum import parse_device_header
 
 
 def parse_info_name(payload):
@@ -293,3 +295,108 @@ def parse_cmd_modes(payload):
     modes = dict(zip(expected_names, [val + 1 for val in map(ord, payload)]))
     text = ", ".join([f"{k}: {v}" for k, v in modes.items()])
     return modes, text
+
+
+def parse_message(message):
+    """Main parser method for messages coming from a device
+
+    Support is mainly focused on LUMP_MSG_TYPE_INFO & LUMP_MSG_TYPE_CMD messages.
+
+    .. note:: Support for CMD_SELECT & CMD_WRITE messages is basic
+        (the raw payload is returned).
+
+    .. warning:: For now, checksum is not tested.
+
+    """
+    # Bit flag used in powered up devices to indicate that the
+    # mode is 8 + the mode specified in the first byte
+    INFO_MODE_PLUS_8 = 0x20
+
+    # Mapping of parsers for LUMP_MSG_TYPE_INFO messages
+    info_type_mapping = {
+        0: parse_info_name,
+        1: parse_info_raw,
+        2: partial(parse_info_raw, percentage=True),
+        3: parse_info_raw,
+        4: parse_info_name,
+        5: parse_info_mapping,
+        6: parse_info_mode_combos,
+        0x80: parse_info_format,
+    }
+
+    # Mapping for humand readable names of LUMP_MSG_TYPE_INFO messages
+    info_type_descr_mapping = {
+        0: "INFO_NAME",
+        1: "INFO_RAW",
+        2: "INFO_PCT",
+        3: "INFO_SI",
+        4: "INFO_UNITS",
+        5: "INFO_MAPPING",
+        6: "INFO_MODE_COMBOS",
+        0x80: "INFO_FORMAT",
+    }
+
+    # Mapping of parsers for LUMP_MSG_TYPE_CMD messages
+    cmd_type_mapping = {
+        "LUMP_CMD_TYPE": parse_cmd_type,
+        "LUMP_CMD_MODES": parse_cmd_modes,
+        "LUMP_CMD_SPEED": parse_cmd_speed,
+        # "LUMP_CMD_SELECT": parse_cmd_select,
+        # "LUMP_CMD_WRITE": parse_cmd_write,
+        # "LUMP_CMD_UNK1": None,
+        # "LUMP_CMD_EXT_MODE": parse_cmd_ext_mode,
+        "LUMP_CMD_VERSION": parse_cmd_version,
+    }
+
+    message = iter(message)
+
+    while True:
+        try:
+            msg_type, mode, cmd, msg_size = parse_device_header(ord(next(message)))
+        except StopIteration:
+            # Yeah, I am a coward, I consider the packets to be complete including checksums.
+            # This exception *should not* occurs elsewhere.
+            break
+
+        payload_size = msg_size - 2  # Remove checksum & header from size
+        if msg_type == "LUMP_MSG_TYPE_CMD":
+            # Note: The range explicitly removes the checksum from the payload size
+            payload = [next(message) for _ in range(payload_size)]
+
+            raw_data, text = cmd_type_mapping.get(cmd, lambda x: (x, "Not supported"))(
+                payload
+            )
+
+            print(cmd, end=" ")
+            print(text)
+            print()
+
+        elif msg_type == "LUMP_MSG_TYPE_INFO":
+            info_type = ord(next(message))
+            if info_type & INFO_MODE_PLUS_8 != 0:
+                # INFO_MODE_PLUS_8 is set: mode should be updated
+                mode %= 8
+            # Remove mode flag from the byte
+            info_type &= ~INFO_MODE_PLUS_8
+
+            # Remove previous byte from the payload size
+            payload_size -= 1
+            # Note: The range explicitly removes the checksum from the payload size
+            payload = [next(message) for _ in range(payload_size)]
+
+            print("MODE", mode, end=" ")
+            print(info_type_descr_mapping.get(info_type, "UKN"), end=" ")
+
+            raw_data, text = info_type_mapping.get(
+                info_type, lambda x: (x, "Not supported")
+            )(payload)
+
+            print(text)
+            print()
+
+        else:
+            payload = [next(message) for _ in range(payload_size + 1)]  # +1 ????
+            print(payload_size + 1, payload, len(payload))
+
+        # Throw the last byte (checksum)
+        next(message)
