@@ -129,9 +129,7 @@ def parse_info_mapping(payload):
         raw_flags[flags_type] = found_flags
         text_flags[flags_type] = ",".join(found_flags)
 
-    text = ", ".join(
-        [f"{k}: {v if v else 'None'}" for k, v in text_flags.items()]
-    )
+    text = ", ".join([f"{k}: {v if v else 'None'}" for k, v in text_flags.items()])
     return raw_flags, text
 
 
