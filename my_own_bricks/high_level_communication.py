@@ -53,7 +53,8 @@ def get_device_messages():
     >>>     msg = messages.send(6)
 
     :return: Coroutine that yields a tuple with (header, response) and accepts
-        values: `mode` and `payload` for write queries;
+        values: `mode` and `payload` for write queries.
+        `mode` is the mode selected on the device to read/write the data.
         `mode` can be set alone if the query is read-only.
     """
     serial_handler = autoconnect()
