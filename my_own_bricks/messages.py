@@ -56,23 +56,33 @@ def forge_write_mode_msg(mode, data=0x04):
         |     EXT_MODE_0
         MESSAGE_CMD | LENGTH_1 | CMD_SELECT
 
-    :param mode: Write mode queried. Must be 5 or 7.
-    :param data: Value to set (1 int for now).
+    :param mode: Write mode queried. This is the mode selected on the device to
+        write the data.
+        Ex: On Color & distance sensor, only mode 5 and 7 are writable.
+        On Color sensor, mode 3 (PBIO_IODEV_MODE_PUP_COLOR_SENSOR__LIGHT) requires
+        3 bytes to set the brightness of the 3 leds (left, bottom, right).
+    :param data: Value to set (1 int for now, but it could require 1 or more bytes).
     :type mode: <int>
     :type data: <int>
     :return: <bytes>
     """
-    assert mode in (5, 7)
-    # 2 bytes for mode 7, 1 byte for mode 5
-    data_bytes_nb = 2 if mode == 7 else 1
+    # Enable EXT_MODE_8 or EXT_MODE_0 at index 1
+    ext_mode = 8 if mode >= 8 else 0
+    mode %= 8
+
+    # Ex: For Color & distance sensor, 2 bytes for mode 7, 1 byte for mode 5
+    data_bytes_nb = ceil(data.bit_length() / 8)
 
     headers = get_hub_header(lump_msg_type_t["LUMP_MSG_TYPE_DATA"], mode, data_bytes_nb)
     assert headers[0] == 0x46
 
     # First part of the message is fixed
-    # modes 5, 7 don't require EXT_MODE_8,
+    # Ex: For Color & distance sensor, modes 5, 7 don't require EXT_MODE_8,
     # so we have EXT_MODE_0 at index 1
-    msg = bytearray(b"\x46\x00\xb9")
+    # msg = bytearray(b"\x46\x00\xb9")
+    msg = bytearray(b"\x46")
+    msg.append(ext_mode)
+    msg.append(get_cheksum(msg))
     # Second part
     msg += headers[1].to_bytes(1, byteorder='little')  # Header
     # Get byte number
