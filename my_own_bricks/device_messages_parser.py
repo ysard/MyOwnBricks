@@ -403,8 +403,11 @@ def parse_messages(stream):
             print("\tMODE", mode, msg_descr, text)
 
         else:
-            payload = [next(stream) for _ in range(payload_size + 1)]  # +1 ????
-            print(payload_size + 1, payload, len(payload))
+            payload = [next(stream) for _ in range(payload_size)]
+            raw_data = text = None
+            # Message description corresponds to the message type here
+            msg_descr = msg_type
+            print("\t" + msg_type,"Not supported", payload)
 
         # Throw the last byte (checksum)
         found_checksum = ord(next(stream))
@@ -414,7 +417,7 @@ def parse_messages(stream):
         expected_checksum = get_cheksum(message)
 
         if found_checksum != expected_checksum:
-            print("ERROR: Bad checksum! Found vs expected:", found_checksum, expected_checksum)
+            print("ERROR: Bad checksum! Found vs expected:", hex(found_checksum), hex(expected_checksum))
 
         message.append(expected_checksum)
-        yield  msg_descr if msg_type == "LUMP_MSG_TYPE_INFO" else cmd, message, raw_data
+        yield  cmd if msg_type == "LUMP_MSG_TYPE_CMD" else msg_descr, message, raw_data
