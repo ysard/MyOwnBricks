@@ -54,7 +54,12 @@ def parse_info_name(payload):
     # - default:
     # This is limited to 11 characters.
     if len(payload) > 12 and "\x00" in payload and payload.index("\x00") <= 5:
-        print("New I/O devices with flags & padding: Not implemented")
+        flags_start_pos = payload.index("\x00")
+        flags = [value for value in payload[flags_start_pos:] if value != 0x00]
+        print("New I/O device with flags NOT parsed: ", flags)
+
+        # Keep only name part
+        payload = payload[:flags_start_pos]
     # strip trailing null chars
     raw_text = "".join(payload).rstrip("\x00")
     text = "'" + raw_text + "'"
