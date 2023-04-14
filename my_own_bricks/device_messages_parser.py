@@ -308,6 +308,8 @@ def parse_message(stream):
     .. note:: Support for CMD_SELECT & CMD_WRITE messages is basic
         (the raw payload is returned).
 
+    .. todo:: This function could be a generator of data used to iterate over
+        analysed messages (yield raw_data).
     """
     # Bit flag used in powered up devices to indicate that the
     # mode is 8 + the mode specified in the first byte
