@@ -295,7 +295,7 @@ def parse_cmd_modes(payload):
     return modes, text
 
 
-def parse_message(message):
+def parse_message(stream):
     """Main parser method for messages coming from a device
 
     Support is mainly focused on LUMP_MSG_TYPE_INFO & LUMP_MSG_TYPE_CMD messages.
@@ -346,20 +346,25 @@ def parse_message(message):
         "LUMP_CMD_VERSION": parse_cmd_version,
     }
 
-    message = iter(message)
+    stream = iter(stream)
 
     while True:
+        # Rebuild the current message
+        message = list()
         try:
-            msg_type, mode, cmd, msg_size = parse_device_header(ord(next(message)))
+            header = ord(next(stream))
         except StopIteration:
             # Yeah, I am a coward, I consider the packets to be complete including checksums.
             # This exception *should not* occurs elsewhere.
             break
 
+        msg_type, mode, cmd, msg_size = parse_device_header(header)
+        message.append(header)
+
         payload_size = msg_size - 2  # Remove checksum & header from size
         if msg_type == "LUMP_MSG_TYPE_CMD":
             # Note: The range explicitly removes the checksum from the payload size
-            payload = [next(message) for _ in range(payload_size)]
+            payload = [next(stream) for _ in range(payload_size)]
 
             raw_data, text = cmd_type_mapping.get(cmd, lambda x: (x, "Not supported"))(
                 payload
@@ -368,17 +373,19 @@ def parse_message(message):
             print("\t" + cmd, text)
 
         elif msg_type == "LUMP_MSG_TYPE_INFO":
-            info_type = ord(next(message))
-            if info_type & INFO_MODE_PLUS_8 != 0:
+            raw_info_type = ord(next(stream))
+            message.append(raw_info_type)
+
+            if raw_info_type & INFO_MODE_PLUS_8 != 0:
                 # INFO_MODE_PLUS_8 is set: mode should be updated
                 mode %= 8
             # Remove mode flag from the byte
-            info_type &= ~INFO_MODE_PLUS_8
+            info_type = raw_info_type & ~INFO_MODE_PLUS_8
 
             # Remove previous byte from the payload size
             payload_size -= 1
             # Note: The range explicitly removes the checksum from the payload size
-            payload = [next(message) for _ in range(payload_size)]
+            payload = [next(stream) for _ in range(payload_size)]
 
             msg_descr = info_type_descr_mapping.get(info_type, "UKN")
 
