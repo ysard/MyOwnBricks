@@ -49,7 +49,7 @@ def forge_info_name(text, flags=None):
     """
     if not isinstance(text, str):
         # Try autodetection
-        #print("New I/O device detected")
+        # print("New I/O device detected")
         text, flags = text
 
     if flags:

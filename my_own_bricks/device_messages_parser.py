@@ -307,10 +307,11 @@ def parse_cmd_modes(payload):
 def parse_messages(stream):
     """Main parser method for messages coming from a device
 
-    Support is mainly focused on LUMP_MSG_TYPE_INFO & LUMP_MSG_TYPE_CMD messages.
+    Support is focused on LUMP_MSG_TYPE_INFO & LUMP_MSG_TYPE_CMD messages used
+    in init sequences.
 
-    .. note:: Support for CMD_SELECT & CMD_WRITE messages is basic
-        (the raw payload is returned).
+    .. note:: Support for CMD_SELECT, CMD_EXT_MODE & CMD_WRITE messages is basic
+        (the raw payload is returned) since they are commands sent by the host.
 
     :return: Generator of message descriptions (info_type converted into
         human readable format for LUMP_MSG_TYPE_INFO messages, cmd otherwise).
@@ -407,6 +408,7 @@ def parse_messages(stream):
             print("\tMODE", mode, msg_descr, text)
 
         else:
+            # LUMP_MSG_TYPE_SYS, LUMP_MSG_TYPE_DATA messages
             payload = [next(stream) for _ in range(payload_size)]
             raw_data = text = None
             # Message description corresponds to the message type here
@@ -424,4 +426,6 @@ def parse_messages(stream):
             print("ERROR: Bad checksum! Found vs expected:", hex(found_checksum), hex(expected_checksum))
 
         message.append(expected_checksum)
+
+        # Use msg_descr for LUMP_MSG_TYPE_INFO and all not supported types
         yield  cmd if msg_type == "LUMP_MSG_TYPE_CMD" else msg_descr, message, raw_data
