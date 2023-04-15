@@ -385,7 +385,7 @@ def parse_messages(stream):
 
             if raw_info_type & INFO_MODE_PLUS_8 != 0:
                 # INFO_MODE_PLUS_8 is set: mode should be updated
-                mode %= 8
+                mode += 8
             # Remove mode flag from the byte
             info_type = raw_info_type & ~INFO_MODE_PLUS_8
 
