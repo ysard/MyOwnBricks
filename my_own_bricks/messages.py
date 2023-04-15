@@ -44,7 +44,7 @@ def forge_mode_msg(mode):
 
 
 def forge_write_mode_msg(mode, data=0x04):
-    """Forge write mode message (5, 7) initiated from hub, sent to device
+    """Forge write mode message initiated from hub, sent to device
 
     :Example: For mode 5:
         0x46, 0x00, 0xb9, 0xC5, 0x00, 0x3a
@@ -54,7 +54,7 @@ def forge_write_mode_msg(mode, data=0x04):
         |     |     |     MESSAGE_DATA | LENGTH_1 | MODE_5
         |     |     checksum
         |     EXT_MODE_0
-        MESSAGE_CMD | LENGTH_1 | CMD_SELECT
+        MESSAGE_CMD | LENGTH_1 | CMD_EXT_MODE
 
     :param mode: Write mode queried. This is the mode selected on the device to
         write the data.
