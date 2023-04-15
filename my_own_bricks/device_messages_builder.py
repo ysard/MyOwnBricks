@@ -29,7 +29,12 @@ from operator import or_
 from functools import reduce
 
 # Custom imports
-from my_own_bricks.header_checksum import parse_device_header, get_cheksum
+from my_own_bricks.header_checksum import (
+    parse_device_header,
+    get_cheksum,
+    get_device_header,
+)
+from my_own_bricks.header_checksum import lump_msg_type_t, lump_cmd_t
 
 
 def forge_info_name(text, flags=None):
@@ -213,3 +218,153 @@ def forge_cmd_modes(modes):
     """
     expected_names = ("modes", "views", "modes2", "views2")
     return bytearray([modes[name] - 1 for name in expected_names if name in modes])
+
+
+def forge_packets(messages_data):
+    """Main builder method for messages coming from a device
+
+    Support is focused on LUMP_MSG_TYPE_INFO & LUMP_MSG_TYPE_CMD messages used
+    in init sequences.
+
+    .. note:: There is NO support for CMD_SELECT, CMD_EXT_MODE & CMD_WRITE messages,
+        since they are commands sent by the host.
+        See :meth:`my_own_bricks.messages.forge_mode_msg` and
+        :meth:`my_own_bricks.messages.forge_write_mode_msg` for the first two.
+        See how to use them in :meth:`my_own_bricks.messages.get_device_messages`.
+
+    :param messages_data: Descriptions of messages as they could be obtained
+        from :meth:`my_own_bricks.device_messages_parser.parse_messages`.
+
+        :Example:
+
+        [
+            (
+                ("LUMP_MSG_TYPE_INFO", info_type, mode),
+                data
+            ),
+            (
+                ("LUMP_MSG_TYPE_CMD", cmd, None),
+                data,
+            ),
+        ]
+
+    :return: Generator of messages (header, payload, checksum).
+    :rtype: <generator <bytearray>>
+    """
+    # Bit flag used in powered up devices to indicate that the
+    # mode is 8 + the mode specified in the first byte
+    INFO_MODE_PLUS_8 = 0x20
+
+    # Mapping of functions for LUMP_MSG_TYPE_INFO messages
+    info_type_mapping = {
+        0: forge_info_name,
+        1: forge_info_raw,
+        2: forge_info_raw,
+        3: forge_info_raw,
+        4: forge_info_name,
+        5: forge_info_mapping,
+        6: forge_info_mode_combos,
+        0x80: forge_info_format,
+    }
+
+    # Mapping for humand readable names of LUMP_MSG_TYPE_INFO messages
+    info_type_descr_mapping = {
+        0: "INFO_NAME",
+        1: "INFO_RAW",
+        2: "INFO_PCT",
+        3: "INFO_SI",
+        4: "INFO_UNITS",
+        5: "INFO_MAPPING",
+        6: "INFO_MODE_COMBOS",
+        0x80: "INFO_FORMAT",
+    }
+
+    # Mapping of functions for LUMP_MSG_TYPE_CMD messages
+    cmd_type_mapping = {
+        "LUMP_CMD_TYPE": forge_cmd_type,
+        "LUMP_CMD_MODES": forge_cmd_modes,
+        "LUMP_CMD_SPEED": forge_cmd_speed,
+        # "LUMP_CMD_SELECT": forge_cmd_select,
+        # "LUMP_CMD_WRITE": forge_cmd_write,
+        # "LUMP_CMD_UNK1": None,
+        # "LUMP_CMD_EXT_MODE": forge_cmd_ext_mode,
+        "LUMP_CMD_VERSION": forge_cmd_version,
+    }
+
+    rev_info_type_descr_mapping = {v: k for k, v in info_type_descr_mapping.items()}
+
+    for message_data in messages_data:
+
+        msg_type, info_cmd_type, mode = message_data[0]
+        data = message_data[1]
+
+        print("=>", msg_type, info_cmd_type, "MODE", mode)
+
+        if msg_type == "LUMP_MSG_TYPE_CMD":
+            # Mode is a nonsense for this kind of messages
+            # => replace it by cmd
+            assert mode is None, "'mode' should be None with LUMP_MSG_TYPE_CMD"
+            cmd = info_cmd_type
+            mode = lump_cmd_t[cmd]
+            payload = cmd_type_mapping[cmd](data)
+
+            # Padding
+            # Original payload size
+            min_length = len(payload)
+
+        elif msg_type == "LUMP_MSG_TYPE_INFO":
+            info_type = info_cmd_type
+            info_type_val = rev_info_type_descr_mapping[info_type]
+            raw_info_type = info_type_val
+
+            if mode >= 8:
+                # INFO_MODE_PLUS_8 is set: mode should be updated
+                mode -= 8
+                raw_info_type |= INFO_MODE_PLUS_8
+
+            # Next bytes:
+            payload = info_type_mapping[info_type_val](data)
+
+            # Padding
+            # Original payload size: info_type + payload size
+            min_length = 1 + len(payload)
+
+        # Header
+        # TODO
+        # erreur: payload taille 4, renvoie pour un message une taille 5 (mangque 1 place)
+        # payload taille 5, renvoie pour un message de taille 5 (manque 2 places)
+        size_offset = 0
+        size = 0
+        while True:
+            header = get_device_header(
+                lump_msg_type_t[msg_type], mode, min_length + size_offset
+            )
+            *_, size = parse_device_header(header)
+
+            if size < min_length + 2:
+                # print("Effective size too small:", size)
+                size_offset += 1
+            else:
+                # print("Effective size OK:", size)
+                break
+
+        # 1st payload byte is info_type for LUMP_MSG_TYPE_INFO
+        msg = (
+            bytearray([header, raw_info_type])
+            if msg_type == "LUMP_MSG_TYPE_INFO"
+            else bytearray([header])
+        )
+        msg += payload
+
+        # Apply padding to fill the expected size
+        padding = size - 2 - min_length
+        if padding > 0:
+            # Add null bytes of padding
+            msg += bytes(padding)
+
+        # Checksum
+        msg.append(get_cheksum(msg))
+
+        assert len(msg) == size
+
+        yield msg
