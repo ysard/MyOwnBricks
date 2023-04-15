@@ -133,7 +133,7 @@ void ForceSensor::handleModes(){
         if (m_defaultComboModesEnabled)
             this->defaultCombosMode();
         else
-            this->sensorAngleMode();
+            this->sensorForceMode();
     } else if (header == 0x43) {
         // "Get value" commands (3 bytes message: header, mode, checksum)
         size_t ret = SerialTTL.readBytes(m_rxBuf, 2);
