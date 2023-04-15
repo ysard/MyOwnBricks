@@ -55,7 +55,11 @@ def parse_info_name(payload):
     # This is limited to 11 characters.
     if len(payload) > 12 and "\x00" in payload and payload.index("\x00") <= 5:
         flags_start_pos = payload.index("\x00")
-        flags = [value for value in payload[flags_start_pos:] if value != 0x00]
+        # Skip null char after the end of the name
+        flags = [value for value in payload[flags_start_pos + 1:]]
+        # code toremove trailing null values
+        while flags[-1] in ("\x00", 0x00):
+            flags.pop()
         print("New I/O device with flags NOT parsed: ", flags)
 
         # Keep only name part
