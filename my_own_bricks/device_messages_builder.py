@@ -83,6 +83,9 @@ def forge_info_mapping(flags):
 
     :param flags: Dict with type of flags as keys and flag values as values.
         Flags can be given as a int numbers or strings.
+
+        - output_flags: for writable value on the device;
+        - input_flags: for readable value from the device.
     :type flags: <dict <str>: <tuple <int>>>
     :return: Bytes encoded input. NOT padded.
     :rtype: <bytes>

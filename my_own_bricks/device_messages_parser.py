@@ -108,6 +108,9 @@ def parse_info_mapping(payload):
     :param payload: List of chars found in the data part of a message.
     :type payload: <list <str>>
     :return: Raw data parsed (input/output flags) and human readable formatted data
+
+        - output_flags: for writable value on the device;
+        - input_flags: for readable value from the device.
     :rtype <tuple <dict <str>:<int>>, <str>>
     """
     info_mapping = {
