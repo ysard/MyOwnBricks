@@ -168,6 +168,12 @@ def test_forge_packets():
             ("LUMP_MSG_TYPE_CMD", "LUMP_CMD_VERSION", None),
             {"fw-version": (1, 0, 0, 0), "hw-version": (1, 0, 0, 0)},
         ),
+        # Color & distance sensor
+        # LUMP_MSG_TYPE_INFO INFO_MODE_COMBOS
+        (
+            ("LUMP_MSG_TYPE_INFO", "INFO_MODE_COMBOS", 0),
+            (0, 1, 2, 3, 6),
+        ),
     ]
 
     expected = [
@@ -189,6 +195,7 @@ def test_forge_packets():
         b"\x49\x03\x02\xB7",
         b"\x52\x00\xC2\x01\x00\x6E",
         b"\x5F\x00\x00\x00\x10\x00\x00\x00\x10\xA0",
+        b"\x88\x06\x4F\x00\x3E",
     ]
 
     for index, msg in enumerate(forge_packets(data)):
