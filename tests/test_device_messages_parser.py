@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import pytest
-from my_own_bricks.device_messages_parser import *  # parse_message
+from my_own_bricks.device_messages_parser import *
 
 
 def strip_info_message(message):
