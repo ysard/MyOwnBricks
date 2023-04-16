@@ -143,7 +143,7 @@ def forge_info_format(*args):
     :param args: List of 4 expected format numbers.
         Expected order: data_sets, data_format, figures, decimals.
     :type args: <list <int>>
-    :return: 2 bytes encoded input. NOT padded.
+    :return: 4 bytes encoded input. NOT padded.
     :rtype: <bytes>
     """
     data_sets_data_format_figures_decimals = list(*args)
@@ -223,7 +223,7 @@ def forge_cmd_modes(modes):
     return bytearray([modes[name] - 1 for name in expected_names if name in modes])
 
 
-def forge_packets(messages_data):
+def forge_packets(messages_definitions):
     """Main builder method for messages coming from a device
 
     Support is focused on LUMP_MSG_TYPE_INFO & LUMP_MSG_TYPE_CMD messages used
@@ -296,10 +296,10 @@ def forge_packets(messages_data):
 
     rev_info_type_descr_mapping = {v: k for k, v in info_type_descr_mapping.items()}
 
-    for message_data in messages_data:
+    for msg_def in messages_definitions:
 
-        msg_type, info_cmd_type, mode = message_data[0]
-        data = message_data[1]
+        msg_type, info_cmd_type, mode = msg_def[0]
+        data = msg_def[1]
 
         print("=>", msg_type, info_cmd_type, "MODE", mode)
 
