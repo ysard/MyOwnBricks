@@ -8,6 +8,11 @@ to guess and without it your device has no chance to work.
 The `forge_packets()` function in the `device_messages_builder` module of the
 Python library is there for this.
 
+Keep in mind that the documentation of the LEGO Powered Up UART Protocol is
+the cornerstone of this project.
+See [PyBricks doc](https://github.com/pybricks/technical-info/blob/master/uart-protocol.md#data-messages).
+
+
 Let's take the example of the unknown initialization sequence of the "Spike Force Sensor"
 that is approximated by reverse engineering.
 See [sources](https://github.com/ysard/MyOwnBricks/blob/spike_force/src/ForceSensor.cpp).
