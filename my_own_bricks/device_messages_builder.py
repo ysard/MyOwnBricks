@@ -78,6 +78,9 @@ def forge_info_raw(values):
 def forge_info_mapping(flags):
     """Encode the given flags into payload
 
+    .. warning: "N/A" flag name is not supported;
+        it will be always replaced by 1 << 0 = 1
+
     :param flags: Dict with type of flags as keys and flag values as values.
         Flags can be given as a int numbers or strings.
     :type flags: <dict <str>: <tuple <int>>>
@@ -86,15 +89,15 @@ def forge_info_mapping(flags):
     """
     info_mapping = {
         1 << 0: "N/A",
-        1 << 1: "N/A",
+        #1 << 1: "N/A",
         1 << 2: "Discrete",
         1 << 3: "Relative",
         1 << 4: "Absolute",
-        1 << 5: "N/A",
+        #1 << 5: "N/A",
         1 << 6: "Func mapping 2.0+",
         1 << 7: "NULL",
     }
-    rev_info_mapping = {v: k for k, v in info_mapping.items() if v not in ("N/A",)}
+    rev_info_mapping = {v: k for k, v in info_mapping.items()}
 
     data = bytearray()
     for flag_type in ("input_flags", "output_flags"):
@@ -107,7 +110,7 @@ def forge_info_mapping(flags):
         if "N/A" in raw_flags:
             print(
                 "There could be a problem in the identification of your N/A flag,"
-                "prefer using ints instead of strings"
+                " prefer using ints instead of strings"
             )
 
         if all([isinstance(i, str) for i in raw_flags]):
