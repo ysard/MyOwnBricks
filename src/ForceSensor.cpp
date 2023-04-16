@@ -110,23 +110,50 @@ void ForceSensor::commSendInitSequence(){
     SerialTTL.flush();
     // Mode 6
     SerialTTL.write("\x9E\x00\x43\x41\x4C\x49\x42\x00\x00\x00\x24", 11); // Name: "CALIB"
+    SerialTTL.write("\x9E\x01\x00\x00\x00\x00\x00\xFF\x7F\x47\xA7", 11); // Range: 0.0 to 65535.0
+    SerialTTL.write("\x9E\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xE9", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x9E\x03\x00\x00\x00\x00\x00\xFF\x7F\x47\xA5", 11); // Si Range: 0.0 to 65535.0
+    SerialTTL.write("\x96\x04\x4E\x2F\x41\x00\x4D", 7);                  // Si Symbol: 'N/A'
+    SerialTTL.write("\x8E\x05\x00\x00\x74", 5);                          // No additional info mapping flag
     SerialTTL.write("\x96\x80\x08\x01\x04\x00\xE4", 7);                  // Format: 8 int16, each 4 chars, 0 decimals
     SerialTTL.flush();
     // Mode 4
     SerialTTL.write("\x94\x00\x46\x52\x41\x57\x69", 7);                  // Name: "FRAW"
+    SerialTTL.write("\x9C\x01\x00\x00\x00\x00\x00\x00\x7A\x44\x5C", 11); // Range: 0.0 to 1000.0
+    SerialTTL.write("\x9C\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEB", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x9C\x03\x00\x00\x00\x00\x00\x00\x7A\x44\x5E", 11); // Si Range: 0.0 to 1000.0
+    SerialTTL.write("\x94\x04\x52\x41\x57\x00\x2B", 7);                  // Si Symbol: 'RAW'
+    SerialTTL.write("\x8C\x05\x50\x00\x26", 5);                          // input_flags: Absolute,Func mapping 2.0+, output_flags: None
     SerialTTL.write("\x94\x80\x01\x01\x04\x00\xEF", 7);                  // Format: 1 int16, each 4 chars, 0 decimals
     SerialTTL.flush();
     // Mode 2
     SerialTTL.write("\x9A\x00\x54\x41\x50\x50\x45\x44\x00\x00\x71", 11); // Name: "TAPPED"
+    SerialTTL.write("\x9A\x01\x00\x00\x00\x00\x00\x00\x40\x40\x64", 11); // Range: 0.0 to 3.0
+    SerialTTL.write("\x9A\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xED", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x9A\x03\x00\x00\x00\x00\x00\x00\x40\x40\x66", 11); // Si Range: 0.0 to 3.0
+    SerialTTL.write("\x92\x04\x49\x44\x58\x00\x3C", 7);                  // Si Symbol: 'IDX'
+    SerialTTL.write("\x8A\x05\x04\x00\x74", 5);                          // input_flags: Discrete, output_flags: None
     SerialTTL.write("\x92\x80\x01\x00\x03\x00\xEF", 7);                  // Format: 1 int8, each 3 chars, 0 decimals
     SerialTTL.flush();
     // Mode 1
     SerialTTL.write("\x99\x00\x54\x4F\x55\x43\x48\x45\x44\x00\x22", 11); // Name: "TOUCHED"
+    SerialTTL.write("\x99\x01\x00\x00\x00\x00\x00\x00\x80\x3F\xD8", 11); // Range: 0.0 to 1.0
+    SerialTTL.write("\x99\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEE", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x99\x03\x00\x00\x00\x00\x00\x00\x80\x3F\xDA", 11); // Si Range: 0.0 to 1.0
+    SerialTTL.write("\x91\x04\x49\x44\x58\x00\x3F", 7);                  // Si Symbol: 'IDX'
+    SerialTTL.write("\x89\x05\x04\x00\x77", 5);                          // input_flags: Discrete, output_flags: None
     SerialTTL.write("\x91\x80\x01\x00\x03\x00\xEC", 7);                  // Format: 1 int8, each 3 chars, 0 decimals
     SerialTTL.flush();
     // Mode 0
     SerialTTL.write("\x98\x00\x46\x4F\x52\x43\x45\x00\x00\x00\x3A", 11); // Name: "FORCE"
+    SerialTTL.write("\x98\x01\x00\x00\x00\x00\x00\x00\xC8\x42\xEC", 11); // Range: 0.0 to 100.0
+    SerialTTL.write("\x98\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEF", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x98\x03\x00\x00\x00\x00\x00\x00\xC8\x42\xEE", 11); // Si Range: 0.0 to 100.0
+    SerialTTL.write("\x90\x04\x46\x4F\x52\x00\x30", 7);                  // Si Symbol: 'FOR'
+    SerialTTL.write("\x88\x05\x50\x00\x22", 5);                          // input_flags: Absolute,Func mapping 2.0+, output_flags: None
     SerialTTL.write("\x90\x80\x01\x00\x03\x00\xED", 7);                  // Format: 1 int8, each 3 chars, 0 decimals
+    SerialTTL.write("\x88\x06\x13\x00\x62", 5);                          // Combinable modes: 0: Force, 1: Touched, 4: RawForce
+
     SerialTTL.flush();
 
     SerialTTL.write("\x04", 1); // ACK
