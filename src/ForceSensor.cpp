@@ -97,7 +97,7 @@ void ForceSensor::setSensorCalibrationValues(uint16_t raw_offset, uint16_t raw_r
 /**
  * @brief Send initialization sequences for the current sensor.
  * @see https://github.com/pybricks/pybricks-micropython/lib/pbio/test/src/uartdev.c
- * @todo fullfill init sequence
+ * @warning The init sequence is purely supposed but plausible. It IS NOT obtained from sniffing and analysis.
  */
 void ForceSensor::commSendInitSequence(){
     // Initialize uart
@@ -153,7 +153,6 @@ void ForceSensor::commSendInitSequence(){
     SerialTTL.write("\x88\x05\x50\x00\x22", 5);                          // input_flags: Absolute,Func mapping 2.0+, output_flags: None
     SerialTTL.write("\x90\x80\x01\x00\x03\x00\xED", 7);                  // Format: 1 int8, each 3 chars, 0 decimals
     SerialTTL.write("\x88\x06\x13\x00\x62", 5);                          // Combinable modes: 0: Force, 1: Touched, 4: RawForce
-
     SerialTTL.flush();
 
     SerialTTL.write("\x04", 1); // ACK
