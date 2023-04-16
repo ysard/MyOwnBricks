@@ -142,6 +142,9 @@ def forge_info_format(*args):
 
     :param args: List of 4 expected format numbers.
         Expected order: data_sets, data_format, figures, decimals.
+
+        Ex: (8, 1, 4, 0): 8 int16 values, 4 chars to display each, 0 decimal
+
     :type args: <list <int>>
     :return: 4 bytes encoded input. NOT padded.
     :rtype: <bytes>
