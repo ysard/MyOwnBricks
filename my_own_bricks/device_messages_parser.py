@@ -191,6 +191,9 @@ def parse_info_format(payload):
     :type payload: <list <str>>
     :return: Raw data parsed (data_sets, data_format, figures, decimals)
         and human readable formatted data
+
+        Ex: (8, 1, 4, 0): 8 int16 values, 4 chars to display each, 0 decimal
+
     :rtype <tuple <tuple <int>>, <str>>
     """
     data_formats = {
