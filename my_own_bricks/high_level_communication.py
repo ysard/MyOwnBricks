@@ -1,5 +1,5 @@
 # MyOwnBricks is a library for the emulation of PoweredUp sensors on microcontrollers
-# Copyright (C) 2021-2022 Ysard - <ysard@users.noreply.github.com>
+# Copyright (C) 2021-2023 Ysard - <ysard@users.noreply.github.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -53,7 +53,8 @@ def get_device_messages():
     >>>     msg = messages.send(6)
 
     :return: Coroutine that yields a tuple with (header, response) and accepts
-        values: `mode` and `payload` for write queries;
+        values: `mode` and `payload` for write queries.
+        `mode` is the mode selected on the device to read/write the data.
         `mode` can be set alone if the query is read-only.
     """
     serial_handler = autoconnect()
@@ -103,7 +104,7 @@ def get_device_messages():
             continue
         header = ord(raw_val)
         print("<\t", end="")
-        msg_type, cmd_mode, msg_size = parse_device_header(header)
+        msg_type, cmd_mode, cmd, msg_size = parse_device_header(header)
 
         # Get the full message (minus the header)
         # NOTE: If we are here, data is already pending after header reception

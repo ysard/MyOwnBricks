@@ -40,9 +40,25 @@ smaller size than that allowed (See the allowed list in the following section).
 
 Here is the list of all the possible headers (encoded on 1 byte from 0 to 255)
 and their meanings (type of message, command, mode and total size of packet).
+Keep in mind that in reality, the data is limited to 32 bytes (thus a message with
+its header & payload is limited to 34 bytes).<br>
+Longer messages do not meet the protocol.
+
 
 For type `LUMP_MSG_TYPE_DATA`, modes meanings for Boost Color & Distance Sensor
 are displayed for information purposes.
+This sensor is a good example because it has 8 standard modes + 3 extended modes,
+showing the use of extended modes.
+
+Notes:
+
+- with `LUMP_MSG_TYPE_DATA` msg, `cmd` message is useless,
+it's assimilated to the `mode`.
+
+- with `LUMP_MSG_TYPE_INFO` msg, `mode` is obtained with `INFO_MODE_PLUS_8`
+flag which is set in the next byte (not the header).
+`cmd` message is also useless it's the `info_type` data that is useful,
+also in the next byte.
 
 This output is obtained via the following code:
 
@@ -180,70 +196,70 @@ device header: 0x7c => type LUMP_MSG_TYPE_CMD cmd LUMP_CMD_WRITE tot size 130
 device header: 0x7d => type LUMP_MSG_TYPE_CMD cmd LUMP_CMD_UNK1 tot size 130
 device header: 0x7e => type LUMP_MSG_TYPE_CMD cmd LUMP_CMD_EXT_MODE tot size 130
 device header: 0x7f => type LUMP_MSG_TYPE_CMD cmd LUMP_CMD_VERSION tot size 130
-device header: 0x80 => type LUMP_MSG_TYPE_INFO cmd ? mode 0/8 tot size 4
-device header: 0x81 => type LUMP_MSG_TYPE_INFO cmd ? mode 1/9 tot size 4
-device header: 0x82 => type LUMP_MSG_TYPE_INFO cmd ? mode 2/10 tot size 4
-device header: 0x83 => type LUMP_MSG_TYPE_INFO cmd ? mode 3/11 tot size 4
-device header: 0x84 => type LUMP_MSG_TYPE_INFO cmd ? mode 4/12 tot size 4
-device header: 0x85 => type LUMP_MSG_TYPE_INFO cmd ? mode 5/13 tot size 4
-device header: 0x86 => type LUMP_MSG_TYPE_INFO cmd ? mode 6/14 tot size 4
-device header: 0x87 => type LUMP_MSG_TYPE_INFO cmd ? mode 7/15 tot size 4
-device header: 0x88 => type LUMP_MSG_TYPE_INFO cmd ? mode 0/8 tot size 5
-device header: 0x89 => type LUMP_MSG_TYPE_INFO cmd ? mode 1/9 tot size 5
-device header: 0x8a => type LUMP_MSG_TYPE_INFO cmd ? mode 2/10 tot size 5
-device header: 0x8b => type LUMP_MSG_TYPE_INFO cmd ? mode 3/11 tot size 5
-device header: 0x8c => type LUMP_MSG_TYPE_INFO cmd ? mode 4/12 tot size 5
-device header: 0x8d => type LUMP_MSG_TYPE_INFO cmd ? mode 5/13 tot size 5
-device header: 0x8e => type LUMP_MSG_TYPE_INFO cmd ? mode 6/14 tot size 5
-device header: 0x8f => type LUMP_MSG_TYPE_INFO cmd ? mode 7/15 tot size 5
-device header: 0x90 => type LUMP_MSG_TYPE_INFO cmd ? mode 0/8 tot size 7
-device header: 0x91 => type LUMP_MSG_TYPE_INFO cmd ? mode 1/9 tot size 7
-device header: 0x92 => type LUMP_MSG_TYPE_INFO cmd ? mode 2/10 tot size 7
-device header: 0x93 => type LUMP_MSG_TYPE_INFO cmd ? mode 3/11 tot size 7
-device header: 0x94 => type LUMP_MSG_TYPE_INFO cmd ? mode 4/12 tot size 7
-device header: 0x95 => type LUMP_MSG_TYPE_INFO cmd ? mode 5/13 tot size 7
-device header: 0x96 => type LUMP_MSG_TYPE_INFO cmd ? mode 6/14 tot size 7
-device header: 0x97 => type LUMP_MSG_TYPE_INFO cmd ? mode 7/15 tot size 7
-device header: 0x98 => type LUMP_MSG_TYPE_INFO cmd ? mode 0/8 tot size 11
-device header: 0x99 => type LUMP_MSG_TYPE_INFO cmd ? mode 1/9 tot size 11
-device header: 0x9a => type LUMP_MSG_TYPE_INFO cmd ? mode 2/10 tot size 11
-device header: 0x9b => type LUMP_MSG_TYPE_INFO cmd ? mode 3/11 tot size 11
-device header: 0x9c => type LUMP_MSG_TYPE_INFO cmd ? mode 4/12 tot size 11
-device header: 0x9d => type LUMP_MSG_TYPE_INFO cmd ? mode 5/13 tot size 11
-device header: 0x9e => type LUMP_MSG_TYPE_INFO cmd ? mode 6/14 tot size 11
-device header: 0x9f => type LUMP_MSG_TYPE_INFO cmd ? mode 7/15 tot size 11
-device header: 0xa0 => type LUMP_MSG_TYPE_INFO cmd ? mode 0/8 tot size 19
-device header: 0xa1 => type LUMP_MSG_TYPE_INFO cmd ? mode 1/9 tot size 19
-device header: 0xa2 => type LUMP_MSG_TYPE_INFO cmd ? mode 2/10 tot size 19
-device header: 0xa3 => type LUMP_MSG_TYPE_INFO cmd ? mode 3/11 tot size 19
-device header: 0xa4 => type LUMP_MSG_TYPE_INFO cmd ? mode 4/12 tot size 19
-device header: 0xa5 => type LUMP_MSG_TYPE_INFO cmd ? mode 5/13 tot size 19
-device header: 0xa6 => type LUMP_MSG_TYPE_INFO cmd ? mode 6/14 tot size 19
-device header: 0xa7 => type LUMP_MSG_TYPE_INFO cmd ? mode 7/15 tot size 19
-device header: 0xa8 => type LUMP_MSG_TYPE_INFO cmd ? mode 0/8 tot size 35
-device header: 0xa9 => type LUMP_MSG_TYPE_INFO cmd ? mode 1/9 tot size 35
-device header: 0xaa => type LUMP_MSG_TYPE_INFO cmd ? mode 2/10 tot size 35
-device header: 0xab => type LUMP_MSG_TYPE_INFO cmd ? mode 3/11 tot size 35
-device header: 0xac => type LUMP_MSG_TYPE_INFO cmd ? mode 4/12 tot size 35
-device header: 0xad => type LUMP_MSG_TYPE_INFO cmd ? mode 5/13 tot size 35
-device header: 0xae => type LUMP_MSG_TYPE_INFO cmd ? mode 6/14 tot size 35
-device header: 0xaf => type LUMP_MSG_TYPE_INFO cmd ? mode 7/15 tot size 35
-device header: 0xb0 => type LUMP_MSG_TYPE_INFO cmd ? mode 0/8 tot size 67
-device header: 0xb1 => type LUMP_MSG_TYPE_INFO cmd ? mode 1/9 tot size 67
-device header: 0xb2 => type LUMP_MSG_TYPE_INFO cmd ? mode 2/10 tot size 67
-device header: 0xb3 => type LUMP_MSG_TYPE_INFO cmd ? mode 3/11 tot size 67
-device header: 0xb4 => type LUMP_MSG_TYPE_INFO cmd ? mode 4/12 tot size 67
-device header: 0xb5 => type LUMP_MSG_TYPE_INFO cmd ? mode 5/13 tot size 67
-device header: 0xb6 => type LUMP_MSG_TYPE_INFO cmd ? mode 6/14 tot size 67
-device header: 0xb7 => type LUMP_MSG_TYPE_INFO cmd ? mode 7/15 tot size 67
-device header: 0xb8 => type LUMP_MSG_TYPE_INFO cmd ? mode 0/8 tot size 131
-device header: 0xb9 => type LUMP_MSG_TYPE_INFO cmd ? mode 1/9 tot size 131
-device header: 0xba => type LUMP_MSG_TYPE_INFO cmd ? mode 2/10 tot size 131
-device header: 0xbb => type LUMP_MSG_TYPE_INFO cmd ? mode 3/11 tot size 131
-device header: 0xbc => type LUMP_MSG_TYPE_INFO cmd ? mode 4/12 tot size 131
-device header: 0xbd => type LUMP_MSG_TYPE_INFO cmd ? mode 5/13 tot size 131
-device header: 0xbe => type LUMP_MSG_TYPE_INFO cmd ? mode 6/14 tot size 131
-device header: 0xbf => type LUMP_MSG_TYPE_INFO cmd ? mode 7/15 tot size 131
+device header: 0x80 => type LUMP_MSG_TYPE_INFO mode 0/8 tot size 4
+device header: 0x81 => type LUMP_MSG_TYPE_INFO mode 1/9 tot size 4
+device header: 0x82 => type LUMP_MSG_TYPE_INFO mode 2/10 tot size 4
+device header: 0x83 => type LUMP_MSG_TYPE_INFO mode 3/11 tot size 4
+device header: 0x84 => type LUMP_MSG_TYPE_INFO mode 4/12 tot size 4
+device header: 0x85 => type LUMP_MSG_TYPE_INFO mode 5/13 tot size 4
+device header: 0x86 => type LUMP_MSG_TYPE_INFO mode 6/14 tot size 4
+device header: 0x87 => type LUMP_MSG_TYPE_INFO mode 7/15 tot size 4
+device header: 0x88 => type LUMP_MSG_TYPE_INFO mode 0/8 tot size 5
+device header: 0x89 => type LUMP_MSG_TYPE_INFO mode 1/9 tot size 5
+device header: 0x8a => type LUMP_MSG_TYPE_INFO mode 2/10 tot size 5
+device header: 0x8b => type LUMP_MSG_TYPE_INFO mode 3/11 tot size 5
+device header: 0x8c => type LUMP_MSG_TYPE_INFO mode 4/12 tot size 5
+device header: 0x8d => type LUMP_MSG_TYPE_INFO mode 5/13 tot size 5
+device header: 0x8e => type LUMP_MSG_TYPE_INFO mode 6/14 tot size 5
+device header: 0x8f => type LUMP_MSG_TYPE_INFO mode 7/15 tot size 5
+device header: 0x90 => type LUMP_MSG_TYPE_INFO mode 0/8 tot size 7
+device header: 0x91 => type LUMP_MSG_TYPE_INFO mode 1/9 tot size 7
+device header: 0x92 => type LUMP_MSG_TYPE_INFO mode 2/10 tot size 7
+device header: 0x93 => type LUMP_MSG_TYPE_INFO mode 3/11 tot size 7
+device header: 0x94 => type LUMP_MSG_TYPE_INFO mode 4/12 tot size 7
+device header: 0x95 => type LUMP_MSG_TYPE_INFO mode 5/13 tot size 7
+device header: 0x96 => type LUMP_MSG_TYPE_INFO mode 6/14 tot size 7
+device header: 0x97 => type LUMP_MSG_TYPE_INFO mode 7/15 tot size 7
+device header: 0x98 => type LUMP_MSG_TYPE_INFO mode 0/8 tot size 11
+device header: 0x99 => type LUMP_MSG_TYPE_INFO mode 1/9 tot size 11
+device header: 0x9a => type LUMP_MSG_TYPE_INFO mode 2/10 tot size 11
+device header: 0x9b => type LUMP_MSG_TYPE_INFO mode 3/11 tot size 11
+device header: 0x9c => type LUMP_MSG_TYPE_INFO mode 4/12 tot size 11
+device header: 0x9d => type LUMP_MSG_TYPE_INFO mode 5/13 tot size 11
+device header: 0x9e => type LUMP_MSG_TYPE_INFO mode 6/14 tot size 11
+device header: 0x9f => type LUMP_MSG_TYPE_INFO mode 7/15 tot size 11
+device header: 0xa0 => type LUMP_MSG_TYPE_INFO mode 0/8 tot size 19
+device header: 0xa1 => type LUMP_MSG_TYPE_INFO mode 1/9 tot size 19
+device header: 0xa2 => type LUMP_MSG_TYPE_INFO mode 2/10 tot size 19
+device header: 0xa3 => type LUMP_MSG_TYPE_INFO mode 3/11 tot size 19
+device header: 0xa4 => type LUMP_MSG_TYPE_INFO mode 4/12 tot size 19
+device header: 0xa5 => type LUMP_MSG_TYPE_INFO mode 5/13 tot size 19
+device header: 0xa6 => type LUMP_MSG_TYPE_INFO mode 6/14 tot size 19
+device header: 0xa7 => type LUMP_MSG_TYPE_INFO mode 7/15 tot size 19
+device header: 0xa8 => type LUMP_MSG_TYPE_INFO mode 0/8 tot size 35
+device header: 0xa9 => type LUMP_MSG_TYPE_INFO mode 1/9 tot size 35
+device header: 0xaa => type LUMP_MSG_TYPE_INFO mode 2/10 tot size 35
+device header: 0xab => type LUMP_MSG_TYPE_INFO mode 3/11 tot size 35
+device header: 0xac => type LUMP_MSG_TYPE_INFO mode 4/12 tot size 35
+device header: 0xad => type LUMP_MSG_TYPE_INFO mode 5/13 tot size 35
+device header: 0xae => type LUMP_MSG_TYPE_INFO mode 6/14 tot size 35
+device header: 0xaf => type LUMP_MSG_TYPE_INFO mode 7/15 tot size 35
+device header: 0xb0 => type LUMP_MSG_TYPE_INFO mode 0/8 tot size 67
+device header: 0xb1 => type LUMP_MSG_TYPE_INFO mode 1/9 tot size 67
+device header: 0xb2 => type LUMP_MSG_TYPE_INFO mode 2/10 tot size 67
+device header: 0xb3 => type LUMP_MSG_TYPE_INFO mode 3/11 tot size 67
+device header: 0xb4 => type LUMP_MSG_TYPE_INFO mode 4/12 tot size 67
+device header: 0xb5 => type LUMP_MSG_TYPE_INFO mode 5/13 tot size 67
+device header: 0xb6 => type LUMP_MSG_TYPE_INFO mode 6/14 tot size 67
+device header: 0xb7 => type LUMP_MSG_TYPE_INFO mode 7/15 tot size 67
+device header: 0xb8 => type LUMP_MSG_TYPE_INFO mode 0/8 tot size 131
+device header: 0xb9 => type LUMP_MSG_TYPE_INFO mode 1/9 tot size 131
+device header: 0xba => type LUMP_MSG_TYPE_INFO mode 2/10 tot size 131
+device header: 0xbb => type LUMP_MSG_TYPE_INFO mode 3/11 tot size 131
+device header: 0xbc => type LUMP_MSG_TYPE_INFO mode 4/12 tot size 131
+device header: 0xbd => type LUMP_MSG_TYPE_INFO mode 5/13 tot size 131
+device header: 0xbe => type LUMP_MSG_TYPE_INFO mode 6/14 tot size 131
+device header: 0xbf => type LUMP_MSG_TYPE_INFO mode 7/15 tot size 131
 device header: 0xc0 => type LUMP_MSG_TYPE_DATA mode 0 (COLOR/SPEC1) tot size 3
 device header: 0xc1 => type LUMP_MSG_TYPE_DATA mode 1 (PROX/DEBUG) tot size 3
 device header: 0xc2 => type LUMP_MSG_TYPE_DATA mode 2 (COUNT/CALIB) tot size 3

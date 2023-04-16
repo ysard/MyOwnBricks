@@ -1,6 +1,6 @@
 /*
  * MyOwnBricks is a library for the emulation of PoweredUp sensors on microcontrollers
- * Copyright (C) 2021-2022 Ysard - <ysard@users.noreply.github.com>
+ * Copyright (C) 2021-2023 Ysard - <ysard@users.noreply.github.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#ifndef MOB_GLOBAL_H
+#define MOB_GLOBAL_H
 
 #if !defined(__AVR__)
 #include <cinttypes>
@@ -76,4 +76,4 @@
     #define INFO_PRINTLN(...) void()
 #endif
 
-#endif
+#endif // MOB_GLOBAL_H

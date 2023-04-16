@@ -22,6 +22,7 @@
     * [Infrared emitter](#infrared-emitter)
 * [Development](#development)
     * [Cloning &amp; installation](#cloning--installation)
+    * [Debugging packets - (Python library, devtools)](#debugging-packets---python-library-devtools)
     * [How to participate ?](#how-to-participate-)
 * [MyOwnBricks is free AND open source](#myownbricks-is-free-and-open-source)
 * [Credits](#credits)
@@ -318,6 +319,18 @@ You can choose one of the following methods:
 - Contribute to the development by cloning the repository:
     `git clone https://github.com:ysard/MyOwnBricks.git`
 
+## Debugging packets - (Python library, devtools)
+
+An important part of the reverse engineering work relies on the use of a Python library
+included in the repository in the [./my_own_bricks](./my_own_bricks) folder.
+
+This library is used in particular in the example given to debug the implementation of a
+sensor on a microcontroller without using the official Hub (Hub emulation).
+
+Many functions are available to process the headers and the checksums of the packets.
+As well as to process the data of some of them (analysis of the initialization sequence).
+
+For more information, read the documents in the [./doc](./doc/) folder and the tests [./tests/](./tests/).
 
 ## How to participate ?
 
@@ -362,6 +375,7 @@ Thanks to @ahmedjouirou for the first implementation https://github.com/ahmedjou
     * [Emetteur infrarouge](#emetteur-infrarouge)
 * [Développement](#développement)
     * [Clonage &amp; installation](#clonage--installation)
+    * [Debugger les paquets - (Librairie Python, devtools)](#debugger-les-paquets---librairie-python-devtools)
     * [Comment participer ?](#comment-participer-)
 * [MyOwnBricks est libre ET open source](#myownbricks-est-libre-et-open-source)
 * [Crédits](#crédits)
@@ -661,6 +675,19 @@ Vous pouvez suivre une des méthodes suivantes :
 `"Croquis/Inclure une bibliothèque/Ajouter la bibliothèque .ZIP"`.
 - Participer au développement en clonant le dépôt:
     `git clone https://github.com:ysard/MyOwnBricks.git`
+
+## Debugger les paquets - (Librairie Python, devtools)
+
+Une part importante du travail de rétro-ingénierie repose sur l'usage d'une bibliothèque Python
+incluse dans le dépôt dans le dossier [./my_own_bricks](./my_own_bricks).
+
+Cette librairie est sert notament dans l'exemple donné pour débugger l'implémentation d'un
+capteur sur un microcontrôleur sans passer par le Hub officiel (émulation de Hub).
+
+De nombreuses fonctions sont disponibles pour traiter les en-têtes et checksums des paquets.
+Ainsi que traiter les données de certains d'entre eux (analyse de la séquence d'initialisation).
+
+Pour plus d'informations, lisez les documents dans le dossier [./doc](./doc/) et les tests [./tests/](./tests/).
 
 ## Comment participer ?
 

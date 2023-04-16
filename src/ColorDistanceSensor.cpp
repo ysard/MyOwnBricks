@@ -1,6 +1,6 @@
 /*
  * A library for the emulation of PoweredUp sensors on microcontrollers
- * Copyright (C) 2021-2022 Ysard - <ysard@users.noreply.github.com>
+ * Copyright (C) 2021-2023 Ysard - <ysard@users.noreply.github.com>
  *
  * Based on the original work of Ahmed Jouirou - <ahmed.jouirou@gmail.com>
  *
@@ -187,113 +187,124 @@ void ColorDistanceSensor::commSendInitSequence(){
     // Initialize uart
     SerialTTL.begin(2400);
 
-    SerialTTL.write("\x40\x25\x9A",3); // Type ID: 0x25
-    SerialTTL.write("\x51\x07\x07\x0A\x07\xA3",6); // CMD_MODES
-    SerialTTL.write("\x52\x00\xC2\x01\x00\x6E",6); // CMD_SPEED: 115200
-    SerialTTL.write("\x5F\x00\x00\x00\x10\x00\x00\x00\x10\xA0",10); // CMD_VERSION
+    SerialTTL.write("\x40\x25\x9A", 3);                              // Type ID: 0x25
+    SerialTTL.write("\x51\x07\x07\x0A\x07\xA3", 6);                  // CMD_MODES: 8 modes, 8 views, Ext. Modes: modes: 11, views: 8
+    SerialTTL.write("\x52\x00\xC2\x01\x00\x6E", 6);                  // CMD_SPEED: 115200
+    SerialTTL.write("\x5F\x00\x00\x00\x10\x00\x00\x00\x10\xA0", 10); // CMD_VERSION: fw-version: 1.0.0.0, hw-version: 1.0.0.0
     SerialTTL.flush();
     delay(10);
-    SerialTTL.write("\x9A\x20\x43\x41\x4C\x49\x42\x00\x00\x00\x00",11);
-    SerialTTL.write("\x9A\x21\x00\x00\x00\x00\x00\xFF\x7F\x47\x83",11);
-    SerialTTL.write("\x9A\x22\x00\x00\x00\x00\x00\x00\xC8\x42\xCD",11);
-    SerialTTL.write("\x9A\x23\x00\x00\x00\x00\x00\xFF\x7F\x47\x81",11);
-    SerialTTL.write("\x92\x24\x4E\x2F\x41\x00\x69",7);
-    SerialTTL.write("\x8A\x25\x10\x00\x40",5);
-    SerialTTL.write("\x92\xA0\x08\x01\x05\x00\xC1",7);
+    // Mode 10
+    SerialTTL.write("\x9A\x20\x43\x41\x4C\x49\x42\x00\x00\x00\x00", 11); // Name: "CALIB"
+    SerialTTL.write("\x9A\x21\x00\x00\x00\x00\x00\xFF\x7F\x47\x83", 11); // Range: 0 to 65535
+    SerialTTL.write("\x9A\x22\x00\x00\x00\x00\x00\x00\xC8\x42\xCD", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x9A\x23\x00\x00\x00\x00\x00\xFF\x7F\x47\x81", 11); // Si Range: 0 to 65535
+    SerialTTL.write("\x92\x24\x4E\x2F\x41\x00\x69", 7);                  // Si Symbol: 'N/A'
+    SerialTTL.write("\x8A\x25\x10\x00\x40", 5);                          // input_flags: Absolute, output_flags: None
+    SerialTTL.write("\x92\xA0\x08\x01\x05\x00\xC1", 7);                  // Format: 8 int16, each 5 chars, 0 decimals
     SerialTTL.flush();
     delay(10);
-    SerialTTL.write("\x99\x20\x44\x45\x42\x55\x47\x00\x00\x00\x17",11);
-    SerialTTL.write("\x99\x21\x00\x00\x00\x00\x00\xC0\x7F\x44\xBC",11);
-    SerialTTL.write("\x99\x22\x00\x00\x00\x00\x00\x00\xC8\x42\xCE",11);
-    SerialTTL.write("\x99\x23\x00\x00\x00\x00\x00\x00\x20\x41\x24",11);
-    SerialTTL.write("\x91\x24\x4E\x2F\x41\x00\x6A",7);
-    SerialTTL.write("\x89\x25\x10\x00\x43",5);
-    SerialTTL.write("\x91\xA0\x02\x01\x05\x00\xC8",7);
+    // Mode 9
+    SerialTTL.write("\x99\x20\x44\x45\x42\x55\x47\x00\x00\x00\x17", 11); // Name: "DEBUG"
+    SerialTTL.write("\x99\x21\x00\x00\x00\x00\x00\xC0\x7F\x44\xBC", 11); // Range: 0.0 to 1023.0
+    SerialTTL.write("\x99\x22\x00\x00\x00\x00\x00\x00\xC8\x42\xCE", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x99\x23\x00\x00\x00\x00\x00\x00\x20\x41\x24", 11); // Si Range: 0.0 to 10.0
+    SerialTTL.write("\x91\x24\x4E\x2F\x41\x00\x6A", 7);                  // Si Symbol: 'N/A'
+    SerialTTL.write("\x89\x25\x10\x00\x43", 5);                          // input_flags: Absolute, output_flags: None
+    SerialTTL.write("\x91\xA0\x02\x01\x05\x00\xC8", 7);                  // Format: 2 int16, each 5 chars, 0 decimals
     SerialTTL.flush();
     delay(10);
-    SerialTTL.write("\x98\x20\x53\x50\x45\x43\x20\x31\x00\x00\x53",11);
-    SerialTTL.write("\x98\x21\x00\x00\x00\x00\x00\x00\x7F\x43\x7A",11);
-    SerialTTL.write("\x98\x22\x00\x00\x00\x00\x00\x00\xC8\x42\xCF",11);
-    SerialTTL.write("\x98\x23\x00\x00\x00\x00\x00\x00\x7F\x43\x78",11);
-    SerialTTL.write("\x90\x24\x4E\x2F\x41\x00\x6B",7);
-    SerialTTL.write("\x88\x25\x00\x00\x52",5);
-    SerialTTL.write("\x90\xA0\x04\x00\x03\x00\xC8",7);
+    // Mode 8
+    SerialTTL.write("\x98\x20\x53\x50\x45\x43\x20\x31\x00\x00\x53", 11); // Name: "SPEC 1"
+    SerialTTL.write("\x98\x21\x00\x00\x00\x00\x00\x00\x7F\x43\x7A", 11); // Range: 0.0 to 255.0
+    SerialTTL.write("\x98\x22\x00\x00\x00\x00\x00\x00\xC8\x42\xCF", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x98\x23\x00\x00\x00\x00\x00\x00\x7F\x43\x78", 11); // Si Range: 0.0 to 255.0
+    SerialTTL.write("\x90\x24\x4E\x2F\x41\x00\x6B", 7);                  // Si Symbol: 'N/A'
+    SerialTTL.write("\x88\x25\x00\x00\x52", 5);                          // No additional info mapping flag
+    SerialTTL.write("\x90\xA0\x04\x00\x03\x00\xC8", 7);                  // Format: 4 int8, each 3 chars, 0 decimals
     SerialTTL.flush();
     delay(10);
-    SerialTTL.write("\x9F\x00\x49\x52\x20\x54\x78\x00\x00\x00\x77",11);
-    SerialTTL.write("\x9F\x01\x00\x00\x00\x00\x00\xFF\x7F\x47\xA6",11);
-    SerialTTL.write("\x9F\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xE8",11);
-    SerialTTL.write("\x9F\x03\x00\x00\x00\x00\x00\xFF\x7F\x47\xA4",11);
-    SerialTTL.write("\x97\x04\x4E\x2F\x41\x00\x4C",7);
-    SerialTTL.write("\x8F\x05\x00\x04\x71",5);
-    SerialTTL.write("\x97\x80\x01\x01\x05\x00\xED",7);
+    // Mode 7
+    SerialTTL.write("\x9F\x00\x49\x52\x20\x54\x78\x00\x00\x00\x77", 11); // Name: "IR Tx"
+    SerialTTL.write("\x9F\x01\x00\x00\x00\x00\x00\xFF\x7F\x47\xA6", 11); // Range: 0 to 65535
+    SerialTTL.write("\x9F\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xE8", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x9F\x03\x00\x00\x00\x00\x00\xFF\x7F\x47\xA4", 11); // Si Range: 0 to 65535
+    SerialTTL.write("\x97\x04\x4E\x2F\x41\x00\x4C", 7);                  // Si Symbol: 'N/A'
+    SerialTTL.write("\x8F\x05\x00\x04\x71", 5);                          // input_flags: None, output_flags: Discrete
+    SerialTTL.write("\x97\x80\x01\x01\x05\x00\xED", 7);                  // Format: 1 int16, each 5 chars, 0 decimals
     SerialTTL.flush();
     delay(10);
-    SerialTTL.write("\x9E\x00\x52\x47\x42\x20\x49\x00\x00\x00\x5F",11);
-    SerialTTL.write("\x9E\x01\x00\x00\x00\x00\x00\xC0\x7F\x44\x9B",11);
-    SerialTTL.write("\x9E\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xE9",11);
-    SerialTTL.write("\x9E\x03\x00\x00\x00\x00\x00\xc0\x7F\x44\x99",11);
-    SerialTTL.write("\x96\x04\x52\x41\x57\x00\x29",7);
-    SerialTTL.write("\x8E\x05\x10\x00\x64",5);
-    SerialTTL.write("\x96\x80\x03\x01\x05\x00\xEE",7);
+    // Mode 6
+    SerialTTL.write("\x9E\x00\x52\x47\x42\x20\x49\x00\x00\x00\x5F", 11); // Name: "RGB I"
+    SerialTTL.write("\x9E\x01\x00\x00\x00\x00\x00\xC0\x7F\x44\x9B", 11); // Range: 0.0 to 1023.0
+    SerialTTL.write("\x9E\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xE9", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x9E\x03\x00\x00\x00\x00\x00\xc0\x7F\x44\x99", 11); // Si Range: 0.0 to 1023.0
+    SerialTTL.write("\x96\x04\x52\x41\x57\x00\x29", 7);                  // Si Symbol: 'RAW'
+    SerialTTL.write("\x8E\x05\x10\x00\x64", 5);                          // input_flags: Absolute, output_flags: None
+    SerialTTL.write("\x96\x80\x03\x01\x05\x00\xEE", 7);                  // Format: 3 int16, each 5 chars, 0 decimals
     SerialTTL.flush();
     delay(10);
-    SerialTTL.write("\x9D\x00\x43\x4F\x4C\x20\x4F\x00\x00\x00\x4D",11);
-    SerialTTL.write("\x9D\x01\x00\x00\x00\x00\x00\x00\x20\x41\x02",11);
-    SerialTTL.write("\x9D\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEA",11);
-    SerialTTL.write("\x9D\x03\x00\x00\x00\x00\x00\x00\x20\x41\x00",11);
-    SerialTTL.write("\x95\x04\x49\x44\x58\x00\x3B",7);
-    SerialTTL.write("\x8D\x05\x00\x04\x73",5);
-    SerialTTL.write("\x95\x80\x01\x00\x03\x00\xE8",7);
+    // Mode 5
+    SerialTTL.write("\x9D\x00\x43\x4F\x4C\x20\x4F\x00\x00\x00\x4D", 11); // Name: "COL O"
+    SerialTTL.write("\x9D\x01\x00\x00\x00\x00\x00\x00\x20\x41\x02", 11); // Range: 0.0 to 10.0
+    SerialTTL.write("\x9D\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEA", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x9D\x03\x00\x00\x00\x00\x00\x00\x20\x41\x00", 11); // Si Range: 0.0 to 10.0
+    SerialTTL.write("\x95\x04\x49\x44\x58\x00\x3B", 7);                  // Si Symbol: 'IDX'
+    SerialTTL.write("\x8D\x05\x00\x04\x73", 5);                          // input_flags: None, output_flags: Discrete
+    SerialTTL.write("\x95\x80\x01\x00\x03\x00\xE8", 7);                  // Format: 1 int8, each 3 chars, 0 decimals
     SerialTTL.flush();
     delay(10);
-    SerialTTL.write("\x94\x00\x41\x4D\x42\x49\x6C",7);
-    SerialTTL.write("\x9C\x01\x00\x00\x00\x00\x00\x00\xC8\x42\xE8",11);
-    SerialTTL.write("\x9C\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEB",11);
-    SerialTTL.write("\x9C\x03\x00\x00\x00\x00\x00\x00\xC8\x42\xEA",11);
-    SerialTTL.write("\x94\x04\x50\x43\x54\x00\x28",7);
-    SerialTTL.write("\x8C\x05\x10\x00\x66",5);
-    SerialTTL.write("\x94\x80\x01\x00\x03\x00\xE9",7);
+    // Mode 4
+    SerialTTL.write("\x94\x00\x41\x4D\x42\x49\x6C", 7);                  // Name: "AMBI"
+    SerialTTL.write("\x9C\x01\x00\x00\x00\x00\x00\x00\xC8\x42\xE8", 11); // Range: 0.0 to 100.0
+    SerialTTL.write("\x9C\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEB", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x9C\x03\x00\x00\x00\x00\x00\x00\xC8\x42\xEA", 11); // Si Range: 0.0 to 100.0
+    SerialTTL.write("\x94\x04\x50\x43\x54\x00\x28", 7);                  // Si Symbol: 'PCT'
+    SerialTTL.write("\x8C\x05\x10\x00\x66", 5);                          // input_flags: Absolute, output_flags: None
+    SerialTTL.write("\x94\x80\x01\x00\x03\x00\xE9", 7);                  // Format: 1 int8, each 3 chars, 0 decimals
     SerialTTL.flush();
     delay(10);
-    SerialTTL.write("\x9B\x00\x52\x45\x46\x4C\x54\x00\x00\x00\x2D",11);
-    SerialTTL.write("\x9B\x01\x00\x00\x00\x00\x00\x00\xC8\x42\xEF",11);
-    SerialTTL.write("\x9B\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEC",11);
-    SerialTTL.write("\x9B\x03\x00\x00\x00\x00\x00\x00\xC8\x42\xED",11);
-    SerialTTL.write("\x93\x04\x50\x43\x54\x00\x2F",7);
-    SerialTTL.write("\x8B\x05\x10\x00\x61",5);
-    SerialTTL.write("\x93\x80\x01\x00\x03\x00\xEE",7);
+    // Mode 3
+    SerialTTL.write("\x9B\x00\x52\x45\x46\x4C\x54\x00\x00\x00\x2D", 11); // Name: "REFLT"
+    SerialTTL.write("\x9B\x01\x00\x00\x00\x00\x00\x00\xC8\x42\xEF", 11); // Range: 0.0 to 100.0
+    SerialTTL.write("\x9B\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEC", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x9B\x03\x00\x00\x00\x00\x00\x00\xC8\x42\xED", 11); // Si Range: 0.0 to 100.0
+    SerialTTL.write("\x93\x04\x50\x43\x54\x00\x2F", 7);                  // Si Symbol: 'PCT'
+    SerialTTL.write("\x8B\x05\x10\x00\x61", 5);                          // input_flags: Absolute, output_flags: None
+    SerialTTL.write("\x93\x80\x01\x00\x03\x00\xEE", 7);                  // Format: 1 int8, each 3 chars, 0 decimals
     SerialTTL.flush();
     delay(10);
-    SerialTTL.write("\x9A\x00\x43\x4F\x55\x4E\x54\x00\x00\x00\x26",11);
-    SerialTTL.write("\x9A\x01\x00\x00\x00\x00\x00\x00\xC8\x42\xEE",11);
-    SerialTTL.write("\x9A\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xED",11);
-    SerialTTL.write("\x9A\x03\x00\x00\x00\x00\x00\x00\xC8\x42\xEC",11);
-    SerialTTL.write("\x92\x04\x43\x4E\x54\x00\x30",7);
-    SerialTTL.write("\x8A\x05\x08\x00\x78",5);
-    SerialTTL.write("\x92\x80\x01\x02\x04\x00\xEA",7);
+    // Mode 2
+    SerialTTL.write("\x9A\x00\x43\x4F\x55\x4E\x54\x00\x00\x00\x26", 11); // Name: "COUNT"
+    SerialTTL.write("\x9A\x01\x00\x00\x00\x00\x00\x00\xC8\x42\xEE", 11); // Range: 0.0 to 100.0
+    SerialTTL.write("\x9A\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xED", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x9A\x03\x00\x00\x00\x00\x00\x00\xC8\x42\xEC", 11); // Si Range: 0.0 to 100.0
+    SerialTTL.write("\x92\x04\x43\x4E\x54\x00\x30", 7);                  // Si Symbol: 'CNT'
+    SerialTTL.write("\x8A\x05\x08\x00\x78", 5);                          // input_flags: Relative, output_flags: None
+    SerialTTL.write("\x92\x80\x01\x02\x04\x00\xEA", 7);                  // Format: 1 int32, each 4 chars, 0 decimals
     SerialTTL.flush();
     delay(10);
-    SerialTTL.write("\x91\x00\x50\x52\x4F\x58\x7B",7);
-    SerialTTL.write("\x99\x01\x00\x00\x00\x00\x00\x00\x20\x41\x06",11);
-    SerialTTL.write("\x99\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEE",11);
-    SerialTTL.write("\x99\x03\x00\x00\x00\x00\x00\x00\x20\x41\x04",11);
-    SerialTTL.write("\x91\x04\x44\x49\x53\x00\x34",7);
-    SerialTTL.write("\x89\x05\x50\x00\x23",5);
-    SerialTTL.write("\x91\x80\x01\x00\x03\x00\xEC",7);
+    // Mode 1
+    SerialTTL.write("\x91\x00\x50\x52\x4F\x58\x7B", 7);                  // Name: "PROX"
+    SerialTTL.write("\x99\x01\x00\x00\x00\x00\x00\x00\x20\x41\x06", 11); // Range: 0.0 to 10.0
+    SerialTTL.write("\x99\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEE", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x99\x03\x00\x00\x00\x00\x00\x00\x20\x41\x04", 11); // Si Range: 0.0 to 10.0
+    SerialTTL.write("\x91\x04\x44\x49\x53\x00\x34", 7);                  // Si Symbol: 'DIS'
+    SerialTTL.write("\x89\x05\x50\x00\x23", 5);                          // input_flags: Absolute,Func mapping 2.0+, output_flags: None
+    SerialTTL.write("\x91\x80\x01\x00\x03\x00\xEC", 7);                  // Format: 1 int8, each 3 chars, 0 decimals
     SerialTTL.flush();
     delay(10);
-    SerialTTL.write("\x98\x00\x43\x4F\x4C\x4F\x52\x00\x00\x00\x3A",11);
-    SerialTTL.write("\x98\x01\x00\x00\x00\x00\x00\x00\x20\x41\x07",11);
-    SerialTTL.write("\x98\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEF",11);
-    SerialTTL.write("\x98\x03\x00\x00\x00\x00\x00\x00\x20\x41\x05",11);
-    SerialTTL.write("\x90\x04\x49\x44\x58\x00\x3E",7);
-    SerialTTL.write("\x88\x05\xC4\x00\xB6",5);
-    SerialTTL.write("\x90\x80\x01\x00\x03\x00\xED",7);
-    SerialTTL.write("\x88\x06\x4F\x00\x3E",5);
+    // Mode 0
+    SerialTTL.write("\x98\x00\x43\x4F\x4C\x4F\x52\x00\x00\x00\x3A", 11); // Name: "COLOR"
+    SerialTTL.write("\x98\x01\x00\x00\x00\x00\x00\x00\x20\x41\x07", 11); // Range: 0.0 to 10.0
+    SerialTTL.write("\x98\x02\x00\x00\x00\x00\x00\x00\xC8\x42\xEF", 11); // PCT Range: 0.0% to 100.0%
+    SerialTTL.write("\x98\x03\x00\x00\x00\x00\x00\x00\x20\x41\x05", 11); // Si Range: 0.0 to 10.0
+    SerialTTL.write("\x90\x04\x49\x44\x58\x00\x3E", 7);                  // Si Symbol: 'IDX'
+    SerialTTL.write("\x88\x05\xC4\x00\xB6", 5);                          // input_flags: Discrete,Func mapping 2.0+,NULL, output_flags: None
+    SerialTTL.write("\x90\x80\x01\x00\x03\x00\xED", 7);                  // Format: 1 int8, each 3 chars, 0 decimals
+    SerialTTL.write("\x88\x06\x4F\x00\x3E", 5);                          // Combinable modes: 0:Color, 1:Proximity, 2:Count, 3:Reflectance, 6:RGB I
     SerialTTL.flush();
     delay(10);
-    SerialTTL.write("\x04",1);
+    SerialTTL.write("\x04", 1);
     SerialTTL.flush();
     delay(5);
 }
