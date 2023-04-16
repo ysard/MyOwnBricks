@@ -104,7 +104,7 @@ void ForceSensor::commSendInitSequence(){
     SerialTTL.begin(2400);
 
     SerialTTL.write("\x40\x3F\x80", 3);                              // Type ID: 0x3F
-    SerialTTL.write("\x41\x05\xBB", 3);                              // CMD_MODES: modes: 4, views: 3, Ext. Modes: 0 modes, 0 views
+    SerialTTL.write("\x51\x05\x05\x05\x05\xAE", 6);                  // CMD_MODES: modes: 6, views: 6, Ext. Modes: 6 modes, 6 views
     SerialTTL.write("\x52\x00\xC2\x01\x00\x6E", 6);                  // CMD_SPEED: 115200
     SerialTTL.write("\x5F\x00\x00\x00\x10\x00\x00\x00\x10\xA0", 10); // CMD_VERSION: fw-version: 1.0.0.0, hw-version: 1.0.0.0
     SerialTTL.flush();
