@@ -103,12 +103,35 @@ void ForceSensor::commSendInitSequence(){
     // Initialize uart
     SerialTTL.begin(2400);
 
-    SerialTTL.write("\x40\x3F\x82", 3);                              // Type ID: 0x3F
-    SerialTTL.write("\x51???", 6);                  // CMD_MODES: ? modes, ? views, Ext. Modes: ? modes, ? view
+    SerialTTL.write("\x40\x3F\x80", 3);                              // Type ID: 0x3F
+    SerialTTL.write("\x41\x05\xBB", 3);                              // CMD_MODES: modes: 4, views: 3, Ext. Modes: 0 modes, 0 views
     SerialTTL.write("\x52\x00\xC2\x01\x00\x6E", 6);                  // CMD_SPEED: 115200
-    SerialTTL.write("\x5F\x00\x00\x00\x10\x00\x00\x00\x10\xA0", 10); // CMD_VERSION
+    SerialTTL.write("\x5F\x00\x00\x00\x10\x00\x00\x00\x10\xA0", 10); // CMD_VERSION: fw-version: 1.0.0.0, hw-version: 1.0.0.0
     SerialTTL.flush();
-    delay(10);
+    // Mode 6
+    SerialTTL.write("\x9E\x00\x43\x41\x4C\x49\x42\x00\x00\x00\x24", 11); // Name: "CALIB"
+    SerialTTL.write("\x96\x80\x08\x01\x04\x00\xE4", 7);                  // Format: 8 int16, each 4 chars, 0 decimals
+    SerialTTL.flush();
+    // Mode 4
+    SerialTTL.write("\x94\x00\x46\x52\x41\x57\x69", 7);                  // Name: "FRAW"
+    SerialTTL.write("\x94\x80\x01\x01\x04\x00\xEF", 7);                  // Format: 1 int16, each 4 chars, 0 decimals
+    SerialTTL.flush();
+    // Mode 2
+    SerialTTL.write("\x9A\x00\x54\x41\x50\x50\x45\x44\x00\x00\x71", 11); // Name: "TAPPED"
+    SerialTTL.write("\x92\x80\x01\x00\x03\x00\xEF", 7);                  // Format: 1 int8, each 3 chars, 0 decimals
+    SerialTTL.flush();
+    // Mode 1
+    SerialTTL.write("\x99\x00\x54\x4F\x55\x43\x48\x45\x44\x00\x22", 11); // Name: "TOUCHED"
+    SerialTTL.write("\x91\x80\x01\x00\x03\x00\xEC", 7);                  // Format: 1 int8, each 3 chars, 0 decimals
+    SerialTTL.flush();
+    // Mode 0
+    SerialTTL.write("\x98\x00\x46\x4F\x52\x43\x45\x00\x00\x00\x3A", 11); // Name: "FORCE"
+    SerialTTL.write("\x90\x80\x01\x00\x03\x00\xED", 7);                  // Format: 1 int8, each 3 chars, 0 decimals
+    SerialTTL.flush();
+
+    SerialTTL.write("\x04", 1); // ACK
+    SerialTTL.flush();
+    delay(5);
 }
 
 
