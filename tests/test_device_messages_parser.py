@@ -13,6 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""Test the parsing of packets mainly emitted by a device"""
 import pytest
 from my_own_bricks.device_messages_parser import *
 

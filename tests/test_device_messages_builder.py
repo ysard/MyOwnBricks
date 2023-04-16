@@ -13,6 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""Test the build of packets from a device point of view"""
 import pytest
 from my_own_bricks.device_messages_builder import *
 
